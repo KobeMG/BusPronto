@@ -4,6 +4,13 @@ import { Clock } from 'lucide-react';
 const BusTimer = ({ schedule }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  const parseTimeToDate = (timeStr, referenceDate) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const date = new Date(referenceDate);
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+  };
+
   useEffect(() => { // Actualiza la hora cada segundo
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -13,28 +20,27 @@ const BusTimer = ({ schedule }) => {
 
   const getNextBus = () => {
     const now = currentTime;
-    const currentMinutes = now.getHours() * 60 + now.getMinutes(); // Convertir a minutos para facilitar el cálculo
 
     let nextBus = null;
-    let minDiff = Infinity; // Al inicio se establece en infinito para que cualquier diferencia sea menor
+    let minDiffSeconds = Infinity;
 
     for (const timeStr of schedule) {
-      const [hours, minutes] = timeStr.split(':').map(Number);
-      const busMinutes = hours * 60 + minutes;
+      const busDate = parseTimeToDate(timeStr, now);
+      const diffSeconds = Math.floor((busDate.getTime() - now.getTime()) / 1000);
 
-      const diff = busMinutes - currentMinutes;
-
-      // If the bus is strictly in the future (or right now, diff >= 0)
-      if (diff >= 0 && diff < minDiff) {
-        minDiff = diff - 1; // Restar 1 minuto para mostrar el tiempo restante correcto
+      if (diffSeconds >= 0 && diffSeconds < minDiffSeconds) {
+        minDiffSeconds = diffSeconds;
         nextBus = timeStr;
       }
     }
 
-    return { nextBus, minutesRemaining: minDiff === Infinity ? null : minDiff };
+    return {
+      nextBus,
+      secondsRemaining: minDiffSeconds === Infinity ? null : minDiffSeconds,
+    };
   };
 
-  const { nextBus, minutesRemaining } = getNextBus();
+  const { nextBus, secondsRemaining } = getNextBus();
 
   // Get upcoming buses (next 3)
   const getUpcomingBuses = () => {
@@ -54,15 +60,13 @@ const BusTimer = ({ schedule }) => {
     );
   }
 
-  const hoursRemaining = Math.floor(minutesRemaining / 60);
-  const displayMinutes = minutesRemaining % 60;
-
-  // Calculate seconds remaining within the current minute
-  const secondsRemaining = 59 - currentTime.getSeconds();
+  const hoursRemaining = Math.floor(secondsRemaining / 3600);
+  const displayMinutes = Math.floor((secondsRemaining % 3600) / 60);
+  const displaySeconds = secondsRemaining % 60;
 
   let timeString = '';
   if (hoursRemaining > 0) timeString += `${hoursRemaining}h `;
-  timeString += `${displayMinutes}m ${secondsRemaining}s`;
+  timeString += `${displayMinutes}m ${displaySeconds}s`;
 
   return (
     <div>
