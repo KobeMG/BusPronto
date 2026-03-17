@@ -26,7 +26,7 @@ const BusTimer = ({ schedule }) => {
 
       // If the bus is strictly in the future (or right now, diff >= 0)
       if (diff >= 0 && diff < minDiff) {
-        minDiff = diff;
+        minDiff = diff - 1; // Restar 1 minuto para mostrar el tiempo restante correcto
         nextBus = timeStr;
       }
     }
