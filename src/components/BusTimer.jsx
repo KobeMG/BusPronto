@@ -40,7 +40,27 @@ const BusTimer = ({ schedule }) => {
     };
   };
 
+  const getLastBus = () => {
+    const now = currentTime;
+    let lastBus = null;
+    let maxDiffSeconds = -Infinity;
+
+    for (const timeStr of schedule) {
+      const busDate = parseTimeToDate(timeStr, now);
+      const diffSeconds = Math.floor((busDate.getTime() - now.getTime()) / 1000);
+
+      // Buscar el bus más próximo pero en el pasado (diff < 0)
+      if (diffSeconds < 0 && diffSeconds > maxDiffSeconds) {
+        maxDiffSeconds = diffSeconds;
+        lastBus = timeStr;
+      }
+    }
+
+    return lastBus;
+  };
+
   const { nextBus, secondsRemaining } = getNextBus();
+  const lastBus = getLastBus();
 
   // Get upcoming buses (next 3)
   const getUpcomingBuses = () => {
@@ -82,6 +102,14 @@ const BusTimer = ({ schedule }) => {
             {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
+        {lastBus && (
+          <div className="detail-item">
+            <span className="detail-label">Bus anterior</span>
+            <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Clock size={16} /> {lastBus}
+            </span>
+          </div>
+        )}
         <div className="detail-item" style={{ alignItems: 'flex-end' }}>
           <span className="detail-label">Siguiente bus</span>
           <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
