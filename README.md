@@ -1,16 +1,9 @@
-# React + Vite
+# Cuando la Inpaciencia le gana a la lógica
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto nació de mi impaciencia en revisar los horarios de los buses de la Universidad de Costa Rica, sede San Pedro.
+No soy una persona que le apacione perder su tiempo viendo el horario de buses, aunque solo implique perder unos minutos, es por ello que
+he decidido desarrollar esta web app como una solución a mi impaciencia.
 
-Currently, two official plugins are available:
+## Colaboraciones
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Sientase libre de colaborar con el proyecto, cualquier ayuda es bienvenida.
