@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <p className="developed-by">
-          Desarrollado con ❤️ por <span className="brand">Kode Creative</span>
+          Desarrollado con ❤️ por <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className="brand">Kode Creative</a>
         </p>
         <div className="social-links">
           <a href="https://instagram.com/kobemg" target="_blank" rel="noopener noreferrer" className="social-icon">

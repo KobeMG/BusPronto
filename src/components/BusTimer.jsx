@@ -18,6 +18,20 @@ const BusTimer = ({ schedule }) => {
     return () => clearInterval(timer);
   }, []);
 
+  // Update tab title with countdown
+  useEffect(() => {
+    const { nextBus, secondsRemaining } = getNextBus();
+    if (nextBus && secondsRemaining !== null) {
+      const mins = Math.ceil(secondsRemaining / 60);
+      document.title = `${mins}m | BusPronto`;
+    } else {
+      document.title = 'BusPronto';
+    }
+    return () => {
+      document.title = 'BusPronto';
+    };
+  }, [currentTime]);
+
   const getNextBus = () => {
     const now = currentTime;
 

@@ -244,6 +244,7 @@ body {
 .brand {
   color: var(--accent-primary);
   font-weight: 600;
+  text-decoration: none;
 }
 
 .social-links {
@@ -257,6 +258,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
 .social-icon:hover {

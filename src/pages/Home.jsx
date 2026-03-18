@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Bus, ChevronRight } from 'lucide-react';
+import { Bus, ChevronRight, Star } from 'lucide-react';
 import horarios from '../data/horarios.json';
 
 const stopNames = {
@@ -9,7 +10,22 @@ const stopNames = {
 };
 
 const Home = () => {
+  const [favorites, setFavorites] = useState([]);
   const stops = Object.keys(horarios);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem('fav_stops') || '[]');
+    setFavorites(saved);
+  }, []);
+
+  // Sort stops: favorites first, then the rest
+  const sortedStops = [...stops].sort((a, b) => {
+    const aFav = favorites.includes(a);
+    const bFav = favorites.includes(b);
+    if (aFav && !bFav) return -1;
+    if (!aFav && bFav) return 1;
+    return 0;
+  });
 
   return (
     <div className="glass-card">
@@ -22,9 +38,12 @@ const Home = () => {
       </p>
 
       <div className="stop-list">
-        {stops.map((stop) => (
-          <Link to={`/parada/${stop}`} key={stop} className="stop-link">
-            <span>{stopNames[stop] || stop.replace('_', ' ')}</span>
+        {sortedStops.map((stop) => (
+          <Link to={`/parada/${stop}`} key={stop} className="stop-link" style={{ position: 'relative' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              {favorites.includes(stop) && <Star size={16} fill="#f59e0b" color="#f59e0b" />}
+              <span>{stopNames[stop] || stop.replace('_', ' ')}</span>
+            </div>
             <ChevronRight size={20} />
           </Link>
         ))}
