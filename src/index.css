@@ -97,9 +97,12 @@ body {
 
 .header {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-bottom: 2rem;
-  
+  position: relative;
+  gap: 0.5rem;
 }
 
 .back-button {
@@ -112,11 +115,32 @@ body {
   padding: 0.5rem;
   border-radius: 0.5rem;
   transition: all 0.2s;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .back-button:hover {
   color: var(--text-primary);
   background: var(--surface-color);
+}
+
+.favorite-button {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.5rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+}
+
+.favorite-button:hover {
+  background: var(--surface-color) !important;
 }
 
 .stop-name {

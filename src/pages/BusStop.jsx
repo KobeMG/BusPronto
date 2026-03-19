@@ -55,9 +55,10 @@ const BusStop = () => {
         <button onClick={() => navigate('/')} className="back-button">
           <ArrowLeft size={24} />
         </button>
+        <h2>Salida de:</h2>
         <h2 className="stop-name">{stopName}</h2>
-        <button className="favorite-button" onClick={toggleFavorite} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '0.5rem', color: isFavorite ? '#f59e0b' : 'var(--text-secondary)' }}>
-          <Star size={24} fill={isFavorite ? '#f59e0b' : 'transparent'} />
+        <button className="favorite-button" onClick={toggleFavorite}>
+          <Star size={24} fill={isFavorite ? '#f59e0b' : 'transparent'} color={isFavorite ? '#f59e0b' : 'var(--text-secondary)'} />
         </button>
       </div>
 
