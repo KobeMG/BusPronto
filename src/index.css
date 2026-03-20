@@ -157,7 +157,7 @@ body {
 }
 
 .time-remaining {
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 10vw, 4rem);
   font-weight: 700;
   line-height: 1;
   margin-bottom: 0.5rem;
@@ -166,6 +166,7 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-variant-numeric: tabular-nums;
+  word-break: break-word;
 }
 
 .time-label {
@@ -175,30 +176,56 @@ body {
 }
 
 .next-bus-details {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
   background: rgba(59, 130, 246, 0.1);
   border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 1rem 1.5rem;
+  padding: 0.875rem 1rem;
   border-radius: 1rem;
   margin-top: 2rem;
+}
+
+.next-bus-details.two-cols {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .detail-item {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .detail-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-value {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 360px) {
+  .detail-label {
+    font-size: 0.65rem;
+  }
+  .detail-value {
+    font-size: 0.95rem;
+  }
+  .next-bus-details {
+    padding: 0.75rem 0.75rem;
+    gap: 0.25rem;
+  }
 }
 
 .schedule-list {
@@ -214,8 +241,14 @@ body {
 
 .times-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 360px) {
+  .times-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .time-badge {

@@ -109,25 +109,25 @@ const BusTimer = ({ schedule }) => {
         <div className="time-label">para el próximo bus</div>
       </div>
 
-      <div className="next-bus-details">
+      <div className={`next-bus-details ${!lastBus ? 'two-cols' : ''}`}>
         <div className="detail-item">
           <span className="detail-label">Hora actual</span>
           <span className="detail-value">
-            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
           </span>
         </div>
         {lastBus && (
           <div className="detail-item">
             <span className="detail-label">Bus anterior</span>
-            <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Clock size={16} /> {lastBus}
+            <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Clock size={14} /> {lastBus}
             </span>
           </div>
         )}
-        <div className="detail-item" style={{ alignItems: 'flex-end' }}>
+        <div className="detail-item" style={{ alignItems: lastBus ? 'flex-end' : 'flex-end' }}>
           <span className="detail-label">Siguiente bus</span>
-          <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Clock size={16} /> {nextBus}
+          <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <Clock size={14} /> {nextBus}
           </span>
         </div>
       </div>
