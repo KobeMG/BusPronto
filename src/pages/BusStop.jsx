@@ -36,13 +36,15 @@ const BusStop = () => {
       sileo.success({
         title: '¡Guardado!',
         description: `La parada ${stopName} se añadió a sus favoritos.`,
-        position: 'top-center'
+        position: 'top-center',
+        duration: 2000
       });
     } else {
       sileo.info({
         title: 'Eliminado',
         description: `Se quitó ${stopName} de sus favoritos.`,
-        position: 'top-center'
+        position: 'top-center',
+        duration: 2000
       });
     }
   };
