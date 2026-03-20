@@ -289,3 +289,27 @@ body {
   color: var(--accent-primary);
   transform: translateY(-2px);
 }
+
+.announcement {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.announcement svg {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

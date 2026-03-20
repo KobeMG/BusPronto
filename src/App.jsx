@@ -1,19 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sileo';
+import 'sileo/styles.css';
 import Home from './pages/Home';
 import BusStop from './pages/BusStop';
 import Footer from './components/Footer';
 
 function App() {
   return (
-    <Router>
-      <div className="app-container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/parada/:stopId" element={<BusStop />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <>
+      <Router>
+        <div className="app-container">
+          <Toaster position="top-right" />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/parada/:stopId" element={<BusStop />} />
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
+    </>
   );
 }
 

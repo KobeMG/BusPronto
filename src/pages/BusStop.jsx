@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
+import { sileo } from 'sileo';
 import horarios from '../data/horarios.json';
 import BusTimer from '../components/BusTimer';
 
@@ -30,6 +31,20 @@ const BusStop = () => {
     }
     localStorage.setItem('fav_stops', JSON.stringify(newFavorites));
     setIsFavorite(!isFavorite);
+
+    if (newFavorites.includes(stopId)) {
+      sileo.success({
+        title: '¡Guardado!',
+        description: `La parada ${stopName} se añadió a sus favoritos.`,
+        position: 'top-center'
+      });
+    } else {
+      sileo.info({
+        title: 'Eliminado',
+        description: `Se quitó ${stopName} de sus favoritos.`,
+        position: 'top-center'
+      });
+    }
   };
 
   const schedule = horarios[stopId];
