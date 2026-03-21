@@ -1,4 +1,4 @@
-import { Instagram, Github, Globe } from 'lucide-react';
+import { Instagram, Github, Globe , Linkedin} from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -16,6 +16,9 @@ const Footer = () => {
           </a>
           <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className="social-icon">
             <Globe size={18} />
+          </a>
+          <a href="https://linkedin.com/in/kobemg" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <Linkedin size={18} />
           </a>
         </div>
       </div>
