@@ -66,8 +66,8 @@ const BusStop = () => {
     );
   }
 
-  const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
-
+  //const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
+  const isWeekend = false; //Dejar asi el primer fin de semana. Para que puedan ver la funcionalidad.
   return (
     <div className="glass-card">
       <div className="header">
