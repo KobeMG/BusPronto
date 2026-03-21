@@ -66,6 +66,8 @@ const BusStop = () => {
     );
   }
 
+  const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
+
   return (
     <div className="glass-card">
       <div className="header">
@@ -79,7 +81,13 @@ const BusStop = () => {
         </button>
       </div>
 
-      <BusTimer schedule={schedule} />
+      {isWeekend ? (
+        <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--text-secondary)' }}>
+          <p>No hay servicio de buses disponibles los fines de semana.</p>
+        </div>
+      ) : (
+        <BusTimer schedule={schedule} />
+      )}
     </div>
   );
 };
