@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { sileo } from 'sileo';
 import horarios from '../data/horarios.json';
 import BusTimer from '../components/BusTimer';
@@ -55,6 +56,9 @@ const BusStop = () => {
   if (!schedule) {
     return (
       <div className="glass-card">
+        <Helmet>
+          <title>Parada no encontrada - BusPronto</title>
+        </Helmet>
         <div className="header">
           <button onClick={() => navigate('/')} className="back-button">
             <ArrowLeft size={24} />
@@ -70,6 +74,10 @@ const BusStop = () => {
   const isWeekend = false; //Dejar asi el primer fin de semana. Para que puedan ver la funcionalidad.
   return (
     <div className="glass-card">
+      <Helmet>
+        <title>{`Salida de ${stopName} - BusPronto`}</title>
+        <meta name="description" content={`Consulte el horario y cronómetro en tiempo real para la parada ${stopName}. ¡No pierda su bus!`} />
+      </Helmet>
       <div className="header">
         <button onClick={() => navigate('/')} className="back-button">
           <ArrowLeft size={24} />
@@ -91,5 +99,6 @@ const BusStop = () => {
     </div>
   );
 };
+
 
 export default BusStop;

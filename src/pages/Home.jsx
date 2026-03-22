@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Bus, ChevronRight, Star, Info } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import horarios from '../data/horarios.json';
 
 const stopNames = {
@@ -29,10 +30,14 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>BusPronto - Horarios de Bus Interno UCR</title>
+        <meta name="description" content="Encuentra el próximo bus en BusPronto. Selecciona tu parada y mira el cronómetro en tiempo real." />
+      </Helmet>
       <div className="glass-card">
         <h1 className="title">
           <Bus size={32} style={{ display: 'inline', marginRight: '0.5rem', verticalAlign: 'middle' }} />
-          BusPronto
+          Bus Interno UCR (BusPronto)
         </h1>
         <p style={{ textAlign: 'center', color: 'var(--text-primary)', marginBottom: '2rem' }}>I Ciclo 2026</p>
         <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bus-pronto.vercel.app/sitemap.xml
