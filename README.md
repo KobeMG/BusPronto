@@ -9,4 +9,4 @@ Este proyecto es una solución para consultar rápidamente los horarios de los b
 Sientase libre de colaborar con el proyecto, cualquier ayuda es bienvenida.
 
 ## Agradecimientos
-Freepik por los iconos utilizados en el proyecto.
+Flaticon por los iconos utilizados en el proyecto.
