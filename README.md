@@ -10,3 +10,7 @@ Sientase libre de colaborar con el proyecto, cualquier ayuda es bienvenida.
 
 ## Agradecimientos
 Flaticon por los iconos utilizados en el proyecto.
+
+## Licencia
+
+Este proyecto está bajo la licencia **GNU Affero General Public License v3 (AGPLv3)**. Para más detalles, consulte el archivo [LICENSE](LICENSE).
