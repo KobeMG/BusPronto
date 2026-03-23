@@ -136,7 +136,7 @@ const BusTimer = ({ schedule }) => {
         <h3 className="schedule-title">Próximos horarios:</h3>
         <div className="times-grid">
           {upcomingBuses.map((time, idx) => (
-            <div key={time} className={`time-badge ${idx === 0 ? 'next' : ''}`}>
+            <div key={time} className={`time-badge ${idx === 0 ? 'next' : ''}`}> {/* Cambiar esto proximamente*/}
               {time}
             </div>
           ))}
