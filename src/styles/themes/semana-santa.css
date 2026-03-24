@@ -1,0 +1,8 @@
+/* src/styles/themes/semana-santa.css */
+[data-theme='semana-santa'] {
+  --accent-primary: #7c3aed;   /* Púrpura Real/Penitente */
+  --accent-secondary: #fbbf24; /* Dorado/Oro */
+  
+  /* Ajustes opcionales para mayor inmersión */
+  --surface-border: #4c1d95;   /* Borde púrpura oscuro */
+}

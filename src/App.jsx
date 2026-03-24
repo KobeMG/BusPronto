@@ -4,8 +4,12 @@ import 'sileo/styles.css';
 import Home from './pages/Home';
 import BusStop from './pages/BusStop';
 import Footer from './components/Footer';
+import useTheme from './hooks/useTheme';
 
 function App() {
+  // Aplicar tema automáticamente según la temporada
+  //useTheme();  //Descomentar para activar la logica de manejo de temas dinamicos.
+
   return (
     <>
       <Router>

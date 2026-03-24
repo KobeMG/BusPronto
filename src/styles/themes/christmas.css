@@ -1,0 +1,8 @@
+/* src/styles/themes/christmas.css */
+[data-theme='christmas'] {
+  --accent-primary: #ef4444;   /* Rojo Santa */
+  --accent-secondary: #059669; /* Verde Árbol */
+  
+  /* Ajustes para mayor inmersión navideña */
+  --surface-border: #991b1b;   /* Rojo oscuro para bordes */
+}
