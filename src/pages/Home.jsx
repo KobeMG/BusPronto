@@ -58,7 +58,7 @@ const Home = () => {
 
         <div className="announcement">
           <Info size={18} />
-          <span>Proximamente se habilitará la opción de instalar la web.</span>
+          <span>¡Opción de Instalación Disponible!</span>
         </div>
       </div>
     </>
