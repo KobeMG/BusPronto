@@ -4,7 +4,6 @@ import 'sileo/styles.css';
 import Home from './pages/Home';
 import BusStop from './pages/BusStop';
 import Footer from './components/Footer';
-import InstallPWA from './components/InstallPWA';
 
 function App() {
   return (
@@ -17,7 +16,6 @@ function App() {
             <Route path="/parada/:stopId" element={<BusStop />} />
           </Routes>
           <Footer />
-          <InstallPWA />
         </div>
       </Router>
     </>
