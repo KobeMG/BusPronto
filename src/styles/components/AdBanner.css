@@ -1,0 +1,44 @@
+.ad-banner {
+  margin-bottom: 2rem;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+  background: rgba(59, 130, 246, 0.05) !important;
+  border: 1px dashed var(--accent-primary) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.ad-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ad-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--accent-primary);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.ad-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .ad-banner {
+    padding: 0.75rem !important;
+  }
+  .ad-text {
+    font-size: 0.75rem;
+  }
+}

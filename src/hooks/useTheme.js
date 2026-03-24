@@ -11,7 +11,6 @@ const useTheme = () => {
       const month = 11
       // Lógica de temas
       // Por ejemplo: Marzo o Abril (meses típicos de Semana Santa)
-      // Nota: En una app real podríamos usar una librería de festividades
       if (month === 2 || month === 3) {
         return 'semana-santa';
       }

@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: true
+        enabled: false
       },
       includeAssets: ['logo192x192.png', 'logo512x512.png', 'logo32x32.png', 'robots.txt', 'sitemap.xml', 'icons.svg'],
       manifest: {

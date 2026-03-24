@@ -5,16 +5,18 @@ import Home from './pages/Home';
 import BusStop from './pages/BusStop';
 import Footer from './components/Footer';
 import useTheme from './hooks/useTheme';
+import AdBanner from './components/AdBanner';
 
 function App() {
   // Aplicar tema automáticamente según la temporada
-  //useTheme();  //Descomentar para activar la logica de manejo de temas dinamicos.
+  //useTheme(); 
 
   return (
     <>
       <Router>
         <div className="app-container">
           <Toaster position="top-right" />
+          {/* <AdBanner /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/parada/:stopId" element={<BusStop />} />
