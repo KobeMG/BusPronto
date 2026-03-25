@@ -16,7 +16,7 @@ function App() {
       <Router>
         <div className="app-container">
           <Toaster position="top-right" />
-          {/* <AdBanner /> */}
+          <AdBanner />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/parada/:stopId" element={<BusStop />} />
