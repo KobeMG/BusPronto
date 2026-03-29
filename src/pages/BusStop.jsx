@@ -2,17 +2,19 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { sileo } from 'sileo';
-import { getStopById, getSchedulesByStopId } from '../Utils/supabaseQueries';
+import { getStopById } from '../utils/supabaseQueries';
+import { useFavorites } from '../contexts/FavoritesContext';
 import BusTimer from '../components/BusTimer';
 
 const BusStop = () => {
   const { stopId } = useParams();
   const navigate = useNavigate();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [stopData, setStopData] = useState(null);
   const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const isFav = isFavorite(stopId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,37 +32,9 @@ const BusStop = () => {
     };
 
     fetchData();
-    const favorites = JSON.parse(localStorage.getItem('fav_stops') || '[]');
-    setIsFavorite(favorites.includes(stopId));
   }, [stopId]);
 
-  const toggleFavorite = () => {
-    const favorites = JSON.parse(localStorage.getItem('fav_stops') || '[]');
-    let newFavorites;
-    if (favorites.includes(stopId)) {
-      newFavorites = favorites.filter(id => id !== stopId);
-    } else {
-      newFavorites = [...favorites, stopId];
-    }
-    localStorage.setItem('fav_stops', JSON.stringify(newFavorites));
-    setIsFavorite(!isFavorite);
 
-    if (newFavorites.includes(stopId)) {
-      sileo.success({
-        title: '¡Guardado!',
-        description: `La parada ${stopName} se añadió a sus favoritos.`,
-        position: 'top-center',
-        duration: 2000
-      });
-    } else {
-      sileo.info({
-        title: 'Eliminado',
-        description: `Se quitó ${stopName} de sus favoritos.`,
-        position: 'top-center',
-        duration: 2000
-      });
-    }
-  };
 
   const stopName = stopData?.name || stopId?.replace('_', ' ');
 
@@ -103,8 +77,8 @@ const BusStop = () => {
         </button>
         <h2>Salida de:</h2>
         <h2 className="stop-name">{stopName}</h2>
-        <button className="favorite-button" onClick={toggleFavorite}>
-          <Star size={24} fill={isFavorite ? '#f59e0b' : 'transparent'} color={isFavorite ? '#f59e0b' : 'var(--text-secondary)'} />
+        <button className="favorite-button" onClick={() => toggleFavorite(stopId, stopName)}>
+          <Star size={24} fill={isFav ? '#f59e0b' : 'transparent'} color={isFav ? '#f59e0b' : 'var(--text-secondary)'} />
         </button>
       </div>
 

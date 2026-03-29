@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
+import { calculateBuses, getUpcomingBusesList } from '../utils/timeHelpers';
 
 const BusTimer = ({ schedule }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
-
-  const parseTimeToDate = (timeStr, referenceDate) => {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    const date = new Date(referenceDate);
-    date.setHours(hours, minutes, 0, 0);
-    return date;
-  };
 
   useEffect(() => { // Actualiza la hora cada segundo
     const timer = setInterval(() => {
@@ -18,9 +12,10 @@ const BusTimer = ({ schedule }) => {
     return () => clearInterval(timer);
   }, []);
 
+  const { nextBus, secondsRemaining, lastBus } = calculateBuses(schedule, currentTime);
+
   // Update tab title with countdown
   useEffect(() => {
-    const { nextBus, secondsRemaining } = getNextBus();
     if (nextBus && secondsRemaining !== null) {
       const mins = Math.ceil(secondsRemaining / 60);
       document.title = `${mins}m | BusPronto`;
@@ -30,61 +25,9 @@ const BusTimer = ({ schedule }) => {
     return () => {
       document.title = 'BusPronto';
     };
-  }, [currentTime]);
+  }, [currentTime, nextBus, secondsRemaining]);
 
-  const getNextBus = () => {
-    const now = currentTime;
-
-    let nextBus = null;
-    let minDiffSeconds = Infinity;
-
-    for (const timeStr of schedule) {
-      const busDate = parseTimeToDate(timeStr, now);
-      const diffSeconds = Math.floor((busDate.getTime() - now.getTime()) / 1000);
-
-      if (diffSeconds >= 0 && diffSeconds < minDiffSeconds) {
-        minDiffSeconds = diffSeconds;
-        nextBus = timeStr;
-      }
-    }
-
-    return {
-      nextBus,
-      secondsRemaining: minDiffSeconds === Infinity ? null : minDiffSeconds,
-    };
-  };
-
-  const getLastBus = () => {
-    const now = currentTime;
-    let lastBus = null;
-    let maxDiffSeconds = -Infinity;
-
-    for (const timeStr of schedule) {
-      const busDate = parseTimeToDate(timeStr, now);
-      const diffSeconds = Math.floor((busDate.getTime() - now.getTime()) / 1000);
-
-      // Buscar el bus más próximo pero en el pasado (diff < 0)
-      if (diffSeconds < 0 && diffSeconds > maxDiffSeconds) {
-        maxDiffSeconds = diffSeconds;
-        lastBus = timeStr;
-      }
-    }
-
-    return lastBus;
-  };
-
-  const { nextBus, secondsRemaining } = getNextBus();
-  const lastBus = getLastBus();
-
-  // Get upcoming buses (next 3)
-  const getUpcomingBuses = () => {
-    if (!nextBus) return [];
-
-    const nextIndex = schedule.indexOf(nextBus);
-    return schedule.slice(nextIndex, nextIndex + 4);
-  };
-
-  const upcomingBuses = getUpcomingBuses();
+  const upcomingBuses = getUpcomingBusesList(schedule, nextBus);
 
   if (!nextBus) {
     return (

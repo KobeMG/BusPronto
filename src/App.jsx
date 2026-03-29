@@ -8,13 +8,14 @@ import BusStop from './pages/BusStop';
 import Footer from './components/Footer';
 import useTheme from './hooks/useTheme';
 import AdBanner from './components/AdBanner';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 
 function App() {
   // Aplicar tema automáticamente según la temporada
   //useTheme(); 
 
   return (
-    <>
+    <FavoritesProvider>
       <Router>
         <div className="app-container">
           <Toaster position="top-right" />
@@ -31,7 +32,7 @@ function App() {
           <Footer />
         </div>
       </Router>
-    </>
+    </FavoritesProvider>
   );
 }
 

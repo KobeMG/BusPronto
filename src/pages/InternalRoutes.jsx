@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Bus, ChevronRight, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { getStops } from '../Utils/supabaseQueries';
+import { getStops } from '../utils/supabaseQueries';
+import { useFavorites } from '../contexts/FavoritesContext';
 
 const InternalRoutes = () => {
-  const [favorites, setFavorites] = useState([]);
+  const { favorites } = useFavorites();
   const [stops, setStops] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,8 +23,6 @@ const InternalRoutes = () => {
     };
 
     fetchStopsData();
-    const saved = JSON.parse(localStorage.getItem('fav_stops') || '[]');
-    setFavorites(saved);
   }, []);
 
   const sortedStops = [...stops].sort((a, b) => {
