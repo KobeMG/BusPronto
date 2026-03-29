@@ -3,21 +3,33 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { sileo } from 'sileo';
-import horarios from '../data/horarios.json';
+import { getStopById, getSchedulesByStopId } from '../Utils/supabaseQueries';
 import BusTimer from '../components/BusTimer';
-
-const stopNames = {
-  facultad_educacion: 'Facultad de Educación',
-  artes_plasticas: 'Artes Plásticas',
-  facultad_odontologia: 'Facultad de Odontología'
-};
 
 const BusStop = () => {
   const { stopId } = useParams();
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [stopData, setStopData] = useState(null);
+  const [schedule, setSchedule] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Obtenemos la parada y sus horarios en una sola llamada (ahora getStopById hace el join)
+        const stop = await getStopById(stopId);
+        setStopData(stop);
+        setSchedule(stop.formattedSchedules || []);
+      } catch (err) {
+        console.error('Error fetching stop data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
     const favorites = JSON.parse(localStorage.getItem('fav_stops') || '[]');
     setIsFavorite(favorites.includes(stopId));
   }, [stopId]);
@@ -50,10 +62,17 @@ const BusStop = () => {
     }
   };
 
-  const schedule = horarios[stopId];
-  const stopName = stopNames[stopId] || stopId?.replace('_', ' ');
+  const stopName = stopData?.name || stopId?.replace('_', ' ');
 
-  if (!schedule) {
+  if (loading) {
+    return (
+      <div className="glass-card" style={{ textAlign: 'center', padding: '3rem' }}>
+        <p>Cargando información de la parada...</p>
+      </div>
+    );
+  }
+
+  if (!stopData) {
     return (
       <div className="glass-card">
         <Helmet>
@@ -65,7 +84,7 @@ const BusStop = () => {
           </button>
           <h2 className="stop-name">Parada no encontrada</h2>
         </div>
-        <p>No se encontraron horarios para esta ubicación.</p>
+        <p>No se encontraron horarios para esta ubicación en el sistema.</p>
       </div>
     );
   }
