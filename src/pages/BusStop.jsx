@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { getStopById } from '../utils/supabaseQueries';
+import { useStopDetailsQuery } from '../hooks/useStopDetailsQuery';
 import { useFavorites } from '../contexts/FavoritesContext';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
@@ -12,35 +11,17 @@ const BusStop = () => {
   const { stopId } = useParams();
   const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const [stopData, setStopData] = useState(null);
-  const [schedule, setSchedule] = useState([]);
-  const [loading, setLoading] = useState(true);
+  
+  const { data: stopData, isLoading } = useStopDetailsQuery(stopId);
+  const schedule = stopData?.formattedSchedules || [];
 
   const isFav = isFavorite(stopId);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // Obtenemos la parada y sus horarios en una sola llamada (ahora getStopById hace el join)
-        const stop = await getStopById(stopId);
-        setStopData(stop);
-        setSchedule(stop.formattedSchedules || []);
-      } catch (err) {
-        console.error('Error fetching stop data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [stopId]);
 
 
 
   const stopName = stopData?.name || stopId?.replace('_', ' ');
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="glass-card">
         <LoadingSpinner text="Cargando información de la parada..." />

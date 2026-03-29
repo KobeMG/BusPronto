@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'sileo/styles.css';
 import Home from './pages/Home';
 import InternalRoutes from './pages/InternalRoutes';
@@ -8,12 +9,15 @@ import useTheme from './hooks/useTheme';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 
+const queryClient = new QueryClient();
+
 function App() {
   // Aplicar tema automáticamente según la temporada
   //useTheme(); 
 
   return (
-    <FavoritesProvider>
+    <QueryClientProvider client={queryClient}>
+      <FavoritesProvider>
       <Router>
         <MainLayout>
           <Routes>
@@ -28,6 +32,7 @@ function App() {
         </MainLayout>
       </Router>
     </FavoritesProvider>
+    </QueryClientProvider>
   );
 }
 

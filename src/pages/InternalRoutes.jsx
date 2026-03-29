@@ -1,31 +1,14 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Bus, ChevronRight, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { getStops } from '../utils/supabaseQueries';
+import { useStopsQuery } from '../hooks/useStopsQuery';
 import { useFavorites } from '../contexts/FavoritesContext';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const InternalRoutes = () => {
   const { favorites } = useFavorites();
-  const [stops, setStops] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchStopsData = async () => {
-      try {
-        const data = await getStops();
-        setStops(data);
-      } catch (err) {
-        console.error('Error fetching stops:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStopsData();
-  }, []);
+  const { data: stops = [], isLoading } = useStopsQuery();
 
   const sortedStops = [...stops].sort((a, b) => {
     const aFav = favorites.includes(a.internal_id || a.id);
@@ -42,15 +25,15 @@ const InternalRoutes = () => {
         <meta name="description" content="Selecciona tu parada del bus interno UCR." />
       </Helmet>
       <div className="glass-card">
-        <PageHeader 
+        <PageHeader
           title="Rutas de Bus Interno"
-          icon={<Bus size={32} />}
+          // icon={<Bus size={32} />}
           description="Seleccione su parada actual para ver cuánto falta para el próximo bus."
           showBackButton={true}
         />
 
         <div className="stop-list">
-          {loading ? (
+          {isLoading ? (
             <LoadingSpinner text="Cargando paradas..." />
           ) : sortedStops.length > 0 ? (
             sortedStops.map((stop) => (
