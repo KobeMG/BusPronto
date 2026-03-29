@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bus, ChevronRight, Star } from 'lucide-react';
+import { ChevronRight, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { useStopsQuery } from '../hooks/useStopsQuery';
 import { useFavorites } from '../contexts/FavoritesContext';
