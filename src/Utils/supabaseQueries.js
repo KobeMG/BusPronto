@@ -6,20 +6,14 @@ import { supabase } from '../lib/supabaseClient';
  */
 export const getStops = async () => {
     try {
-        /*  const { data, error } = await supabase
-             .from('stops')
-             .select('*')
-             .order('name');
- 
-         if (error) throw error;
-         return data || []; */
+        const { data, error } = await supabase
+            .from('stops')
+            .select('*')
+            .order('name');
 
-        //TODO; Eliminar cuando se haga conexion oficial con BD.    
-        const data = [{ "id": "f23010cc-e83f-42d0-bb3f-de261239da0d", "name": "Artes Plásticas", "internal_id": "artes_plasticas", "created_at": "2026-03-27T03:25:07.913531+00:00" },
-        { "id": "6149be64-7cb4-4f5c-80e7-59ebf646ab1d", "name": "Facultad de Educación", "internal_id": "facultad_educacion", "created_at": "2026-03-27T03:25:07.913531+00:00" },
-        { "id": "f62acd72-dcf8-48c4-a0e1-fa2f4ab2a298", "name": "Facultad de Odontología", "internal_id": "facultad_odontologia", "created_at": "2026-03-27T03:25:07.913531+00:00" }]
+        if (error) throw error;
+        return data || [];
 
-        return data;
     } catch (err) {
         console.error('Error in getStops:', err);
         throw err;
@@ -33,7 +27,7 @@ export const getStops = async () => {
  */
 export const getStopById = async (stopId) => {
     try {
-       // console.log('Fetching stop with ID:', stopId);
+        // console.log('Fetching stop with ID:', stopId);
 
         // Verificamos si el stopId tiene formato de UUID para evitar errores de casteo en PostgreSQL
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(stopId);

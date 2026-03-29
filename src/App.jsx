@@ -1,7 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'sileo';
 import 'sileo/styles.css';
 import Home from './pages/Home';
+import InternalRoutes from './pages/InternalRoutes';
+import ExternalRoutes from './pages/ExternalRoutes';
 import BusStop from './pages/BusStop';
 import Footer from './components/Footer';
 import useTheme from './hooks/useTheme';
@@ -19,7 +21,12 @@ function App() {
           <AdBanner />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/parada/:stopId" element={<BusStop />} />
+            <Route path="/rutas-internas" element={<InternalRoutes />} />
+            <Route path="/rutas-externas" element={<ExternalRoutes />} />
+            <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
+
+            {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <Footer />
         </div>

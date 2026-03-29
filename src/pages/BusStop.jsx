@@ -79,7 +79,7 @@ const BusStop = () => {
           <title>Parada no encontrada - BusPronto</title>
         </Helmet>
         <div className="header">
-          <button onClick={() => navigate('/')} className="back-button">
+          <button onClick={() => navigate('/rutas-internas')} className="back-button">
             <ArrowLeft size={24} />
           </button>
           <h2 className="stop-name">Parada no encontrada</h2>
@@ -89,8 +89,8 @@ const BusStop = () => {
     );
   }
 
-  const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
-  //const isWeekend = false; //Dejar asi el primer fin de semana. Para que puedan ver la funcionalidad.
+  //const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
+  const isWeekend = false; //Dejar asi para pruebas locales.
   return (
     <div className="glass-card">
       <Helmet>
@@ -98,7 +98,7 @@ const BusStop = () => {
         <meta name="description" content={`Consulte el horario y cronómetro en tiempo real para la parada ${stopName}. ¡No pierda su bus!`} />
       </Helmet>
       <div className="header">
-        <button onClick={() => navigate('/')} className="back-button">
+        <button onClick={() => navigate('/rutas-internas')} className="back-button">
           <ArrowLeft size={24} />
         </button>
         <h2>Salida de:</h2>
