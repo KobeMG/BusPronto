@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { getStopById } from '../utils/supabaseQueries';
 import { useFavorites } from '../contexts/FavoritesContext';
 import BusTimer from '../components/BusTimer';
+import PageHeader from '../components/ui/PageHeader';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const BusStop = () => {
   const { stopId } = useParams();
@@ -40,8 +42,8 @@ const BusStop = () => {
 
   if (loading) {
     return (
-      <div className="glass-card" style={{ textAlign: 'center', padding: '3rem' }}>
-        <p>Cargando información de la parada...</p>
+      <div className="glass-card">
+        <LoadingSpinner text="Cargando información de la parada..." />
       </div>
     );
   }
@@ -52,13 +54,12 @@ const BusStop = () => {
         <Helmet>
           <title>Parada no encontrada - BusPronto</title>
         </Helmet>
-        <div className="header">
-          <button onClick={() => navigate('/rutas-internas')} className="back-button">
-            <ArrowLeft size={24} />
-          </button>
-          <h2 className="stop-name">Parada no encontrada</h2>
-        </div>
-        <p>No se encontraron horarios para esta ubicación en el sistema.</p>
+        <PageHeader 
+          title="Parada no encontrada"
+          showBackButton={true}
+          backUrl="/rutas-internas"
+          description="No se encontraron horarios para esta ubicación en el sistema."
+        />
       </div>
     );
   }
@@ -71,16 +72,21 @@ const BusStop = () => {
         <title>{`Salida de ${stopName} - BusPronto`}</title>
         <meta name="description" content={`Consulte el horario y cronómetro en tiempo real para la parada ${stopName}. ¡No pierda su bus!`} />
       </Helmet>
-      <div className="header">
-        <button onClick={() => navigate('/rutas-internas')} className="back-button">
-          <ArrowLeft size={24} />
-        </button>
-        <h2>Salida de:</h2>
-        <h2 className="stop-name">{stopName}</h2>
-        <button className="favorite-button" onClick={() => toggleFavorite(stopId, stopName)}>
-          <Star size={24} fill={isFav ? '#f59e0b' : 'transparent'} color={isFav ? '#f59e0b' : 'var(--text-secondary)'} />
-        </button>
-      </div>
+      <PageHeader 
+        title={
+          <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>Salida de:</span>
+            <span className="stop-name" style={{ margin: 0 }}>{stopName}</span>
+          </span>
+        }
+        showBackButton={true}
+        backUrl="/rutas-internas"
+        actionButton={
+          <button className="favorite-button" onClick={() => toggleFavorite(stopId, stopName)}>
+            <Star size={24} fill={isFav ? '#f59e0b' : 'transparent'} color={isFav ? '#f59e0b' : 'var(--text-secondary)'} />
+          </button>
+        }
+      />
 
       {isWeekend ? (
         <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--text-secondary)' }}>

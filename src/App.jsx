@@ -1,14 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'sileo';
 import 'sileo/styles.css';
 import Home from './pages/Home';
 import InternalRoutes from './pages/InternalRoutes';
 import ExternalRoutes from './pages/ExternalRoutes';
 import BusStop from './pages/BusStop';
-import Footer from './components/Footer';
 import useTheme from './hooks/useTheme';
-import AdBanner from './components/AdBanner';
 import { FavoritesProvider } from './contexts/FavoritesContext';
+import MainLayout from './components/layout/MainLayout';
 
 function App() {
   // Aplicar tema automáticamente según la temporada
@@ -17,9 +15,7 @@ function App() {
   return (
     <FavoritesProvider>
       <Router>
-        <div className="app-container">
-          <Toaster position="top-right" />
-          <AdBanner />
+        <MainLayout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rutas-internas" element={<InternalRoutes />} />
@@ -29,8 +25,7 @@ function App() {
             {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-          <Footer />
-        </div>
+        </MainLayout>
       </Router>
     </FavoritesProvider>
   );

@@ -4,6 +4,8 @@ import { Bus, ChevronRight, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { getStops } from '../utils/supabaseQueries';
 import { useFavorites } from '../contexts/FavoritesContext';
+import PageHeader from '../components/ui/PageHeader';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const InternalRoutes = () => {
   const { favorites } = useFavorites();
@@ -40,17 +42,16 @@ const InternalRoutes = () => {
         <meta name="description" content="Selecciona tu parada del bus interno UCR." />
       </Helmet>
       <div className="glass-card">
-        <h1 className="title">
-          <Bus size={32} style={{ display: 'inline', marginRight: '0.5rem', verticalAlign: 'middle' }} />
-          Rutas de Bus Interno
-        </h1>
-        <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-          Seleccione su parada actual para ver cuánto falta para el próximo bus.
-        </p>
+        <PageHeader 
+          title="Rutas de Bus Interno"
+          icon={<Bus size={32} />}
+          description="Seleccione su parada actual para ver cuánto falta para el próximo bus."
+          showBackButton={true}
+        />
 
         <div className="stop-list">
           {loading ? (
-            <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>Cargando paradas...</p>
+            <LoadingSpinner text="Cargando paradas..." />
           ) : sortedStops.length > 0 ? (
             sortedStops.map((stop) => (
               <Link to={`/rutas-internas/parada/${stop.internal_id || stop.id}`} key={stop.id} className="stop-link" style={{ position: 'relative' }}>

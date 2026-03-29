@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Bus, MapPin, ChevronRight, Info } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/ui/PageHeader';
 
 const Home = () => {
   return (
@@ -10,14 +11,16 @@ const Home = () => {
         <meta name="description" content="Horarios de buses UCR. Elige entre rutas internas o externas." />
       </Helmet>
       <div className="glass-card">
-        <h1 className="title">
-          <Bus size={32} style={{ display: 'inline', marginRight: '0.5rem', verticalAlign: 'middle' }} />
-          BusPronto (UCR)
-        </h1>
-        <p style={{ textAlign: 'center', color: 'var(--text-primary)', marginBottom: '2rem' }}>I Ciclo 2026</p>
-        <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-          Seleccione el tipo de ruta que desea consultar.
-        </p>
+        <PageHeader 
+          title="BusPronto (UCR)" 
+          icon={<Bus size={32} />}
+          description={
+            <>
+              <span style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '0.5rem' }}>I Ciclo 2026</span>
+              Seleccione el tipo de ruta que desea consultar.
+            </>
+          }
+        />
 
         <div className="stop-list">
           <Link to="/rutas-internas" className="stop-link">
