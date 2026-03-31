@@ -55,34 +55,59 @@ const BusTimer = ({ schedule }) => {
       <div className={`next-bus-details ${!lastBus ? 'two-cols' : ''}`}>
         <div className="detail-item">
           <span className="detail-label">Hora actual</span>
-          <span className="detail-value">
-            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-          </span>
+          <div className="detail-value">
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Clock size={14} /> {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+            </span>
+          </div>
         </div>
         {lastBus && (
           <div className="detail-item">
             <span className="detail-label">Bus anterior</span>
-            <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <Clock size={14} /> {lastBus}
-            </span>
+            <div className="detail-value">
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Clock size={14} /> {typeof lastBus === 'string' ? lastBus : lastBus.time}
+              </span>
+            </div>
+            {typeof lastBus !== 'string' && lastBus.destination && (
+              <span className="detail-destination">
+                Hacia {lastBus.destination}
+              </span>
+            )}
           </div>
         )}
-        <div className="detail-item" style={{ alignItems: lastBus ? 'flex-end' : 'flex-end' }}>
+        <div className="detail-item">
           <span className="detail-label">Siguiente bus</span>
-          <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <Clock size={14} /> {nextBus}
-          </span>
+          <div className="detail-value">
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Clock size={14} /> {typeof nextBus === 'string' ? nextBus : nextBus.time}
+            </span>
+          </div>
+          {typeof nextBus !== 'string' && nextBus.destination && (
+            <span className="detail-destination">
+              Hacia {nextBus.destination}
+            </span>
+          )}
         </div>
       </div>
 
       <div className="schedule-list">
         <h3 className="schedule-title">Próximos horarios:</h3>
         <div className="times-grid">
-          {upcomingBuses.map((time, idx) => (
-            <div key={time} className={`time-badge ${idx === 0 ? 'next' : ''}`}> {/* Cambiar esto proximamente*/}
-              {time}
-            </div>
-          ))}
+          {upcomingBuses.map((bus, idx) => {
+            const time = typeof bus === 'string' ? bus : bus.time;
+            const dest = typeof bus === 'string' ? null : bus.destination;
+            return (
+              <div key={`${time}-${idx}`} className={`time-badge ${idx === 0 ? 'next' : ''}`}>
+                <span className="time-badge-value">{time}</span>
+                {dest && (
+                  <span className="time-badge-dest">
+                    {dest}
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -7,17 +7,46 @@ import { supabase } from '../lib/supabaseClient';
 export const getStops = async () => {
     try {
         const { data, error } = await supabase
-            .from('stops')
+            .from('v_salidas_internas')
             .select('*')
-            .order('name');
+            .order('nombre_parada');
 
         if (error) throw error;
-        return data || [];
+        
+        return (data || []).map(row => ({
+            id: row.parada_id,
+            name: row.nombre_parada,
+            internal_id: row.identificador
+        }));
 
     } catch (err) {
         console.error('Error in getStops:', err);
         throw err;
     }
+};
+
+// Función pura (Helper) para filtrar y dar formato a los horarios de buses internos
+const formatInternalSchedules = (schedules) => {
+    if (!schedules || schedules.length === 0) return [];
+
+    const uniqueTimes = new Map();
+
+    for (const h of schedules) {
+        // Ignoramos si no tiene hora de salida o si no pertenece a una ruta interna
+        if (!h.departure_time || h.routes?.type !== 'interno') continue;
+
+        const timeParsed = String(h.departure_time).substring(0, 5);
+        
+        // El mapa garantiza que no habrán dos salidas a la misma hora para esta parada
+        if (!uniqueTimes.has(timeParsed)) {
+            uniqueTimes.set(timeParsed, {
+                time: timeParsed,
+                destination: h.destination?.name || null
+            });
+        }
+    }
+
+    return Array.from(uniqueTimes.values()).sort((a, b) => a.time.localeCompare(b.time));
 };
 
 /**
@@ -27,47 +56,32 @@ export const getStops = async () => {
  */
 export const getStopById = async (stopId) => {
     try {
-        // console.log('Fetching stop with ID:', stopId);
-
-        // Verificamos si el stopId tiene formato de UUID para evitar errores de casteo en PostgreSQL
-        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(stopId);
-
-        let query = supabase
+        const baseQuery = supabase
             .from('stops')
             .select(`
-                *,
-                schedules (
-                    departure_time
+                id, name, internal_id,
+                schedules!origin_stop_id (
+                    departure_time,
+                    destination:stops!destination_stop_id ( name ),
+                    routes!inner ( type )
                 )
             `);
 
-        if (isUuid) {
-            // Si es UUID, buscamos en ambas columnas (por si internal_id también fuera un UUID)
-            query = query.or(`id.eq.${stopId},internal_id.eq.${stopId}`);
-        } else {
-            // Si no es UUID, solo buscamos en internal_id para evitar error 22P02
-            query = query.eq('internal_id', stopId);
-        }
+        // Aplicamos la condicional de búsqueda directamente a la Promesa
+        const query = /^\d+$/.test(stopId)
+            ? baseQuery.or(`id.eq.${stopId},internal_id.eq.${stopId}`)
+            : baseQuery.eq('internal_id', stopId);
 
-        const { data: stop, error: stopError } = await query.single();
+        const { data: routeData, error } = await query.single();
 
-        if (stopError) {
-            console.error('Error fetching stop:', stopError);
-            throw stopError;
-        }
+        if (error) throw error; // El bloque catch de abajo de encargará de consologuearlo
 
-        // Formateamos los horarios (HH:mm) y los ordenamos
-        if (stop.schedules && stop.schedules.length > 0) {
-            stop.formattedSchedules = stop.schedules
-                .filter(s => s.departure_time)
-                .map(s => s.departure_time.substring(0, 5))
-                .sort();
-        } else {
-            stop.formattedSchedules = [];
-        }
-
-        console.log('Found stop with schedules:', stop);
-        return stop;
+        return {
+            id: routeData.id,
+            name: routeData.name,
+            internal_id: routeData.internal_id,
+            formattedSchedules: formatInternalSchedules(routeData.schedules)
+        };
     } catch (err) {
         console.error('Error in getStopById:', err);
         throw err;
@@ -81,22 +95,30 @@ export const getStopById = async (stopId) => {
  */
 export const getSchedulesByStopId = async (stopId) => {
     try {
-        console.log('Fetching schedules for stop ID:', stopId);
-        const { data: schedules, error: scheduleError } = await supabase
-            .from('schedules')
-            .select('departure_time')
-            .eq('stop_id', stopId)
-            .order('departure_time');
+        console.log('Fetching schedules for stop ID from view:', stopId);
+        
+        const isNumeric = /^\d+$/.test(stopId);
+        let query = supabase
+            .from('v_salidas_internas')
+            .select('salidas');
+            
+        if (isNumeric) {
+            query = query.or(`parada_id.eq.${stopId},identificador.eq.${stopId}`);
+        } else {
+            query = query.eq('identificador', stopId);
+        }
+
+        const { data: row, error: scheduleError } = await query.single();
 
         if (scheduleError) {
             console.error('Error fetching schedules:', scheduleError);
             throw scheduleError;
         }
 
-        console.log('Schedules found:', schedules);
+        if (!row || !row.salidas) return [];
 
-        // Format time strings (HH:mm)
-        return (schedules || []).map(s => s.departure_time.substring(0, 5));
+        const times = row.salidas.map(s => String(s).substring(0, 5));
+        return Array.from(new Set(times)).sort();
     } catch (err) {
         console.error('Error in getSchedulesByStopId:', err);
         throw err;

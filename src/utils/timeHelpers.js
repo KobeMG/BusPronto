@@ -10,7 +10,7 @@ export const parseTimeToDate = (timeStr, referenceDate) => {
     return date;
   };
   
-  // Dado un schedule (ej: ["06:30", "07:00"]) y la fecha actual, determina el próximo y el anterior bus
+  // Dado un schedule (ej: [{ time: "06:30", destination: "..." }]) y la fecha actual, determina el próximo y el anterior bus
   export const calculateBuses = (schedule, currentTime) => {
     let nextBus = null;
     let minDiffSeconds = Infinity;
@@ -18,20 +18,23 @@ export const parseTimeToDate = (timeStr, referenceDate) => {
     let lastBus = null;
     let maxDiffSeconds = -Infinity;
   
-    for (const timeStr of schedule) {
+    for (const item of schedule) {
+      const timeStr = typeof item === 'string' ? item : item.time;
+      if (!timeStr) continue;
+
       const busDate = parseTimeToDate(timeStr, currentTime);
       const diffSeconds = Math.floor((busDate.getTime() - currentTime.getTime()) / 1000);
       
       // Lógica NextBus (diff >= 0)
       if (diffSeconds >= 0 && diffSeconds < minDiffSeconds) {
         minDiffSeconds = diffSeconds;
-        nextBus = timeStr;
+        nextBus = item;
       }
   
       // Lógica LastBus (diff < 0)
       if (diffSeconds < 0 && diffSeconds > maxDiffSeconds) {
         maxDiffSeconds = diffSeconds;
-        lastBus = timeStr;
+        lastBus = item;
       }
     }
   
@@ -45,7 +48,13 @@ export const parseTimeToDate = (timeStr, referenceDate) => {
   export const getUpcomingBusesList = (schedule, nextBus, count = 4) => {
     if (!nextBus || !schedule || schedule.length === 0) return [];
     
-    const nextIndex = schedule.indexOf(nextBus);
+    const nextTime = typeof nextBus === 'string' ? nextBus : nextBus.time;
+    
+    const nextIndex = schedule.findIndex(item => {
+        const itemTime = typeof item === 'string' ? item : item.time;
+        return itemTime === nextTime;
+    });
+
     if (nextIndex === -1) return [];
     
     return schedule.slice(nextIndex, nextIndex + count);
