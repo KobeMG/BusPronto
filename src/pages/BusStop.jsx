@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { useStopDetailsQuery } from '../hooks/useStopDetailsQuery';
+import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuery';
 import { useFavorites } from '../contexts/FavoritesContext';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
@@ -12,7 +12,7 @@ const BusStop = () => {
   const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useFavorites();
   
-  const { data: stopData, isLoading } = useStopDetailsQuery(stopId);
+  const { data: stopData, isLoading } = useInternalStopDetailsQuery(stopId);
   const schedule = stopData?.formattedSchedules || [];
 
   const isFav = isFavorite(stopId);

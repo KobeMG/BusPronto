@@ -1,10 +1,10 @@
 import { supabase } from '../lib/supabaseClient';
 
 /**
- * Fetches all available stops from the database.
+ * Fetches all available internal stops from the database.
  * @returns {Promise<Array>} A list of stops ordered by name.
  */
-export const getStops = async () => {
+export const getInternalStops = async () => {
     try {
         const { data, error } = await supabase
             .from('v_salidas_internas')
@@ -20,7 +20,7 @@ export const getStops = async () => {
         }));
 
     } catch (err) {
-        console.error('Error in getStops:', err);
+        console.error('Error in getInternalStops:', err);
         throw err;
     }
 };
@@ -32,12 +32,10 @@ const formatInternalSchedules = (schedules) => {
     const uniqueTimes = new Map();
 
     for (const h of schedules) {
-        // Ignoramos si no tiene hora de salida o si no pertenece a una ruta interna
         if (!h.departure_time || h.routes?.type !== 'interno') continue;
 
         const timeParsed = String(h.departure_time).substring(0, 5);
         
-        // El mapa garantiza que no habrán dos salidas a la misma hora para esta parada
         if (!uniqueTimes.has(timeParsed)) {
             uniqueTimes.set(timeParsed, {
                 time: timeParsed,
@@ -50,11 +48,11 @@ const formatInternalSchedules = (schedules) => {
 };
 
 /**
- * Fetches a single stop by its internal_id or id.
+ * Fetches a single internal stop by its internal_id or id.
  * @param {string} stopId The ID to search for.
  * @returns {Promise<Object>} The stop record.
  */
-export const getStopById = async (stopId) => {
+export const getInternalStopById = async (stopId) => {
     try {
         const baseQuery = supabase
             .from('stops')
@@ -67,14 +65,13 @@ export const getStopById = async (stopId) => {
                 )
             `);
 
-        // Aplicamos la condicional de búsqueda directamente a la Promesa
         const query = /^\d+$/.test(stopId)
             ? baseQuery.or(`id.eq.${stopId},internal_id.eq.${stopId}`)
             : baseQuery.eq('internal_id', stopId);
 
         const { data: routeData, error } = await query.single();
 
-        if (error) throw error; // El bloque catch de abajo de encargará de consologuearlo
+        if (error) throw error; 
 
         return {
             id: routeData.id,
@@ -83,17 +80,17 @@ export const getStopById = async (stopId) => {
             formattedSchedules: formatInternalSchedules(routeData.schedules)
         };
     } catch (err) {
-        console.error('Error in getStopById:', err);
+        console.error('Error in getInternalStopById:', err);
         throw err;
     }
 };
 
 /**
- * Fetches the schedule for a given stop.
+ * Fetches the schedule for a given internal stop.
  * @param {string} stopId Internal or UUID stop ID. (Internal preferred for simplicity)
  * @returns {Promise<Array>} A list of departure times (formatted as HH:mm)
  */
-export const getSchedulesByStopId = async (stopId) => {
+export const getInternalSchedulesByStopId = async (stopId) => {
     try {
         console.log('Fetching schedules for stop ID from view:', stopId);
         
@@ -120,7 +117,7 @@ export const getSchedulesByStopId = async (stopId) => {
         const times = row.salidas.map(s => String(s).substring(0, 5));
         return Array.from(new Set(times)).sort();
     } catch (err) {
-        console.error('Error in getSchedulesByStopId:', err);
+        console.error('Error in getInternalSchedulesByStopId:', err);
         throw err;
     }
 };

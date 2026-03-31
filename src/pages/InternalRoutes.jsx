@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { useStopsQuery } from '../hooks/useStopsQuery';
+import { useInternalStopsQuery } from '../hooks/useInternalStopsQuery';
 import { useFavorites } from '../contexts/FavoritesContext';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const InternalRoutes = () => {
   const { favorites } = useFavorites();
-  const { data: stops = [], isLoading } = useStopsQuery();
+  const { data: stops = [], isLoading } = useInternalStopsQuery();
 
   const sortedStops = [...stops].sort((a, b) => {
     const aFav = favorites.includes(a.internal_id || a.id);
