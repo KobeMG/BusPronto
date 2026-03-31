@@ -6,10 +6,10 @@ const MainLayout = ({ children }) => {
   return (
     <div className="app-container">
       <Toaster position="top-right" />
-      <AdBanner />
-      
+      {/* <AdBanner /> */}
+
       {children}
-      
+
       <Footer />
     </div>
   );

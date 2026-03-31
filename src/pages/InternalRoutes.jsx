@@ -22,12 +22,11 @@ const InternalRoutes = () => {
     <>
       <Helmet>
         <title>Rutas de Bus Interno - BusPronto</title>
-        <meta name="description" content="Selecciona tu parada del bus interno UCR." />
+        <meta name="description" content="Seleccione su parada del bus interno UCR." />
       </Helmet>
       <div className="glass-card">
         <PageHeader
           title="Rutas de Bus Interno"
-          // icon={<Bus size={32} />}
           description="Seleccione su parada actual para ver cuánto falta para el próximo bus."
           showBackButton={true}
         />
