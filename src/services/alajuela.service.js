@@ -1,13 +1,13 @@
 import { supabase } from '../lib/supabaseClient';
 
 /**
- * Fetches all available internal stops from the database.
+ * Fetches all available stops for the Alajuela route from the database.
  * @returns {Promise<Array>} A list of stops ordered by name.
  */
-export const getInternalStops = async () => {
+export const getAlajuelaStops = async () => {
     try {
         const { data, error } = await supabase
-            .from('v_salidas_internas')
+            .from('v_salidas_alajuela')
             .select('*')
             .order('nombre_parada');
 
@@ -18,20 +18,21 @@ export const getInternalStops = async () => {
             name: row.nombre_parada,
             internal_id: row.identificador
         }));
+
     } catch (err) {
-        console.error('Error in getInternalStops:', err);
+        console.error('Error in getAlajuelaStops:', err);
         throw err;
     }
 };
 
 /**
- * Fetches a single internal stop and its completely formatted schedule.
- * @param {string} stopId The ID (internal or numeric) to search for.
- * @returns {Promise<Object>} The stop record with its schedules.
+ * Fetches the schedule for a given Alajuela stop, including days and fares.
+ * @param {string} stopId Internal or UUID stop ID. 
+ * @returns {Promise<Object>} The stop record with fully formatted schedules.
  */
-export const getInternalStopById = async (stopId) => {
+export const getAlajuelaStopDetails = async (stopId) => {
     try {
-        // 1. Obtenemos la información básica de la parada
+        // 1. Obtenemos la información básica de la parada desde la tabla 'stops'
         const isNumeric = /^\d+$/.test(stopId);
         let query = supabase.from('stops').select('id, name, internal_id');
 
@@ -44,25 +45,31 @@ export const getInternalStopById = async (stopId) => {
         const { data: stopData, error: stopError } = await query.single();
         if (stopError) throw stopError;
 
-        // 2. Usar vista para traer los horarios limpios
-        // Como la vista ya trae todo filtrado por 'interno' y ordenado, es directo.
+        // 2. Consultamos la vista de horarios específica de Alajuela
+        // Traemos también los días activos y la tarifa que son cruciales para rutas externas
         const { data: scheduleData, error: scheduleError } = await supabase
-            .from('v_horarios_internos')
-            .select('hora_salida, parada_destino')
+            .from('v_horarios_alajuela')
+            .select('hora_salida, parada_destino, dias_activos, tarifa')
             .eq('parada_origen', stopData.name)
             .order('hora_salida', { ascending: true });
 
         if (scheduleError) throw scheduleError;
 
-        // 3. Formateamos la hora (quitamos los segundos de '06:30:00' a '06:30')
-        // y eliminamos duplicados si existieran (ej. dos rutas saliendo a la misma hora)
+        // 3. Formateamos y enriquecemos los datos para el frontend
         const uniqueTimes = new Map();
+
         (scheduleData || []).forEach(h => {
             const timeParsed = h.hora_salida.substring(0, 5);
-            if (!uniqueTimes.has(timeParsed)) {
-                uniqueTimes.set(timeParsed, {
+
+            // Usamos una llave compuesta por hora y destino por seguridad
+            const key = `${timeParsed}-${h.parada_destino}`;
+
+            if (!uniqueTimes.has(key)) {
+                uniqueTimes.set(key, {
                     time: timeParsed,
-                    destination: h.parada_destino
+                    destination: h.parada_destino,
+                    days: h.dias_activos,
+                    fare: h.tarifa
                 });
             }
         });
@@ -73,9 +80,8 @@ export const getInternalStopById = async (stopId) => {
             internal_id: stopData.internal_id,
             formattedSchedules: Array.from(uniqueTimes.values())
         };
-
     } catch (err) {
-        console.error('Error in getInternalStopById:', err);
+        console.error('Error in getAlajuelaStopDetails:', err);
         throw err;
     }
 };

@@ -4,8 +4,10 @@ import 'sileo/styles.css';
 import Home from './pages/Home';
 import InternalRoutes from './pages/InternalRoutes';
 import ExternalRoutes from './pages/ExternalRoutes';
+import ExternalStopsList from './pages/ExternalStopsList';
 import BusStop from './pages/BusStop';
-import useTheme from './hooks/useTheme';
+import ExternalBusStop from './pages/ExternalBusStop';
+//import useTheme from './hooks/useTheme';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 
@@ -18,20 +20,22 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <FavoritesProvider>
-      <Router>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/rutas-internas" element={<InternalRoutes />} />
-            <Route path="/rutas-externas" element={<ExternalRoutes />} />
-            <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
+        <Router>
+          <MainLayout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/rutas-internas" element={<InternalRoutes />} />
+              <Route path="/rutas-externas" element={<ExternalRoutes />} />
+              <Route path="/rutas-externas/:routeId" element={<ExternalStopsList />} />
+              <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
+              <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
 
-            {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </MainLayout>
-      </Router>
-    </FavoritesProvider>
+              {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </MainLayout>
+        </Router>
+      </FavoritesProvider>
     </QueryClientProvider>
   );
 }
