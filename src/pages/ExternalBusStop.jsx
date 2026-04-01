@@ -14,7 +14,7 @@ const ExternalBusStop = () => {
 
     // Llama al hook genérico para buscar datos
     const { data: stopData, isLoading, error } = useExternalStopDetailsQuery(routeId, stopId);
-    
+
     const schedule = stopData?.formattedSchedules || [];
 
     // Combine routeId + stopId for favorites mapping
@@ -26,12 +26,12 @@ const ExternalBusStop = () => {
     if (error && error.message === 'ROUTE_NOT_SUPPORTED') {
         return (
             <div className="glass-card">
-              <PageHeader 
-                title="Ruta no soportada"
-                showBackButton={true}
-                backUrl="/rutas-externas"
-                description={`La ruta ${routeId} aún no está implementada completamente.`}
-              />
+                <PageHeader
+                    title="Ruta no soportada"
+                    showBackButton={true}
+                    backUrl="/rutas-externas"
+                    description={`La ruta ${routeId} aún no está implementada completamente.`}
+                />
             </div>
         );
     }
@@ -50,7 +50,7 @@ const ExternalBusStop = () => {
                 <Helmet>
                     <title>Ruta no encontrada - BusPronto</title>
                 </Helmet>
-                <PageHeader 
+                <PageHeader
                     title="Ruta no encontrada"
                     showBackButton={true}
                     backUrl="/rutas-externas"
@@ -62,17 +62,17 @@ const ExternalBusStop = () => {
 
     //const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
     const isWeekend = false; //Dejar asi para pruebas locales.
-    
+
     return (
         <div className="glass-card">
             <Helmet>
-                <title>{`Salida de ${stopName} - BusPronto`}</title>
+                <title>{`Rutas de ${stopName} - BusPronto`}</title>
                 <meta name="description" content={`Consulte el horario y cronómetro en tiempo real para la ruta de ${stopName}. ¡No pierda su bus!`} />
             </Helmet>
-            <PageHeader 
+            <PageHeader
                 title={
                     <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>Salida externa hacia:</span>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>Salida externa desde:</span>
                         <span className="stop-name" style={{ margin: 0 }}>{stopName}</span>
                     </span>
                 }

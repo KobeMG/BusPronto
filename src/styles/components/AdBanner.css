@@ -1,20 +1,39 @@
 .ad-banner {
-  margin-bottom: 2rem;
-  padding: 1rem !important;
-  border-radius: 1rem !important;
+  margin: 0 0 2rem 0;
+  padding: 0 !important;
+  border-radius: 1.5rem !important;
   background: rgba(59, 130, 246, 0.05) !important;
   border: 1px dashed var(--accent-primary) !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   position: relative;
+  min-height: 80px;
+  display: flex;
+  align-items: left;
+}
+
+.embla {
+  overflow: hidden;
+  width: 100%;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .ad-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
+  width: 100%;
 }
 
 .ad-tag {
@@ -22,9 +41,11 @@
   font-weight: 700;
   background: var(--accent-primary);
   color: white;
-  padding: 2px 6px;
+  padding: 1px 4px;
   border-radius: 4px;
   letter-spacing: 0.05em;
+  white-space: nowrap;
+  margin-top: 2px;
 }
 
 .ad-text {
@@ -32,12 +53,31 @@
   color: var(--text-secondary);
   font-weight: 500;
   margin: 0;
+  text-align: left;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.ad-text a {
+  color: var(--accent-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 @media (max-width: 480px) {
   .ad-banner {
-    padding: 0.75rem !important;
+    min-height: 70px;
   }
+
+  .embla__slide {
+    padding: 1rem 1.25rem;
+  }
+
+  .ad-content {
+    gap: 0.75rem;
+  }
+
   .ad-text {
     font-size: 0.75rem;
   }

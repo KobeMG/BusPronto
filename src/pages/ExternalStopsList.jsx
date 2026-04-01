@@ -7,7 +7,7 @@ import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const ExternalStopsList = () => {
   const { routeId } = useParams();
-  
+
   const { data: stops = [], isLoading, error } = useExternalStopsQuery(routeId);
 
   const routeName = routeId ? routeId.charAt(0).toUpperCase() + routeId.slice(1) : '';
@@ -50,7 +50,7 @@ const ExternalStopsList = () => {
 
       <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1.5rem' }}>
         <PageHeader
-          title={`Salida de ${routeName}`}
+          title={`Rutas de ${routeName}`}
           description="Seleccione desde cuál parada abordará el bus."
           showBackButton={true}
           backUrl="/rutas-externas"
