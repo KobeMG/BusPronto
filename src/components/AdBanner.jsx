@@ -12,8 +12,8 @@ const ADS = [
   },
   {
     tag: 'INFO',
-    text: 'Nueva ruta Alajuela - UCR disponible.',
-    link: '/external-stops/alajuela',
+    text: 'Nueva rutas externas disponibles.',
+    link: '',
     linkText: 'Ver Info'
   },
   {
@@ -25,7 +25,7 @@ const ADS = [
   {
     tag: 'BUG',
     text: 'Hay algún error? Repórtelo.',
-    link: 'https://kobemg.com/',
+    link: 'mailto:kobemoya@gmail.com',
     linkText: 'AQUÍ'
   }
 ];

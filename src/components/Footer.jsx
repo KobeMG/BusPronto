@@ -1,4 +1,4 @@
-import { Instagram, Github, Globe , Linkedin} from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin } from 'lucide-react';
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -7,6 +7,9 @@ const Footer = () => {
       <div className={styles.footerContent}>
         <p className={styles.developedBy}>
           Desarrollado con ❤️ por <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className={styles.brand}>Kode Creative</a>
+          <span className={styles.disclaimer}>
+            Proyecto no oficial de la UCR ni de las empresas de autobuses.
+          </span>
         </p>
         <div className={styles.socialLinks}>
           <a href="https://instagram.com/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}>

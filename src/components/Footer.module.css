@@ -23,6 +23,16 @@
   text-decoration: none;
 }
 
+.disclaimer {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  font-style: italic;
+  margin-top: 0.5rem;
+  letter-spacing: 0.02rem;
+}
+
 .socialLinks {
   display: flex;
   gap: 1.5rem;
