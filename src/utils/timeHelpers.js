@@ -1,4 +1,21 @@
 /**
+ * Constantes y funciones de utilidad para el tiempo.
+ */
+
+export const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+/**
+ * Determina el día inicial para el selector de horarios basándose en la fecha actual.
+ * Retorna 'Lunes' como proxy para el bloque de Lunes a Viernes.
+ */
+export const getInitialBusDay = () => {
+    const todayIndex = new Date().getDay();
+    if (todayIndex === 0) return 'Domingo';
+    if (todayIndex === 6) return 'Sábado';
+    return 'Lunes';
+};
+
+/**
  * Funciones puras para el cálculo de horarios de buses.
  */
 

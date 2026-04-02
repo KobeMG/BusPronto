@@ -8,30 +8,30 @@ import PageHeader from '../components/ui/PageHeader';
 import styles from '../components/ui/PageHeader.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
+// Componentes UI
+import ViewToggle from '../components/ui/ViewToggle';
+import DaySelector from '../components/ui/DaySelector';
+import FullScheduleList from '../components/ui/FullScheduleList';
+
+// Hook centralizado
+import { useSchedule } from '../hooks/useSchedule';
+
 const BusStop = () => {
   const { stopId } = useParams();
   const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useFavorites();
 
   const { data: stopData, isLoading } = useInternalStopDetailsQuery(stopId);
-  const baseSchedule = stopData?.formattedSchedules || [];
-
-  // Obtener día actual en español (BD en español xd)
-  const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  const currentDayStr = DAYS_ES[new Date().getDay()];
-
-  // Filtrar horarios que aplican para el día actual
-  const schedule = baseSchedule.filter(s => {
-    if (!s.days || !Array.isArray(s.days)) return true;
-    return s.days.includes(currentDayStr);
-  });
-
-  //const currentFare = stopData?.formattedSchedules?.find(s => s.fare != null)?.fare;
+  
+  // Usar el hook centralizado para manejar toda la lógica de horarios y vistas
+  const { 
+    view, setView, 
+    selectedDay, setSelectedDay, 
+    schedule, nextBusTime, 
+    todayName 
+  } = useSchedule(stopData?.formattedSchedules);
 
   const isFav = isFavorite(stopId);
-
-
-
   const stopName = stopData?.name || stopId?.replace('_', ' ');
 
   if (isLoading) {
@@ -58,7 +58,6 @@ const BusStop = () => {
     );
   }
 
-
   return (
     <div className="glass-card">
       <Helmet>
@@ -84,16 +83,24 @@ const BusStop = () => {
         }
       />
 
-      {schedule.length === 0 ? (
-        <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--text-secondary)' }}>
-          <p>No hay servicio de buses disponibles para el día de hoy ({currentDayStr}).</p>
-        </div>
+      <ViewToggle activeView={view} onViewChange={setView} />
+
+      {view === 'timer' ? (
+        schedule.length === 0 ? (
+          <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--text-secondary)' }}>
+            <p>No hay servicio de buses disponibles para el día de hoy ({todayName}).</p>
+          </div>
+        ) : (
+          <BusTimer schedule={schedule} />
+        )
       ) : (
-        <BusTimer schedule={schedule} />
+        <>
+          <DaySelector selectedDay={selectedDay} onDayChange={setSelectedDay} />
+          <FullScheduleList schedule={schedule} nextBusTime={nextBusTime} />
+        </>
       )}
     </div>
   );
 };
-
 
 export default BusStop;
