@@ -21,6 +21,12 @@ const ADS = [
     text: 'Visite a KodeCreative.',
     link: 'https://kobemg.com/',
     linkText: 'AQUÍ'
+  },
+  {
+    tag: 'BUG',
+    text: 'Hay algún error? Repórtelo.',
+    link: 'https://kobemg.com/',
+    linkText: 'AQUÍ'
   }
 ];
 
