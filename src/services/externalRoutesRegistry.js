@@ -1,5 +1,5 @@
 import { getAlajuelaStops, getAlajuelaStopDetails } from './alajuela.service';
-
+import { getHerediaStops, getHerediaStopDetails } from './heredia.service';
 /**
  * Registro central de servicios para rutas externas.
  * Mapea un `routeId` dinámico a las funciones específicas de la ruta.
@@ -12,10 +12,10 @@ const registry = {
         getStopDetails: getAlajuelaStopDetails,
     },
     // Añadir el resto de rutas aquí en el futuro:
-    // heredia: {
-    //     getStops: getHerediaStops,
-    //     getStopDetails: getHerediaStopDetails,
-    // }
+    heredia: {
+        getStops: getHerediaStops,
+        getStopDetails: getHerediaStopDetails,
+    }
 };
 
 /**
@@ -26,14 +26,14 @@ const registry = {
  */
 export const getExternalService = (routeId) => {
     if (!routeId) throw new Error('ROUTE_ID_REQUIRED');
-    
+
     // Normalizamos manejando minúsculas
     const normalizedRouteId = routeId.toLowerCase();
     const service = registry[normalizedRouteId];
-    
+
     if (!service) {
         throw new Error('ROUTE_NOT_SUPPORTED');
     }
-    
+
     return service;
 };

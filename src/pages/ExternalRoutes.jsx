@@ -26,17 +26,17 @@ const ExternalRoutes = () => {
             <ChevronRight size={20} />
           </Link>
 
-          <Link to={'#'} className="stop-link" style={{ position: 'relative', opacity: 0.5, pointerEvents: 'none' }}>
+          {/* <Link to={'#'} className="stop-link" style={{ position: 'relative', opacity: 0.5, pointerEvents: 'none' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Alajuelita - PRÓXIMAMENTE</span>
             </div>
             <ChevronRight size={20} />
-          </Link>
+          </Link> */}
 
 
-          <Link to={'#'} className="stop-link" style={{ position: 'relative', opacity: 0.5, pointerEvents: 'none' }}>
+          <Link to={'/rutas-externas/heredia'} className="stop-link" style={{ position: 'relative' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Heredia - PRÓXIMAMENTE</span>
+              <span>Heredia</span>
             </div>
             <ChevronRight size={20} />
           </Link>
