@@ -8,7 +8,8 @@ const Footer = () => {
         <p className={styles.developedBy}>
           Desarrollado con ❤️ por <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className={styles.brand}>Kode Creative</a>
           <span className={styles.disclaimer}>
-            Proyecto no oficial de la UCR ni de las empresas de autobuses.
+            Proyecto no oficial de la UCR ni de las empresas de autobuses mencionadas. Puede revisar los
+            horarios oficiales <a href="https://www.ucr.ac.cr/acerca-u/campus/" target="_blank" rel="noopener noreferrer" className={styles.brand}>aquí</a>
           </span>
         </p>
         <div className={styles.socialLinks}>
