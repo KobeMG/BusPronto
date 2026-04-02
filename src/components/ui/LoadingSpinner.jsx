@@ -1,10 +1,11 @@
 import { Loader2 } from 'lucide-react';
+import styles from './LoadingSpinner.module.css';
 
 const LoadingSpinner = ({ text = "Cargando información..." }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem' }}>
-      <Loader2 size={32} style={{ animation: 'spin 1s linear infinite', color: 'var(--primary-color)', marginBottom: '1rem' }} />
-      <p style={{ color: 'var(--text-secondary)' }}>{text}</p>
+    <div className={styles.spinnerContainer}>
+      <Loader2 size={32} className={styles.spinner} />
+      <p className={styles.loadingText}>{text}</p>
     </div>
   );
 };

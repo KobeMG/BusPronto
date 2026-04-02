@@ -5,6 +5,7 @@ import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuer
 import { useFavorites } from '../contexts/FavoritesContext';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
+import styles from '../components/ui/PageHeader.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const BusStop = () => {
@@ -68,7 +69,7 @@ const BusStop = () => {
         title={
           <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)', WebkitTextFillColor: 'initial' }}>Salida de:</span>
-            <span className="stop-name" style={{ margin: 0 }}>{stopName}</span>
+            <span className={styles.stopName} style={{ margin: 0 }}>{stopName}</span>
             <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '0.25rem', WebkitTextFillColor: 'initial' }}>
               Tarifa: GRATUITO
             </span>
@@ -77,7 +78,7 @@ const BusStop = () => {
         showBackButton={true}
         backUrl="/rutas-internas"
         actionButton={
-          <button className="favorite-button" onClick={() => toggleFavorite(stopId, stopName)}>
+          <button className={styles.favoriteButton} onClick={() => toggleFavorite(stopId, stopName)}>
             <Star size={24} fill={isFav ? '#f59e0b' : 'transparent'} color={isFav ? '#f59e0b' : 'var(--text-secondary)'} />
           </button>
         }

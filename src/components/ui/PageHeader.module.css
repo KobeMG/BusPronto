@@ -1,0 +1,66 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  position: relative;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.backButton {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.backButton:hover {
+  color: var(--text-primary);
+  background: var(--surface-color);
+}
+
+.favoriteButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.favoriteButton:hover {
+  background: var(--surface-color);
+}
+
+.stopName {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  flex-grow: 1;
+  text-transform: capitalize;
+}

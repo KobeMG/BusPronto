@@ -1,4 +1,5 @@
 import { ChevronRight } from 'lucide-react';
+import listStyles from '../components/ui/StopsList.module.css';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import PageHeader from '../components/ui/PageHeader';
@@ -18,15 +19,15 @@ const ExternalRoutes = () => {
           showBackButton={true}
         />
 
-        <div className="stop-list">
-          <Link to={'/rutas-externas/alajuela'} className="stop-link" style={{ position: 'relative' }}>
+        <div className={listStyles.stopList}>
+          <Link to={'/rutas-externas/alajuela'} className={listStyles.stopLink} style={{ position: 'relative' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Alajuela</span>
             </div>
             <ChevronRight size={20} />
           </Link>
 
-          {/* <Link to={'#'} className="stop-link" style={{ position: 'relative', opacity: 0.5, pointerEvents: 'none' }}>
+          {/* <Link to={'#'} className={listStyles.stopLink} style={{ opacity: 0.5, pointerEvents: 'none' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Alajuelita - PRÓXIMAMENTE</span>
             </div>
@@ -34,7 +35,7 @@ const ExternalRoutes = () => {
           </Link> */}
 
 
-          <Link to={'/rutas-externas/heredia'} className="stop-link" style={{ position: 'relative' }}>
+          <Link to={'/rutas-externas/heredia'} className={listStyles.stopLink}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Heredia</span>
             </div>

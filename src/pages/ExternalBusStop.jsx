@@ -5,6 +5,7 @@ import { useFavorites } from '../contexts/FavoritesContext';
 import { useExternalStopDetailsQuery } from '../hooks/useExternalStopDetailsQuery';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
+import styles from '../components/ui/PageHeader.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const ExternalBusStop = () => {
@@ -84,7 +85,7 @@ const ExternalBusStop = () => {
                 title={
                     <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)', WebkitTextFillColor: 'initial' }}>Salida externa desde:</span>
-                        <span className="stop-name" style={{ margin: 0 }}>{stopName}</span>
+                        <span className={styles.stopName} style={{ margin: 0 }}>{stopName}</span>
                         {currentFare && (
                             <span style={{ fontSize: '1rem', color: 'var(--error)', marginTop: '0.25rem', WebkitTextFillColor: 'initial' }}>
                                 Tarifa: ₡{currentFare}
@@ -95,7 +96,7 @@ const ExternalBusStop = () => {
                 showBackButton={true}
                 backUrl={`/rutas-externas/${routeId}`}
                 actionButton={
-                    <button className="favorite-button" onClick={() => toggleFavorite(favId, stopName)}>
+                    <button className={styles.favoriteButton} onClick={() => toggleFavorite(stopId, stopName)}>
                         <Star size={24} fill={isFav ? '#f59e0b' : 'transparent'} color={isFav ? '#f59e0b' : 'var(--text-secondary)'} />
                     </button>
                 }

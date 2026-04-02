@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styles from './BusTimer.module.css';
 import { Clock } from 'lucide-react';
 import { calculateBuses, getUpcomingBusesList } from '../utils/timeHelpers';
 
@@ -31,7 +32,7 @@ const BusTimer = ({ schedule }) => {
 
   if (!nextBus) {
     return (
-      <div className="no-more-buses">
+      <div className={styles.noMoreBuses}>
         No hay más buses programados para hoy en esta parada.
       </div>
     );
@@ -47,61 +48,61 @@ const BusTimer = ({ schedule }) => {
 
   return (
     <div>
-      <div className="timer-section">
-        <div className="time-remaining">{timeString}</div>
-        <div className="time-label">para el próximo bus</div>
+      <div className={styles.timerSection}>
+        <div className={styles.timeRemaining}>{timeString}</div>
+        <div className={styles.timeLabel}>para el próximo bus</div>
       </div>
 
-      <div className={`next-bus-details ${!lastBus ? 'two-cols' : ''}`}>
-        <div className="detail-item">
-          <span className="detail-label">Hora actual</span>
-          <div className="detail-value">
+      <div className={`${styles.nextBusDetails} ${!lastBus ? styles.twoCols : ''}`}>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>Hora actual</span>
+          <div className={styles.detailValue}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               <Clock size={14} /> {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
             </span>
           </div>
         </div>
         {lastBus && (
-          <div className="detail-item">
-            <span className="detail-label">Bus anterior</span>
-            <div className="detail-value">
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Bus anterior</span>
+            <div className={styles.detailValue}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                 <Clock size={14} /> {typeof lastBus === 'string' ? lastBus : lastBus.time}
               </span>
             </div>
             {typeof lastBus !== 'string' && lastBus.destination && (
-              <span className="detail-destination">
+              <span className={styles.detailDestination}>
                 Hacia {lastBus.destination}
               </span>
             )}
           </div>
         )}
-        <div className="detail-item">
-          <span className="detail-label">Siguiente bus</span>
-          <div className="detail-value">
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>Siguiente bus</span>
+          <div className={styles.detailValue}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               <Clock size={14} /> {typeof nextBus === 'string' ? nextBus : nextBus.time}
             </span>
           </div>
           {typeof nextBus !== 'string' && nextBus.destination && (
-            <span className="detail-destination">
+            <span className={styles.detailDestination}>
               Hacia {nextBus.destination}
             </span>
           )}
         </div>
       </div>
 
-      <div className="schedule-list">
-        <h3 className="schedule-title">Próximos horarios:</h3>
-        <div className="times-grid">
+      <div className={styles.scheduleList}>
+        <h3 className={styles.scheduleTitle}>Próximos horarios:</h3>
+        <div className={styles.timesGrid}>
           {upcomingBuses.map((bus, idx) => {
             const time = typeof bus === 'string' ? bus : bus.time;
             const dest = typeof bus === 'string' ? null : bus.destination;
             return (
-              <div key={`${time}-${idx}`} className={`time-badge ${idx === 0 ? 'next' : ''}`}>
-                <span className="time-badge-value">{time}</span>
+              <div key={`${time}-${idx}`} className={`${styles.timeBadge} ${idx === 0 ? styles.next : ''}`}>
+                <span className={styles.timeBadgeValue}>{time}</span>
                 {dest && (
-                  <span className="time-badge-dest">
+                  <span className={styles.timeBadgeDest}>
                     {dest}
                   </span>
                 )}

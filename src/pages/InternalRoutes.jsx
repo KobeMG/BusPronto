@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useInternalStopsQuery } from '../hooks/useInternalStopsQuery';
 import { useFavorites } from '../contexts/FavoritesContext';
 import PageHeader from '../components/ui/PageHeader';
+import listStyles from '../components/ui/StopsList.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const InternalRoutes = () => {
@@ -31,12 +32,12 @@ const InternalRoutes = () => {
           showBackButton={true}
         />
 
-        <div className="stop-list">
+        <div className={listStyles.stopList}>
           {isLoading ? (
             <LoadingSpinner text="Cargando paradas..." />
           ) : sortedStops.length > 0 ? (
             sortedStops.map((stop) => (
-              <Link to={`/rutas-internas/parada/${stop.internal_id || stop.id}`} key={stop.id} className="stop-link" style={{ position: 'relative' }}>
+              <Link to={`/rutas-internas/parada/${stop.internal_id || stop.id}`} key={stop.id} className={listStyles.stopLink} style={{ position: 'relative' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   {favorites.includes(stop.internal_id || stop.id) && <Star size={16} fill="#f59e0b" color="#f59e0b" />}
                   <span>{stop.name}</span>

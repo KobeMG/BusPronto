@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
 import { useExternalStopsQuery } from '../hooks/useExternalStopsQuery';
+import listStyles from '../components/ui/StopsList.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const ExternalStopsList = () => {
@@ -56,12 +57,16 @@ const ExternalStopsList = () => {
           backUrl="/rutas-externas"
         />
 
-        <div className="stop-list">
+        <div className={listStyles.stopList}>
           {isLoading ? (
             <LoadingSpinner text="Cargando paradas disponibles..." />
           ) : stops.length > 0 ? (
             stops.map(stop => (
-              <Link to={`/rutas-externas/${routeId}/${stop.internal_id || stop.id}`} key={stop.id} className="stop-link" style={{ position: 'relative' }}>
+              <Link 
+                to={`/rutas-externas/${routeId}/${stop.internal_id || stop.id}`} 
+                key={stop.id} 
+                className={listStyles.stopLink}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <span>{stop.name}</span>
                 </div>

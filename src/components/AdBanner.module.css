@@ -1,14 +1,13 @@
-.ad-banner {
+.adBanner {
   margin: 0 0 2rem 0;
-  padding: 0 !important;
-  border-radius: 1.5rem !important;
-  background: rgba(59, 130, 246, 0.05) !important;
-  border: 1px dashed var(--accent-primary) !important;
+  padding: 0;
+  border-radius: 1.5rem;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px dashed var(--accent-primary);
   overflow: hidden;
   position: relative;
   min-height: 80px;
-  display: flex;
-  align-items: left;
+  display: block; /* Ensure it's not a flex container for the embla container */
 }
 
 .embla {
@@ -16,27 +15,28 @@
   width: 100%;
 }
 
-.embla__container {
+.emblaContainer {
   display: flex;
 }
 
-.embla__slide {
+.emblaSlide {
   flex: 0 0 100%;
   min-width: 0;
   padding: 1.25rem 2rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  min-height: 80px;
 }
 
-.ad-content {
+.adContent {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
   width: 100%;
 }
 
-.ad-tag {
+.adTag {
   font-size: 0.65rem;
   font-weight: 700;
   background: var(--accent-primary);
@@ -48,7 +48,7 @@
   margin-top: 2px;
 }
 
-.ad-text {
+.adText {
   font-size: 0.85rem;
   color: var(--text-secondary);
   font-weight: 500;
@@ -58,7 +58,7 @@
   word-break: break-word;
 }
 
-.ad-text a {
+.adText a {
   color: var(--accent-primary);
   font-weight: 700;
   text-decoration: underline;
@@ -66,19 +66,19 @@
 }
 
 @media (max-width: 480px) {
-  .ad-banner {
+  .adBanner {
     min-height: 70px;
   }
 
-  .embla__slide {
+  .emblaSlide {
     padding: 1rem 1.25rem;
   }
 
-  .ad-content {
+  .adContent {
     gap: 0.75rem;
   }
 
-  .ad-text {
+  .adText {
     font-size: 0.75rem;
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
-import '../styles/components/AdBanner.css';
+import styles from './AdBanner.module.css';
 
 const ADS = [
   {
@@ -36,13 +36,13 @@ const AdBanner = () => {
   ]);
 
   return (
-    <div className="ad-banner glass-card embla" ref={emblaRef}>
-      <div className="embla__container">
+    <div className={`${styles.adBanner} glass-card ${styles.embla}`} ref={emblaRef}>
+      <div className={styles.emblaContainer}>
         {ADS.map((ad, index) => (
-          <div className="embla__slide" key={index}>
-            <div className="ad-content">
-              <span className="ad-tag">{ad.tag}</span>
-              <p className="ad-text">
+          <div className={styles.emblaSlide} key={index}>
+            <div className={styles.adContent}>
+              <span className={styles.adTag}>{ad.tag}</span>
+              <p className={styles.adText}>
                 {ad.text} {ad.link && <a target="_blank" rel="noopener noreferrer" href={ad.link}>{ad.linkText}</a>}
               </p>
             </div>

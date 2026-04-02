@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import styles from './PageHeader.module.css';
 
 const PageHeader = ({ title, icon, description, showBackButton = false, backUrl = "/", actionButton }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="header" style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+    <div className={styles.header} style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
 
       {/* Top area for BackButton / ActionButton inline with title if needed */}
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', minHeight: '32px' }}>
@@ -13,7 +14,7 @@ const PageHeader = ({ title, icon, description, showBackButton = false, backUrl 
         {showBackButton && (
           <button
             onClick={() => navigate(backUrl)}
-            className="back-button"
+            className={styles.backButton}
             style={{ position: 'absolute', left: 0 }}
           >
             <ArrowLeft size={24} />
@@ -21,7 +22,7 @@ const PageHeader = ({ title, icon, description, showBackButton = false, backUrl 
         )}
 
         {/* Title & Icon */}
-        <h1 className="title" style={{ margin: 0, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 40px' }}>
+        <h1 className={styles.title} style={{ margin: 0, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 40px' }}>
           {icon && <span style={{ marginRight: '0.5rem', display: 'flex' }}>{icon}</span>}
           {title}
         </h1>

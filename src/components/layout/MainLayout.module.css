@@ -1,0 +1,9 @@
+.appContainer {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
