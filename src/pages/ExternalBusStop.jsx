@@ -15,7 +15,19 @@ const ExternalBusStop = () => {
     // Llama al hook genérico para buscar datos
     const { data: stopData, isLoading, error } = useExternalStopDetailsQuery(routeId, stopId);
 
-    const schedule = stopData?.formattedSchedules || [];
+    const baseSchedule = stopData?.formattedSchedules || [];
+
+    // Obtener día actual en español
+    const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const currentDayStr = DAYS_ES[new Date().getDay()];
+
+    // Filtrar horarios que aplican para el día actual
+    const schedule = baseSchedule.filter(s => {
+        if (!s.days || !Array.isArray(s.days)) return true;
+        return s.days.includes(currentDayStr);
+    });
+
+    const currentFare = stopData?.formattedSchedules?.find(s => s.fare != null)?.fare;
 
     // Combine routeId + stopId for favorites mapping
     const favId = `${routeId}_${stopId}`;
@@ -60,8 +72,7 @@ const ExternalBusStop = () => {
         );
     }
 
-    //const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
-    const isWeekend = false; //Dejar asi para pruebas locales.
+
 
     return (
         <div className="glass-card">
@@ -72,8 +83,13 @@ const ExternalBusStop = () => {
             <PageHeader
                 title={
                     <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>Salida externa desde:</span>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)', WebkitTextFillColor: 'initial' }}>Salida externa desde:</span>
                         <span className="stop-name" style={{ margin: 0 }}>{stopName}</span>
+                        {currentFare && (
+                            <span style={{ fontSize: '1rem', color: 'var(--error)', marginTop: '0.25rem', WebkitTextFillColor: 'initial' }}>
+                                Tarifa: ₡{currentFare}
+                            </span>
+                        )}
                     </span>
                 }
                 showBackButton={true}
@@ -85,9 +101,9 @@ const ExternalBusStop = () => {
                 }
             />
 
-            {isWeekend ? (
+            {schedule.length === 0 ? (
                 <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--text-secondary)' }}>
-                    <p>No hay servicio de buses externos disponibles los fines de semana.</p>
+                    <p>No hay servicio de buses disponibles para el día de hoy ({currentDayStr}).</p>
                 </div>
             ) : (
                 <BusTimer schedule={schedule} />

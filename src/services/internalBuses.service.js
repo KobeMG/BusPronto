@@ -48,7 +48,7 @@ export const getInternalStopById = async (stopId) => {
         // Como la vista ya trae todo filtrado por 'interno' y ordenado, es directo.
         const { data: scheduleData, error: scheduleError } = await supabase
             .from('v_horarios_internos')
-            .select('hora_salida, parada_destino')
+            .select('hora_salida, parada_destino, dias_activos')
             .eq('parada_origen', stopData.name)
             .order('hora_salida', { ascending: true });
 
@@ -59,10 +59,13 @@ export const getInternalStopById = async (stopId) => {
         const uniqueTimes = new Map();
         (scheduleData || []).forEach(h => {
             const timeParsed = h.hora_salida.substring(0, 5);
-            if (!uniqueTimes.has(timeParsed)) {
-                uniqueTimes.set(timeParsed, {
+            const key = `${timeParsed}-${h.parada_destino}`;
+            if (!uniqueTimes.has(key)) {
+                uniqueTimes.set(key, {
                     time: timeParsed,
-                    destination: h.parada_destino
+                    destination: h.parada_destino,
+                    days: h.dias_activos,
+                    //fare: h.tarifa
                 });
             }
         });

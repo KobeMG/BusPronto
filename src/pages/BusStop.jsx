@@ -11,9 +11,21 @@ const BusStop = () => {
   const { stopId } = useParams();
   const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useFavorites();
-  
+
   const { data: stopData, isLoading } = useInternalStopDetailsQuery(stopId);
-  const schedule = stopData?.formattedSchedules || [];
+  const baseSchedule = stopData?.formattedSchedules || [];
+
+  // Obtener día actual en español (BD en español xd)
+  const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  const currentDayStr = DAYS_ES[new Date().getDay()];
+
+  // Filtrar horarios que aplican para el día actual
+  const schedule = baseSchedule.filter(s => {
+    if (!s.days || !Array.isArray(s.days)) return true;
+    return s.days.includes(currentDayStr);
+  });
+
+  //const currentFare = stopData?.formattedSchedules?.find(s => s.fare != null)?.fare;
 
   const isFav = isFavorite(stopId);
 
@@ -35,7 +47,7 @@ const BusStop = () => {
         <Helmet>
           <title>Parada no encontrada - BusPronto</title>
         </Helmet>
-        <PageHeader 
+        <PageHeader
           title="Parada no encontrada"
           showBackButton={true}
           backUrl="/rutas-internas"
@@ -45,19 +57,21 @@ const BusStop = () => {
     );
   }
 
-  //const isWeekend = [0, 6].includes(new Date().getDay()); // 0 es domingo, 6 es sábado
-  const isWeekend = false; //Dejar asi para pruebas locales.
+
   return (
     <div className="glass-card">
       <Helmet>
         <title>{`Salida de ${stopName} - BusPronto`}</title>
         <meta name="description" content={`Consulte el horario y cronómetro en tiempo real para la parada ${stopName}. ¡No pierda su bus!`} />
       </Helmet>
-      <PageHeader 
+      <PageHeader
         title={
           <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>Salida de:</span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'var(--text-secondary)', WebkitTextFillColor: 'initial' }}>Salida de:</span>
             <span className="stop-name" style={{ margin: 0 }}>{stopName}</span>
+            <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '0.25rem', WebkitTextFillColor: 'initial' }}>
+              Tarifa: GRATUITO
+            </span>
           </span>
         }
         showBackButton={true}
@@ -69,9 +83,9 @@ const BusStop = () => {
         }
       />
 
-      {isWeekend ? (
+      {schedule.length === 0 ? (
         <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--text-secondary)' }}>
-          <p>No hay servicio de buses disponibles los fines de semana.</p>
+          <p>No hay servicio de buses disponibles para el día de hoy ({currentDayStr}).</p>
         </div>
       ) : (
         <BusTimer schedule={schedule} />
