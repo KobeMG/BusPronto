@@ -9,8 +9,12 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>BusPronto - Menú Principal</title>
-        <meta name="description" content="Horarios de buses UCR. Elige entre rutas internas o externas." />
+        <title>BusPronto – Horarios Bus UCR en Tiempo Real | Rutas Internas y Externas</title>
+        <meta name="description" content="Consulta el próximo bus UCR en tiempo real. Horarios del bus interno UCR y bus externo UCR a Alajuela y Heredia. Cronómetro en vivo para no perder tu bus." />
+        <link rel="canonical" href="https://www.buspronto.lat/" />
+        <meta property="og:title" content="BusPronto – Horarios Bus UCR en Tiempo Real" />
+        <meta property="og:description" content="Consulta el próximo bus UCR en tiempo real. Bus interno UCR y bus externo UCR a Alajuela y Heredia. Cronómetro en vivo." />
+        <meta property="og:url" content="https://www.buspronto.lat/" />
       </Helmet>
       <div className="glass-card">
         <PageHeader

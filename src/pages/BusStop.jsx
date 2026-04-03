@@ -61,8 +61,12 @@ const BusStop = () => {
   return (
     <div className="glass-card">
       <Helmet>
-        <title>{`Salida de ${stopName} - BusPronto`}</title>
-        <meta name="description" content={`Consulte el horario y cronómetro en tiempo real para la parada ${stopName}. ¡No pierda su bus!`} />
+        <title>{`${stopName} – Bus Interno UCR | BusPronto`}</title>
+        <meta name="description" content={`Horarios del bus interno UCR desde ${stopName} en tiempo real. Cronómetro en vivo para no perder tu bus.`} />
+        <link rel="canonical" href={`https://www.buspronto.lat/rutas-internas/parada/${stopId}`} />
+        <meta property="og:title" content={`${stopName} – Bus Interno UCR | BusPronto`} />
+        <meta property="og:description" content={`Ver cuánto falta para el próximo bus interno UCR desde ${stopName}. Cronómetro en vivo.`} />
+        <meta property="og:url" content={`https://www.buspronto.lat/rutas-internas/parada/${stopId}`} />
       </Helmet>
       <PageHeader
         title={

@@ -45,8 +45,12 @@ const ExternalStopsList = () => {
   return (
     <>
       <Helmet>
-        <title>{`Paradas a ${routeName} - BusPronto`}</title>
-        <meta name="description" content={`Seleccione su parada para ir a ${routeName}.`} />
+        <title>{`Paradas a ${routeName} – Bus Externo UCR | BusPronto`}</title>
+        <meta name="description" content={`Horarios del bus externo UCR a ${routeName} en tiempo real. Selecciona desde cuál parada abordas el bus.`} />
+        <link rel="canonical" href={`https://www.buspronto.lat/rutas-externas/${routeId}`} />
+        <meta property="og:title" content={`Bus Externo UCR a ${routeName} | BusPronto`} />
+        <meta property="og:description" content={`Horarios del bus externo UCR a ${routeName} en tiempo real. Cronómetro en vivo.`} />
+        <meta property="og:url" content={`https://www.buspronto.lat/rutas-externas/${routeId}`} />
       </Helmet>
 
       <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1.5rem' }}>
