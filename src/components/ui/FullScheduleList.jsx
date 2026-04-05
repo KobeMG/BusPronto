@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './FullScheduleList.module.css';
-import { Clock } from 'lucide-react';
+import { Clock, ChevronUp } from 'lucide-react';
 
 const FullScheduleList = ({ schedule, nextBusTime }) => {
   if (!schedule || schedule.length === 0) {
@@ -30,9 +30,9 @@ const FullScheduleList = ({ schedule, nextBusTime }) => {
             {grouped[hour].map((item, idx) => {
               const isNext = nextBusTime === item.time;
               return (
-                <div 
-                    key={`${item.time}-${idx}`} 
-                    className={`${styles.scheduleItem} ${isNext ? styles.nextBus : ''}`}
+                <div
+                  key={`${item.time}-${idx}`}
+                  className={`${styles.scheduleItem} ${isNext ? styles.nextBus : ''}`}
                 >
                   <div className={styles.timeWrap}>
                     <Clock size={16} className={isNext ? styles.nextIcon : styles.icon} />
@@ -44,12 +44,22 @@ const FullScheduleList = ({ schedule, nextBusTime }) => {
                       <span>{item.destination}</span>
                     </div>
                   )}
+
                 </div>
+
               );
             })}
           </div>
         </div>
       ))}
+      <button
+        className={styles.backToTop}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Volver al inicio"
+      >
+        <ChevronUp size={18} />
+        <span>Subir</span>
+      </button>
     </div>
   );
 };

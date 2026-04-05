@@ -1,5 +1,6 @@
 import { getAlajuelaStops, getAlajuelaStopDetails } from './alajuela.service';
 import { getHerediaStops, getHerediaStopDetails } from './heredia.service';
+import { getTibasStops, getTibasStopDetails } from './tibas.service';
 /**
  * Registro central de servicios para rutas externas.
  * Mapea un `routeId` dinámico a las funciones específicas de la ruta.
@@ -15,6 +16,10 @@ const registry = {
     heredia: {
         getStops: getHerediaStops,
         getStopDetails: getHerediaStopDetails,
+    },
+    tibas: {
+        getStops: getTibasStops,
+        getStopDetails: getTibasStopDetails,
     }
 };
 

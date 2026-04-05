@@ -31,20 +31,20 @@ const ExternalRoutes = () => {
             <ChevronRight size={20} />
           </Link>
 
-          {/* <Link to={'#'} className={listStyles.stopLink} style={{ opacity: 0.5, pointerEvents: 'none' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Alajuelita - PRÓXIMAMENTE</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link> */}
-
-
           <Link to={'/rutas-externas/heredia'} className={listStyles.stopLink}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Heredia</span>
             </div>
             <ChevronRight size={20} />
           </Link>
+
+          <Link to={'/rutas-externas/tibas'} className={listStyles.stopLink} style={{ opacity: 1, pointerEvents: 'auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span>Tibás</span>
+            </div>
+            <ChevronRight size={20} />
+          </Link>
+
         </div>
       </div>
     </>
