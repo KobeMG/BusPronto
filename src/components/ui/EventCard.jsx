@@ -1,9 +1,9 @@
 import React from 'react';
-import { MapPin, Users, Video, Globe } from 'lucide-react';
+import { MapPin, Users, Video, Globe, ExternalLink } from 'lucide-react';
 import styles from './EventCard.module.css';
 
 const EventCard = ({ event }) => {
-  const { title, organizer, location, modality, is_active } = event;
+  const { title, organizer, location, modality, is_active, google_maps } = event;
 
   // Determinar ícono y clase según la modalidad
   const getModalityConfig = (mod) => {
@@ -38,6 +38,19 @@ const EventCard = ({ event }) => {
       <div className={styles.infoRow}>
         <div className={styles.icon}>{icon}</div>
         <span className={styles.locationText}>{location || 'Lugar por definir'}</span>
+        
+        {google_maps && (
+          <a 
+            href={google_maps} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={styles.mapsLink}
+            title="Ver en Google Maps"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ExternalLink size={14} />
+          </a>
+        )}
       </div>
     </div>
   );

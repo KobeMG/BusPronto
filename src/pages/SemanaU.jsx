@@ -32,7 +32,7 @@ const SemanaU = () => {
 
             <PageHeader
                 title="Semana U 2026"
-                description="Agenda oficial de actividades y eventos universitarios."
+                description="Agenda de actividades de la Sede Rodrigo Facio"
                 showBackButton={true}
                 backUrl="/"
             />
