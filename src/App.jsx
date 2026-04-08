@@ -7,6 +7,7 @@ import ExternalRoutes from './pages/ExternalRoutes';
 import ExternalStopsList from './pages/ExternalStopsList';
 import BusStop from './pages/BusStop';
 import ExternalBusStop from './pages/ExternalBusStop';
+import SemanaU from './pages/SemanaU';
 //import useTheme from './hooks/useTheme';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
@@ -29,7 +30,8 @@ function App() {
               <Route path="/rutas-externas/:routeId" element={<ExternalStopsList />} />
               <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
-
+              <Route path="/semana-u" element={<SemanaU />} />
+              
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

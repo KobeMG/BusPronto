@@ -1,0 +1,109 @@
+.card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--surface-border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--accent-primary);
+  /* box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15);  Sombra rojiza */
+  transform: translateY(-2px);
+}
+
+.cancelled {
+  opacity: 0.6;
+  filter: grayscale(0.8);
+  pointer-events: none;
+}
+
+.cancelled::after {
+  content: "EVENTO CANCELADO";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  background: var(--error);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: 800;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
+  letter-spacing: 0.05rem;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  letter-spacing: 0.02rem;
+  flex-shrink: 0;
+}
+
+.presencial {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.virtual {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.hibrido {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.icon {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.organizer {
+  margin-top: 0.25rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--accent-secondary);
+}
+
+.locationText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
