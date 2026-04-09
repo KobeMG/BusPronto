@@ -48,6 +48,8 @@ const CinemaCarousel = ({ movies, onSelectIndex }) => {
                       alt={movie.title} 
                       className={styles.posterImage}
                       loading="lazy"
+                      width="400"
+                      height="600"
                     />
                   ) : (
                     <div className={styles.posterFallback}>
