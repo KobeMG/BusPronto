@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { HelmetProvider } from 'react-helmet-async'
 import './styles/global.css'
 import './styles/themes/semana-santa.css'
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')).render(
     <HelmetProvider>
       <App />
       <Analytics />
+      <SpeedInsights />
     </HelmetProvider>
   </StrictMode>,
 )
