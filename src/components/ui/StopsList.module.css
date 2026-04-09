@@ -27,3 +27,17 @@
 .stopLink svg {
   color: var(--accent-primary);
 }
+
+.cinemaLink {
+  background: linear-gradient(135deg, var(--surface-color) 0%, #1e1b2e 100%) !important;
+  border-color: #8b5cf6;
+}
+
+.cinemaLink:hover {
+  border-color: #a78bfa;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+}
+
+.cinemaLink .cinemaIcon {
+  color: #8b5cf6;
+}

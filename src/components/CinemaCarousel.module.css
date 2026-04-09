@@ -1,0 +1,59 @@
+.carouselContainer {
+  width: 100%;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.embla {
+  overflow: hidden;
+  width: 100%;
+}
+
+.emblaContainer {
+  display: flex;
+  touch-action: pan-y;
+  align-items: center;
+}
+
+.emblaSlide {
+  flex: 0 0 65%; /* Make slightly larger for mobile */
+  min-width: 0;
+  padding: 0 10px;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+  transform: scale(0.85);
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.emblaSlide.isActive {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
+}
+
+.posterWrapper {
+  width: 100%; /* Force width to 100% of the slide */
+  aspect-ratio: 2 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  background: var(--bg-neutral, #e0e0e0);
+  display: flex;
+}
+
+.posterImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.posterFallback {
+  padding: 1rem;
+  text-align: center;
+  font-weight: bold;
+  color: var(--text-secondary);
+}
+
+/* For larger screens we can adjust the slide width */
+

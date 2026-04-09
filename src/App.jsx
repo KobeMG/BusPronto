@@ -11,6 +11,8 @@ import ExternalBusStop from './pages/ExternalBusStop';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 
+import Cinema from './pages/Cinema';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
               <Route path="/rutas-externas/:routeId" element={<ExternalStopsList />} />
               <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
+              <Route path="/cinema" element={<Cinema />} />
 
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
