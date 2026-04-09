@@ -68,12 +68,13 @@
 .nextBadge {
     background: var(--accent-primary);
     color: white;
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     font-weight: 800;
     text-transform: uppercase;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    letter-spacing: 0.05rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.4rem;
+    letter-spacing: 0.03rem;
+    flex-shrink: 0;
 }
 
 .icon {
@@ -89,7 +90,10 @@
   font-weight: 600;
   color: var(--text-secondary);
   text-align: right;
-  max-width: 60%;
+  max-width: 65%;
+  flex-shrink: 1;
+  word-break: break-word;
+  line-height: 1.2;
 }
 
 .nextBus .destWrap {
@@ -133,4 +137,29 @@
 
 .backToTop:active {
   transform: translateY(0);
+}
+
+@media (max-width: 420px) {
+  .scheduleItem {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .timeWrap {
+    gap: 0.4rem;
+  }
+
+  .time {
+    font-size: 1rem;
+  }
+
+  .destWrap {
+    font-size: 0.75rem;
+    max-width: 55%;
+  }
+
+  .nextBadge {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.3rem;
+  }
 }

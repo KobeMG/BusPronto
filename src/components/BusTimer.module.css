@@ -75,8 +75,8 @@
     gap: 1.25rem 0.5rem;
   }
 
-  /* El último elemento (Siguiente bus) ocupa todo el ancho */
-  .nextBusDetails>div:last-child {
+  /* Solo expandir el último elemento si hay 3 items (es decir, NO es twoCols) */
+  .nextBusDetails:not(.twoCols)>div:last-child {
     grid-column: span 2;
     border-top: 1px solid rgba(59, 130, 246, 0.1);
     padding-top: 1rem;
@@ -84,13 +84,13 @@
     text-align: center;
   }
 
+  .nextBusDetails.twoCols .detailValue {
+    justify-content: flex-start;
+  }
+
   .detailDestination {
     max-width: none;
     text-align: left;
-  }
-
-  .detailValue {
-    justify-content: center;
   }
 }
 
