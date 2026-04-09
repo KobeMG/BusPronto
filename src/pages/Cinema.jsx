@@ -87,7 +87,7 @@ const Cinema = () => {
                       </div>
                     </div>
 
-                    <div className={`${styles.infoItem} ${activeMovie.virtual ? styles.virtualMode : ''}`}>
+                    <div className={`${styles.infoItem} ${activeMovie.virtual ? styles.virtualMode : styles.presencialMode}`}>
                       <div className={styles.iconWrapper}>
                         {activeMovie.virtual ? <Video size={20} /> : <MapPin size={20} />}
                       </div>

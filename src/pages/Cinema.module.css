@@ -77,8 +77,13 @@
 }
 
 .infoItem.virtualMode {
-  background: rgba(43, 108, 203, 0.1);
-  /* Slight blue tint for Zoom */
+  background: rgba(43, 108, 203, 0.15) !important;
+  border: 1px solid rgba(43, 108, 203, 0.3);
+}
+
+.infoItem.presencialMode {
+  background: rgba(16, 185, 129, 0.1); /* Subtle green tint for in-person */
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .iconWrapper {
@@ -94,8 +99,11 @@
 }
 
 .virtualMode .iconWrapper {
-  background: #2b6ccb;
-  /* Zoom blue */
+  background: #2b6ccb; /* Zoom blue */
+}
+
+.presencialMode .iconWrapper {
+  background: #10b981; /* Success/In-person green */
 }
 
 .infoText {
