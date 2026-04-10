@@ -7,7 +7,7 @@ const ADS = [
   {
     tag: 'INFO',
     text: '¡Otras Rutas de Bus Externo!',
-    link: 'https://bus-ucr-coronado.netlify.app/',
+    link: 'https://bus-ucr-externo.netlify.app',
     linkText: 'AQUÍ'
   },
   {
@@ -18,7 +18,7 @@ const ADS = [
   },
   {
     tag: 'INFO',
-    text: 'Visite a KodeCreative.',
+    text: 'Damos tutorias en KodeCreative.',
     link: 'https://kobemg.com/',
     linkText: 'AQUÍ'
   },
