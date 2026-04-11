@@ -21,7 +21,14 @@ const ADS = [
     text: '¿Hay algún error? Repórtelo.',
     link: 'mailto:kobemoya@gmail.com',
     linkText: 'AQUÍ'
+  },
+  {
+    tag: '🐱',
+    text: 'Buscamos un hogar para este gatito',
+    link: 'https://wa.me/50660091562?text=Hola,%20quisiera%20adoptar%20el%20gatito',
+    linkText: 'ADOPTAR'
   }
+
 ];
 // Aleatorizar el array de anuncios.
 const shuffleArray = (array) => {
