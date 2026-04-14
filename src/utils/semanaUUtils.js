@@ -24,3 +24,17 @@ export const formatDate = (dateString) => {
         full: new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'long' }).format(date)
     };
 };
+
+export const formatEventTime = (timeString) => {
+    if (!timeString) return null;
+
+    try {
+        const [hours, minutes] = timeString.split(':');
+        const h = parseInt(hours);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        return `${h12}:${minutes} ${ampm}`;
+    } catch (e) {
+        return null;
+    }
+};

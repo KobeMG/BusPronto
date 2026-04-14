@@ -31,11 +31,25 @@ const SemanaU = () => {
             </Helmet>
 
             <PageHeader
-                title="Semana U 2026"
-                description="Agenda de actividades de la Sede Rodrigo Facio"
+                title="Agenda Semana U 2026"
+                description={
+                    <>
+                        Consulte las redes de la{" "}
+                        <a
+                            href="https://www.instagram.com/feucr/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}
+                        >
+                            FEUCR
+                        </a>{" "}
+                        para más información
+                    </>
+                }
                 showBackButton={true}
                 backUrl="/"
             />
+
 
             {error || groupedEvents.length === 0 ? (
                 <div className={styles.emptyState}>
