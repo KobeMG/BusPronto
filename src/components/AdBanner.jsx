@@ -7,30 +7,37 @@ const ADS = [
   {
     tag: 'INFO',
     text: '¡Otras Rutas de Bus Externo!',
-    link: 'https://bus-ucr-coronado.netlify.app/',
+    link: 'https://bus-ucr-externo.netlify.app',
     linkText: 'AQUÍ'
   },
   {
     tag: 'INFO',
-    text: 'Nueva rutas externas disponibles.',
-    link: '',
-    linkText: 'Ver Info'
-  },
-  {
-    tag: 'INFO',
-    text: 'Visite a KodeCreative.',
+    text: '¿Semestre Dificil? Damos tutorias en KodeCreative.',
     link: 'https://kobemg.com/',
-    linkText: 'AQUÍ'
+    linkText: 'VISITENOS'
   },
   {
     tag: 'BUG',
-    text: 'Hay algún error? Repórtelo.',
+    text: '¿Hay algún error? Repórtelo.',
     link: 'mailto:kobemoya@gmail.com',
     linkText: 'AQUÍ'
+  },
+  {
+    tag: '🐱',
+    text: 'Buscamos un hogar para este gatito',
+    link: 'https://wa.me/50660091562?text=Hola,%20quisiera%20adoptar%20el%20gatito',
+    linkText: 'ADOPTAR'
   }
+
 ];
+// Aleatorizar el array de anuncios.
+const shuffleArray = (array) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
 const AdBanner = () => {
+  const shuffledAds = React.useMemo(() => shuffleArray(ADS), []);
+
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: true })
   ]);
@@ -38,8 +45,8 @@ const AdBanner = () => {
   return (
     <div className={`${styles.adBanner} glass-card ${styles.embla}`} ref={emblaRef}>
       <div className={styles.emblaContainer}>
-        {ADS.map((ad, index) => (
-          <div className={styles.emblaSlide} key={index}>
+        {shuffledAds.map((ad) => (
+          <div className={styles.emblaSlide} key={ad.text}>
             <div className={styles.adContent}>
               <span className={styles.adTag}>{ad.tag}</span>
               <p className={styles.adText}>

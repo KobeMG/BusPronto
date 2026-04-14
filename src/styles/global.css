@@ -2,6 +2,7 @@
 @import './themes/christmas.css';
 @import './themes/semana-santa.css';
 
+
 :root {
   --bg-color: #0f1115;
   --surface-color: #1a1d24;

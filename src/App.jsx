@@ -12,6 +12,8 @@ import SemanaU from './pages/SemanaU';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 
+import Cinema from './pages/Cinema';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -31,7 +33,8 @@ function App() {
               <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
               <Route path="/semana-u" element={<SemanaU />} />
-              
+              <Route path="/cinema" element={<Cinema />} />
+
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

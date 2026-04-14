@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { MapPin, ChevronRight, Info, Calendar } from 'lucide-react';
+import { MapPin, ChevronRight, Info, Calendar, Film } from 'lucide-react';
+
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
 import listStyles from '../components/ui/StopsList.module.css';
 
 const Home = () => {
@@ -42,6 +42,13 @@ const Home = () => {
             </div>
             <ChevronRight size={20} />
           </Link>
+          <Link to="/cinema" className={`${listStyles.stopLink} ${listStyles.cinemaLink}`}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Film size={20} className={listStyles.cinemaIcon} />
+              <span>Cine Universitario</span>
+            </div>
+            <ChevronRight size={20} />
+          </Link>
 
           <Link to="/semana-u" className={listStyles.stopLink}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -51,6 +58,7 @@ const Home = () => {
             <ChevronRight size={20} />
           </Link>
         </div>
+
       </div>
     </>
   );
