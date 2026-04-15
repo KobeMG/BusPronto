@@ -1,37 +1,46 @@
-import { MapPin, Users, Video, Globe, ExternalLink, Clock } from 'lucide-react';
-import { formatEventTime } from '../../utils/semanaUUtils';
+import { MapPin, Video, Globe, ExternalLink, Clock, Share2 } from 'lucide-react';
+import { formatEventTime, shareEvent, getEventModalityConfig } from '../../utils/semanaUUtils';
 import styles from './EventCard.module.css';
 
+const MODALITY_ICONS = {
+  presencial: <MapPin size={14} />,
+  virtual: <Video size={14} />,
+  hibrido: <Globe size={14} />,
+};
 
 const EventCard = ({ event }) => {
   const { title, organizer, location, modality, is_active, google_maps, start_time } = event;
   const formattedTime = formatEventTime(start_time);
 
+  const { type, className } = getEventModalityConfig(modality, styles);
+  const icon = MODALITY_ICONS[type] || MODALITY_ICONS.presencial;
 
-  // Determinar ícono y clase según la modalidad
-  const getModalityConfig = (mod) => {
-    switch (mod?.toLowerCase()) {
-      case 'presencial':
-        return { icon: <MapPin size={14} />, className: styles.presencial };
-      case 'virtual':
-        return { icon: <Video size={14} />, className: styles.virtual };
-      case 'híbrido':
-      case 'hibrido':
-        return { icon: <Globe size={14} />, className: styles.hibrido };
-      default:
-        return { icon: <MapPin size={14} />, className: styles.presencial };
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const result = await shareEvent(event, formattedTime);
+    if (result.success && result.method === 'clipboard') {
+      alert('¡Información del evento copiada al portapapeles!');
     }
   };
-
-  const { icon, className } = getModalityConfig(modality);
 
   return (
     <div className={`${styles.card} ${!is_active ? styles.cancelled : ''}`}>
       <div className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
-        <span className={`${styles.badge} ${className}`}>
-          {modality || 'Evento'}
-        </span>
+        <div className={styles.headerRight}>
+          <span className={`${styles.badge} ${className}`}>
+            {modality || 'Evento'}
+          </span>
+          <button
+            className={styles.shareButton}
+            onClick={handleShare}
+            aria-label="Compartir evento"
+            title="Compartir evento"
+          >
+            <Share2 size={15} />
+          </button>
+        </div>
       </div>
 
       <div className={styles.organizer}>
