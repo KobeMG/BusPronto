@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Calendar } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
@@ -13,6 +13,14 @@ const SemanaU = () => {
 
     // Agrupamos eventos por fecha
     const groupedEvents = useMemo(() => groupEventsByDate(events), [events]);
+    const [activeTab, setActiveTab] = useState(null);
+
+    // Seleccionar el primer día por defecto cuando cargan los datos
+    useEffect(() => {
+        if (groupedEvents && groupedEvents.length > 0 && !activeTab) {
+            setActiveTab(groupedEvents[0].date);
+        }
+    }, [groupedEvents, activeTab]);
 
     if (isLoading) {
         return (
@@ -58,17 +66,35 @@ const SemanaU = () => {
                 </div>
             ) : (
                 <div className={styles.container}>
+                    {/* Tabs de Navegación por Día */}
+                    <div className={styles.tabsContainer}>
+                        {groupedEvents.map(({ date }) => {
+                            const { day, full } = formatDate(date);
+                            const isActive = activeTab === date;
+                            return (
+                                <button
+                                    key={date}
+                                    className={`${styles.tabButton} ${isActive ? styles.activeTab : ''}`}
+                                    onClick={() => setActiveTab(date)}
+                                >
+                                    <span className={styles.tabDayName}>{day}</span>
+                                    <span className={styles.tabFullDate}>{full}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Contenido del Día Seleccionado */}
                     {groupedEvents.map(({ date, eventList }) => {
-                        const { day, full } = formatDate(date);
+                        if (date !== activeTab) return null;
+                        
                         return (
                             <section key={date} className={styles.daySection}>
-                                <div className={styles.dateHeader}>
-                                    <h2 className={styles.dayName}>{day}</h2>
-                                    <span className={styles.fullDate}>{full}</span>
-                                </div>
                                 <div className={styles.eventsGrid}>
-                                    {eventList.map(event => (
-                                        <EventCard key={event.id} event={event} />
+                                    {eventList.map((event, index) => (
+                                        <div key={event.id} style={{ animationDelay: `${index * 0.05}s` }} className={styles.animatedCard}>
+                                            <EventCard event={event} />
+                                        </div>
                                     ))}
                                 </div>
                             </section>
