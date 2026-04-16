@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { MapPin, Video, Calendar, Clock, Film } from 'lucide-react';
+import { sileo } from 'sileo';
+import { MapPin, Video, Calendar, Clock, Film, Share2 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import CinemaCarousel from '../components/CinemaCarousel';
 import { useCinemaQuery } from '../hooks/useCinemaQuery';
+import { shareMovie } from '../utils/cinemaUtils';
 import styles from './Cinema.module.css';
 import { formatDate, formatTime } from '../utils/dateHelpers';
 
@@ -13,6 +15,24 @@ const Cinema = () => {
   const { data: movies = [], isLoading: loading, error } = useCinemaQuery();
 
   const activeMovie = movies[activeIndex];
+
+  const handleShare = async (e) => {
+    if (!activeMovie) return;
+    e.stopPropagation();
+    
+    const formattedDate = formatDate(activeMovie.screening_date);
+    const formattedTime = formatTime(activeMovie.screening_time);
+    
+    const result = await shareMovie(activeMovie, formattedDate, formattedTime);
+    if (result.success && result.method === 'clipboard') {
+      sileo.success({
+        title: '¡Copiado!',
+        description: 'Información de la película copiada al portapapeles.',
+        position: 'top-center',
+        duration: 2500
+      });
+    }
+  };
 
   return (
     <>
@@ -56,7 +76,17 @@ const Cinema = () => {
               {activeMovie && (
                 <div className={styles.movieDetailsCard}>
                   <div className={styles.movieHeader}>
-                    <h2 className={styles.movieTitle}>{activeMovie.title}</h2>
+                    <div className={styles.titleRow}>
+                      <h2 className={styles.movieTitle}>{activeMovie.title}</h2>
+                      <button 
+                        className={styles.shareButton} 
+                        onClick={handleShare}
+                        title="Compartir película"
+                        aria-label="Compartir película"
+                      >
+                        <Share2 size={20} />
+                      </button>
+                    </div>
                     {activeMovie.synopsis && (
                       <p className={styles.movieSynopsis}>{activeMovie.synopsis}</p>
                     )}

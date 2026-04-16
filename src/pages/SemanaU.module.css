@@ -5,25 +5,28 @@
   margin-top: 1rem;
 }
 
-/* Tabs Navigation */
-.tabsContainer {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
+.emblaTabs {
+  overflow: hidden;
   margin-bottom: 1.5rem;
-  /* Hide scrollbar for a cleaner look */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   /* Degradado en el borde para insinuar contenido con scroll */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 100%);
-  padding-right: 3rem; /* Espacio extra para que el último tab no quede cubierto por el difuminado */
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 100%);
+  cursor: grab;
 }
 
-.tabsContainer::-webkit-scrollbar {
-  display: none;
+.emblaTabs:active {
+  cursor: grabbing;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-right: 4rem; /* Espacio extra para que el último tab no quede cubierto por el difuminado */
+}
+
+.tabSlide {
+  flex: 0 0 auto;
 }
 
 .tabButton {

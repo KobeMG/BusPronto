@@ -1,4 +1,5 @@
 import { MapPin, Video, Globe, ExternalLink, Clock, Share2 } from 'lucide-react';
+import { sileo } from 'sileo';
 import { formatEventTime, shareEvent, getEventModalityConfig } from '../../utils/semanaUUtils';
 import styles from './EventCard.module.css';
 
@@ -20,7 +21,12 @@ const EventCard = ({ event }) => {
     e.preventDefault();
     const result = await shareEvent(event, formattedTime);
     if (result.success && result.method === 'clipboard') {
-      alert('¡Información del evento copiada al portapapeles!');
+      sileo.success({
+        title: '¡Evento Copiado!',
+        description: 'La información se copió correctamente.',
+        position: 'top-center',
+        duration: 2500
+      });
     }
   };
 

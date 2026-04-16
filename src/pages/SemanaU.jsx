@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Calendar } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import EventCard from '../components/ui/EventCard';
@@ -21,6 +22,21 @@ const SemanaU = () => {
             setActiveTab(groupedEvents[0].date);
         }
     }, [groupedEvents, activeTab]);
+
+    // Configuración de Embla para los tabs
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+        align: 'start',
+        containScroll: 'trimSnaps',
+        dragFree: true
+    });
+
+    // Asegurar que el tab activo esté a la vista al cambiar
+    useEffect(() => {
+        if (emblaApi && activeTab) {
+            const index = groupedEvents.findIndex(item => item.date === activeTab);
+            if (index !== -1) emblaApi.scrollTo(index);
+        }
+    }, [emblaApi, activeTab, groupedEvents]);
 
     if (isLoading) {
         return (
@@ -66,22 +82,25 @@ const SemanaU = () => {
                 </div>
             ) : (
                 <div className={styles.container}>
-                    {/* Tabs de Navegación por Día */}
-                    <div className={styles.tabsContainer}>
-                        {groupedEvents.map(({ date }) => {
-                            const { day, full } = formatDate(date);
-                            const isActive = activeTab === date;
-                            return (
-                                <button
-                                    key={date}
-                                    className={`${styles.tabButton} ${isActive ? styles.activeTab : ''}`}
-                                    onClick={() => setActiveTab(date)}
-                                >
-                                    <span className={styles.tabDayName}>{day}</span>
-                                    <span className={styles.tabFullDate}>{full}</span>
-                                </button>
-                            );
-                        })}
+                    {/* Tabs de Navegación por Día (ahora con Embla para scroll por mouse) */}
+                    <div className={styles.emblaTabs} ref={emblaRef}>
+                        <div className={styles.tabsContainer}>
+                            {groupedEvents.map(({ date }) => {
+                                const { day, full } = formatDate(date);
+                                const isActive = activeTab === date;
+                                return (
+                                    <div key={date} className={styles.tabSlide}>
+                                        <button
+                                            className={`${styles.tabButton} ${isActive ? styles.activeTab : ''}`}
+                                            onClick={() => setActiveTab(date)}
+                                        >
+                                            <span className={styles.tabDayName}>{day}</span>
+                                            <span className={styles.tabFullDate}>{full}</span>
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* Contenido del Día Seleccionado */}
