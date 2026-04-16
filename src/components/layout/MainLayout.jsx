@@ -1,6 +1,7 @@
 import { Toaster } from 'sileo';
 import AdBanner from '../AdBanner';
-import Footer from '../Footer';
+
+import BottomNav from './BottomNav';
 import styles from './MainLayout.module.css';
 
 const MainLayout = ({ children }) => {
@@ -9,9 +10,11 @@ const MainLayout = ({ children }) => {
       <Toaster position="top-right" />
       <AdBanner />
 
-      {children}
+      <main className={styles.mainContent}>
+        {children}
+      </main>
 
-      <Footer />
+      <BottomNav />
     </div>
   );
 };

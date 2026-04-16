@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MapPin, ChevronRight, Info, Calendar, Film } from 'lucide-react';
+import { MapPin, ChevronRight } from 'lucide-react';
 
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
@@ -39,21 +39,6 @@ const Home = () => {
           <Link to="/rutas-externas" className={listStyles.stopLink}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Bus Externo UCR</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-          <Link to="/cinema" className={`${listStyles.stopLink} ${listStyles.cinemaLink}`}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Film size={20} className={listStyles.cinemaIcon} />
-              <span>Cine Universitario</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to="/semana-u" className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Calendar size={18} />
-              <span>Semana U 2026</span>
             </div>
             <ChevronRight size={20} />
           </Link>

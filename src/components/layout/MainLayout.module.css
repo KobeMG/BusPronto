@@ -2,8 +2,16 @@
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem 5rem 1.5rem;
+  /* Padding bottom para la pastilla */
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
