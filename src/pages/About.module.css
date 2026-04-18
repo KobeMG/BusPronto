@@ -115,6 +115,114 @@
     margin: 0;
 }
 
+.supportCard {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.supportCard::before {
+    content: 'SINPE';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(59, 130, 246, 0.05);
+    transform: rotate(-15deg);
+    pointer-events: none;
+}
+
+.sinpeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sinpeBadge {
+    background: var(--accent-primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sinpeContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.numberContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.phoneNumber {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0.05em;
+}
+
+.copyButton {
+    background: var(--accent-primary);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.copyButton:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.copyButton:active {
+    transform: scale(0.95);
+}
+
+.ownerName {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+}
+
+.tapToCopy {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    margin: 0.5rem 0 0 0;
+}
+
 @media (max-width: 480px) {
     .socialGrid {
         grid-template-columns: 1fr;

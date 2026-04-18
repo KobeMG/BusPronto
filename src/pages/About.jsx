@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Instagram, Github, Globe, Linkedin, ExternalLink } from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin, ExternalLink, Copy, Check, Heart, QrCode } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import styles from './About.module.css';
 
 const About = () => {
+    const [copied, setCopied] = useState(false);
+    const sinpeNumber = "8745-8295"; // Reemplazar con tu número real
+
+    const handleCopy = () => {
+        // Eliminar guiones si existen para copiar solo los números
+        const cleanNumber = sinpeNumber.replace(/-/g, '');
+        navigator.clipboard.writeText(cleanNumber);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
         <>
             <Helmet>
@@ -45,6 +56,35 @@ const About = () => {
                                 <Globe size={24} />
                                 <span>Web</span>
                             </a>
+                        </div>
+                    </section>
+
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Apoyar el Proyecto</h2>
+                        <p className={styles.text}>
+                            Si BusPronto le ha sido útil y desea apoyar su mantenimiento y desarrollo continuo, puede hacerlo mediante un "cafecito" virtual.
+                        </p>
+
+                        <div className={styles.supportCard}>
+                            <div className={styles.sinpeHeader}>
+                                <div className={styles.sinpeBadge}>SINPE Móvil</div>
+                                <Heart size={18} className="text-accent" fill="currentColor" />
+                            </div>
+
+                            <div className={styles.sinpeContent}>
+                                <span className={styles.ownerName}>[Kobe Williams]</span>
+                                <div className={styles.numberContainer}>
+                                    <span className={styles.phoneNumber}>{sinpeNumber}</span>
+                                    <button
+                                        className={styles.copyButton}
+                                        onClick={handleCopy}
+                                        title="Copiar número"
+                                    >
+                                        {copied ? <Check size={20} /> : <Copy size={20} />}
+                                    </button>
+                                </div>
+                                <p className={styles.tapToCopy}>Toque el botón para copiar el número</p>
+                            </div>
                         </div>
                     </section>
 

@@ -14,6 +14,9 @@ const ExternalRoutes = () => {
         <meta property="og:title" content="Bus Externo UCR – Horarios Alajuela y Heredia | BusPronto" />
         <meta property="og:description" content="Horarios del bus externo UCR a Alajuela y Heredia en tiempo real. Cronómetro en vivo." />
         <meta property="og:url" content="https://www.buspronto.lat/rutas-externas" />
+        <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
       </Helmet>
 
       <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1.5rem' }}>
