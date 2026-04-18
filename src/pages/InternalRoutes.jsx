@@ -28,6 +28,9 @@ const InternalRoutes = () => {
         <meta property="og:title" content="Bus Interno UCR – Horarios en Tiempo Real | BusPronto" />
         <meta property="og:description" content="Horarios del bus interno UCR en tiempo real. Paradas: Facultad Educación, Artes Plásticas, Odontología." />
         <meta property="og:url" content="https://www.buspronto.lat/rutas-internas" />
+        <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
       </Helmet>
       <div className="glass-card">
         <PageHeader

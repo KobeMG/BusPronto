@@ -15,6 +15,9 @@ const Home = () => {
         <meta property="og:title" content="BusPronto – Horarios Bus UCR en Tiempo Real" />
         <meta property="og:description" content="Consulta el próximo bus UCR en tiempo real. Bus interno UCR y bus externo UCR a Alajuela y Heredia. Cronómetro en vivo." />
         <meta property="og:url" content="https://www.buspronto.lat/" />
+        <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
       </Helmet>
       <div className="glass-card">
         <PageHeader

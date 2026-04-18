@@ -52,6 +52,12 @@ const SemanaU = () => {
                 <title>Semana U 2026 – Agenda de Eventos | BusPronto (UCR)</title>
                 <meta name="description" content="Agenda completa de eventos para la Semana Universitaria 2026 en la UCR. Conciertos, talleres, y actividades en tiempo real." />
                 <link rel="canonical" href="https://www.buspronto.lat/semana-u" />
+                <meta property="og:title" content="Semana U 2026 – Agenda de Eventos | BusPronto (UCR)" />
+                <meta property="og:description" content="No te pierdas ningún detalle de la Semana U 2026. Consulta conciertos y actividades." />
+                <meta property="og:url" content="https://www.buspronto.lat/semana-u" />
+                <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
             </Helmet>
 
             <PageHeader
