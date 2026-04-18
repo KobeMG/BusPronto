@@ -6,10 +6,9 @@ import styles from './About.module.css';
 
 const About = () => {
     const [copied, setCopied] = useState(false);
-    const sinpeNumber = "8745-8295"; // Reemplazar con tu número real
+    const sinpeNumber = "8745-8295";
 
     const handleCopy = () => {
-        // Eliminar guiones si existen para copiar solo los números
         const cleanNumber = sinpeNumber.replace(/-/g, '');
         navigator.clipboard.writeText(cleanNumber);
         setCopied(true);
