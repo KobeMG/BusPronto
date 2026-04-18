@@ -71,13 +71,13 @@ const About = () => {
                                     <Coffee size={24} color="white" />
                                 </div>
                                 <div className={styles.supportInfo}>
-                                    <h3 className={styles.supportType}>Internacional / Tarjeta</h3>
+                                    <h3 className={styles.supportType}>Internacional</h3>
                                     <p className={styles.supportDescription}>Seguro y privado vía Ko-fi</p>
                                 </div>
-                                <a 
-                                    href="https://ko-fi.com/kobemg" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
+                                <a
+                                    href="https://ko-fi.com/kobemg"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className={styles.kofiButtonSmall}
                                 >
                                     Ko-fi
@@ -89,9 +89,9 @@ const About = () => {
                                 <div className={styles.supportIcon} style={{ background: '#10b981' }}>
                                     <Phone size={24} color="white" />
                                 </div>
-                                
+
                                 <div className={styles.supportInfo}>
-                                    <h3 className={styles.supportType}>Local (Costa Rica)</h3>
+                                    <h3 className={styles.supportType}>Costa Rica</h3>
                                     {!showSinpe ? (
                                         <p className={styles.supportDescription}>SINPE Móvil directo</p>
                                     ) : (
@@ -103,7 +103,7 @@ const About = () => {
                                 </div>
 
                                 {!showSinpe ? (
-                                    <button 
+                                    <button
                                         className={styles.revealButton}
                                         onClick={() => setShowSinpe(true)}
                                     >
@@ -111,7 +111,7 @@ const About = () => {
                                         Ver
                                     </button>
                                 ) : (
-                                    <button 
+                                    <button
                                         className={styles.copyButtonSmall}
                                         onClick={handleCopy}
                                     >
@@ -143,7 +143,7 @@ const About = () => {
 
                     <footer className={styles.miniFooter}>
                         <p>© 2026 Kode Creative</p>
-                        <p>Distribuido bajo licencia <strong>AGPL-3.0</strong></p>
+                        <p>La grandeza nace de pequeños comienzos. </p>
                         <p>Version 2.0.0 - Actualización de Eventos</p>
                     </footer>
 

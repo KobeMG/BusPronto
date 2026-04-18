@@ -263,4 +263,57 @@
     .socialGrid {
         grid-template-columns: 1fr;
     }
+
+    /* Ajustes específicos para las tarjetas de soporte en móvil */
+    .supportOption {
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .supportIcon {
+        width: 40px;
+        height: 40px;
+        border-radius: 0.75rem;
+    }
+
+    .supportIcon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .supportType {
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .supportDescription {
+        font-size: 0.75rem;
+    }
+
+    .kofiButtonSmall, .revealButton, .copyButtonSmall {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .sinpeNumberDisplay {
+        font-size: 1rem;
+    }
+}
+
+/* Para teléfonos extra delgados (ej. iPhone SE) */
+@media (max-width: 360px) {
+    .supportOption {
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .supportType {
+        font-size: 0.75rem;
+    }
+
+    .supportDescription {
+        display: none; /* Ocultamos la descripción pequeña en pantallas mínimas */
+    }
 }
