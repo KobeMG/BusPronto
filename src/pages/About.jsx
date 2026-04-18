@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Instagram, Github, Globe, Linkedin, ExternalLink } from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin, ExternalLink, Heart, Coffee, Phone, Copy, Check, Eye } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import styles from './About.module.css';
 
 const About = () => {
+    const [showSinpe, setShowSinpe] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const sinpeNumber = "8745-8295";
+
+    const handleCopy = () => {
+        const cleanNumber = sinpeNumber.replace(/-/g, '');
+        navigator.clipboard.writeText(cleanNumber);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
     return (
         <>
             <Helmet>
@@ -45,6 +55,70 @@ const About = () => {
                                 <Globe size={24} />
                                 <span>Web</span>
                             </a>
+                        </div>
+                    </section>
+
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Apoyar el Proyecto</h2>
+                        <p className={styles.text}>
+                            Si BusPronto le ha sido útil y desea apoyar su mantenimiento y desarrollo continuo, puede hacerlo mediante un "cafecito" virtual.
+                        </p>
+
+                        <div className={styles.supportContainer}>
+                            {/* Opción Ko-fi */}
+                            <div className={styles.supportOption}>
+                                <div className={styles.supportIcon} style={{ background: '#29abe0' }}>
+                                    <Coffee size={24} color="white" />
+                                </div>
+                                <div className={styles.supportInfo}>
+                                    <h3 className={styles.supportType}>Internacional / Tarjeta</h3>
+                                    <p className={styles.supportDescription}>Seguro y privado vía Ko-fi</p>
+                                </div>
+                                <a 
+                                    href="https://ko-fi.com/kobemg" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className={styles.kofiButtonSmall}
+                                >
+                                    Ko-fi
+                                </a>
+                            </div>
+
+                            {/* Opción SINPE */}
+                            <div className={`${styles.supportOption} ${showSinpe ? styles.activeSinpe : ''}`}>
+                                <div className={styles.supportIcon} style={{ background: '#10b981' }}>
+                                    <Phone size={24} color="white" />
+                                </div>
+                                
+                                <div className={styles.supportInfo}>
+                                    <h3 className={styles.supportType}>Local (Costa Rica)</h3>
+                                    {!showSinpe ? (
+                                        <p className={styles.supportDescription}>SINPE Móvil directo</p>
+                                    ) : (
+                                        <div className={styles.sinpeRevealContent}>
+                                            <span className={styles.sinpeNumberDisplay}>{sinpeNumber}</span>
+                                            <span className={styles.sinpeOwner}>Kobe Williams</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {!showSinpe ? (
+                                    <button 
+                                        className={styles.revealButton}
+                                        onClick={() => setShowSinpe(true)}
+                                    >
+                                        <Eye size={16} />
+                                        Ver
+                                    </button>
+                                ) : (
+                                    <button 
+                                        className={styles.copyButtonSmall}
+                                        onClick={handleCopy}
+                                    >
+                                        {copied ? <Check size={16} /> : <Copy size={16} />}
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </section>
 
