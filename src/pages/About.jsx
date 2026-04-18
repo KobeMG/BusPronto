@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Instagram, Github, Globe, Linkedin, Info, ExternalLink } from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin, ExternalLink } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import styles from './About.module.css';
 
@@ -15,7 +15,6 @@ const About = () => {
             <div className="glass-card">
                 <PageHeader
                     title="Acerca de BusPronto"
-                    icon={<Info size={28} color="var(--accent-primary)" />}
                     description="Información del proyecto y contacto"
                     showBackButton={true}
                     backUrl="/"
@@ -69,9 +68,11 @@ const About = () => {
                     </section>
 
                     <footer className={styles.miniFooter}>
-                        <p>© 2026 BusPronto (UCR).</p>
+                        <p>© 2026 Kode Creative</p>
+                        <p>Distribuido bajo licencia <strong>AGPL-3.0</strong></p>
                         <p>Version 2.0.0 - Actualización de Eventos</p>
                     </footer>
+
                 </div>
             </div>
         </>

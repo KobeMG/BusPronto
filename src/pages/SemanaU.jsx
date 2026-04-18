@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Calendar } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -106,7 +106,7 @@ const SemanaU = () => {
                     {/* Contenido del Día Seleccionado */}
                     {groupedEvents.map(({ date, eventList }) => {
                         if (date !== activeTab) return null;
-                        
+
                         return (
                             <section key={date} className={styles.daySection}>
                                 <div className={styles.eventsGrid}>

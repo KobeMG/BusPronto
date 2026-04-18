@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabaseClient';
 
 /**
  * Fetches all visible university events from the database.
- * @returns {Promise<Array>} A list of events ordered by event_date.
+ * @returns {Promise<Array>} A list of events ordered by event_date and start_time.
  */
 export const getUniversityEvents = async () => {
     try {
@@ -10,7 +10,8 @@ export const getUniversityEvents = async () => {
             .from('university_events')
             .select('*')
             .eq('is_visible', true)
-            .order('event_date', { ascending: true });
+            .order('event_date', { ascending: true })
+            .order('start_time', { ascending: true });
 
         if (error) throw error;
 
