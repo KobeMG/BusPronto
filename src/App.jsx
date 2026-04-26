@@ -33,7 +33,7 @@ function App() {
               <Route path="/rutas-externas/:routeId" element={<ExternalStopsList />} />
               <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
-              <Route path="/semana-u" element={<SemanaU />} />
+              {/* <Route path="/semana-u" element={<SemanaU />} /> */}
               <Route path="/cinema" element={<Cinema />} />
               <Route path="/acerca" element={<About />} />
 

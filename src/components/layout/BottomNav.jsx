@@ -7,9 +7,9 @@ const BottomNav = () => {
 
   // Función para determinar si el tab de buses está activo.
   // Será true si estamos en el Home (/) o en cualquier ruta de rutas internas o externas.
-  const isBusesActive = 
-    location.pathname === '/' || 
-    location.pathname.startsWith('/rutas-internas') || 
+  const isBusesActive =
+    location.pathname === '/' ||
+    location.pathname.startsWith('/rutas-internas') ||
     location.pathname.startsWith('/rutas-externas');
 
   const isCinemaActive = location.pathname.startsWith('/cinema');
@@ -19,8 +19,8 @@ const BottomNav = () => {
   return (
     <div className={styles.bottomNavWrapper}>
       <nav className={styles.glassPill}>
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className={`${styles.navItem} ${isBusesActive ? styles.active : ''}`}
         >
           <div className={styles.iconContainer}>
@@ -28,9 +28,9 @@ const BottomNav = () => {
           </div>
           <span className={styles.label}>Buses</span>
         </Link>
-        
-        <Link 
-          to="/cinema" 
+
+        <Link
+          to="/cinema"
           className={`${styles.navItem} ${isCinemaActive ? styles.active : ''}`}
         >
           <div className={styles.iconContainer}>
@@ -39,7 +39,7 @@ const BottomNav = () => {
           <span className={styles.label}>Cine</span>
         </Link>
 
-        <Link 
+        {/* <Link 
           to="/semana-u" 
           className={`${styles.navItem} ${isSemanaUActive ? styles.active : ''}`}
         >
@@ -47,10 +47,10 @@ const BottomNav = () => {
             <Calendar size={20} strokeWidth={isSemanaUActive ? 2.5 : 2} />
           </div>
           <span className={styles.label}>Semana U</span>
-        </Link>
+        </Link> */}
 
-        <Link 
-          to="/acerca" 
+        <Link
+          to="/acerca"
           className={`${styles.navItem} ${isAcercaActive ? styles.active : ''}`}
         >
           <div className={styles.iconContainer}>
