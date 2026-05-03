@@ -1,57 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
-import {
-  Info,
-  ExternalLink,
-  Bug,
-  Sparkles,
-  Heart,
-  MessageCircle,
-  UtensilsCrossed
-} from 'lucide-react';
-import { fetchAdsData, shuffleArray, trackAdClick } from '../utils/adBannerUtils';
+import { ExternalLink } from 'lucide-react';
+import { trackAdClick, shuffleArray } from '../utils/adBannerUtils';
+import { getAdIcon } from '../utils/adThemeUtils';
+import { useAdsQuery } from '../hooks/useAdsQuery';
 import styles from './AdBanner.module.css';
 
-const ICON_MAP = {
-  info: <Info size={18} />,
-  entrepreneur: <Sparkles size={18} />,
-  bug: <Bug size={18} />,
-  community: <Heart size={18} />,
-  suggestion: <MessageCircle size={18} />,
-  restaurant: <UtensilsCrossed size={18} />
-};
-
-
-
 const AdBanner = () => {
-  const [ads, setAds] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: adsRaw = [], isLoading: loading } = useAdsQuery();
+  
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 6000, stopOnInteraction: true })
   ]);
 
-  useEffect(() => {
-    fetchAds();
-  }, []);
-
-  const fetchAds = async () => {
-    try {
-      const data = await fetchAdsData();
-
-      if (data.length > 0) {
-        const formattedAds = data.map(ad => ({
-          ...ad,
-          icon: ICON_MAP[ad.type] || <Info size={18} />
-        }));
-        setAds(shuffleArray(formattedAds));
-      }
-    } catch (err) {
-      console.error('Error in AdBanner fetchAds:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const ads = useMemo(() => {
+    if (!adsRaw || adsRaw.length === 0) return [];
+    
+    const filtered = adsRaw.filter(ad => ad.addBannerMessage && ad.addBannerMessage.trim() !== '');
+    
+    const formatted = filtered.map(ad => ({
+      ...ad,
+      icon: getAdIcon(ad.type, 18)
+    }));
+    
+    return shuffleArray(formatted);
+  }, [adsRaw]);
 
   const handleAdClick = (id) => {
     trackAdClick(id);

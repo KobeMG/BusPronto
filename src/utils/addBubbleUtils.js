@@ -1,35 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
 
-/**
- * Obtiene un anuncio activo aleatorio de la base de datos junto con una frase gancho al azar.
- * @returns {Promise<{ ad: Object|null, phrase: string }>}
- */
-export const fetchRandomAdData = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('ads')
-      .select('*')
-      .eq('active', true);
-
-    if (error) throw error;
-
-    if (data && data.length > 0) {
-      const randomAd = data[Math.floor(Math.random() * data.length)];
-      
-      let randomPhrase = '¡Mira esto!';
-      if (randomAd.phrases && randomAd.phrases.length > 0) {
-        randomPhrase = randomAd.phrases[Math.floor(Math.random() * randomAd.phrases.length)];
-      }
-
-      return { ad: randomAd, phrase: randomPhrase };
-    }
-    
-    return { ad: null, phrase: '' };
-  } catch (err) {
-    console.error('Error fetching ad for floating bubble:', err);
-    return { ad: null, phrase: '' };
-  }
-};
 
 /**
  * Registra el clic de un anuncio en la base de datos.

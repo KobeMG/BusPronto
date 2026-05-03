@@ -1,31 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Info, Sparkles, UtensilsCrossed, Store } from 'lucide-react';
-import { fetchRandomAdData, trackAdClick, calculateSnapX, getAppBounds } from '../utils/addBubbleUtils';
+import { X, ExternalLink } from 'lucide-react';
+import { trackAdClick, calculateSnapX, getAppBounds } from '../utils/addBubbleUtils';
+import { AD_THEMES } from '../utils/adThemeUtils';
+import { useAdsQuery } from '../hooks/useAdsQuery';
 import styles from './AddBubble.module.css';
-
-const AD_THEMES = {
-  restaurant: {
-    icon: <UtensilsCrossed size={24} />,
-    color: 'var(--ad-restaurant-start)',
-    gradient: 'linear-gradient(135deg, var(--ad-restaurant-start) 0%, var(--ad-restaurant-end) 100%)',
-  },
-  entrepreneur: {
-    icon: <Sparkles size={24} />,
-    color: 'var(--ad-entrepreneur-start)',
-    gradient: 'linear-gradient(135deg, var(--ad-entrepreneur-start) 0%, var(--ad-entrepreneur-end) 100%)',
-  },
-  store: {
-    icon: <Store size={24} />,
-    color: 'var(--ad-store-start)',
-    gradient: 'linear-gradient(135deg, var(--ad-store-start) 0%, var(--ad-store-end) 100%)',
-  },
-  default: {
-    icon: <Info size={24} />,
-    color: 'var(--ad-default-start)',
-    gradient: 'linear-gradient(135deg, var(--ad-default-start) 0%, var(--ad-default-end) 100%)',
-  }
-};
 
 const AddBubble = () => {
   const [ad, setAd] = useState(null);
@@ -33,6 +12,8 @@ const AddBubble = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
   const [isRightSide, setIsRightSide] = useState(true);
+
+  const { data: adsRaw = [] } = useAdsQuery();
 
   const controls = useAnimation();
   const [windowDimensions, setWindowDimensions] = useState({
@@ -49,15 +30,27 @@ const AddBubble = () => {
   }, []);
 
   useEffect(() => {
-    const initAd = async () => {
-      const { ad: randomAd, phrase: randomPhrase } = await fetchRandomAdData();
-      if (randomAd) {
-        setAd(randomAd);
-        setPhrase(randomPhrase);
+    if (adsRaw.length > 0 && !ad) {
+      // Filtrar anuncios que tienen mensaje para la burbuja
+      const filtered = adsRaw.filter(a => a.addBubbleMessage && a.addBubbleMessage.trim() !== '');
+      
+      if (filtered.length > 0) {
+        const randomAd = filtered[Math.floor(Math.random() * filtered.length)];
+        
+        let randomPhrase = '¡Mira esto!';
+        if (randomAd.phrases && randomAd.phrases.length > 0) {
+          randomPhrase = randomAd.phrases[Math.floor(Math.random() * randomAd.phrases.length)];
+        }
+
+        const timer = setTimeout(() => {
+          setAd(randomAd);
+          setPhrase(randomPhrase);
+        }, 1000);
+        
+        return () => clearTimeout(timer);
       }
-    };
-    initAd();
-  }, []);
+    }
+  }, [adsRaw, ad]);
 
   // Efecto para manejar la posición inicial, el centrado al abrir y el snap al cerrar
   useEffect(() => {
@@ -92,12 +85,12 @@ const AddBubble = () => {
 
 
 
-  // Efecto para ocultar el globo de texto automáticamente después de 1 segundos. No molestar al usuario bro
+  // Efecto para ocultar el globo de texto automáticamente después de 1.5 segundos. No molestar al usuario bro
   useEffect(() => {
     if (showTooltip && ad) {
       const tooltipTimer = setTimeout(() => {
         setShowTooltip(false);
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(tooltipTimer);
     }
   }, [showTooltip, ad]);

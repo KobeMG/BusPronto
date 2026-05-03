@@ -18,7 +18,8 @@ export const fetchAdsData = async () => {
     const { data, error } = await supabase
       .from('ads')
       .select('*')
-      .eq('active', true);
+      .eq('active', true)
+      .order('priority', { ascending: false }); //Ordenar los anuncios en funcion de la prioridad de la BD
 
     if (error) throw error;
     return data || [];

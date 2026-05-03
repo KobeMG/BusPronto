@@ -1,0 +1,142 @@
+.loaderContainer {
+  padding: 4rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.headerIcon {
+  color: var(--error);
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
+}
+
+.sponsorsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.sponsorCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sponsorCard:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.iconWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sponsorTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.cardBody {
+  flex-grow: 1;
+}
+
+.sponsorDesc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.cardFooter {
+  margin-top: auto;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.actionBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Theme Variations */
+
+.restaurant .iconWrapper {
+  background: linear-gradient(135deg, var(--ad-restaurant-start), var(--ad-restaurant-end));
+}
+.restaurant:hover {
+  border-color: var(--ad-restaurant-start);
+}
+
+.entrepreneur .iconWrapper {
+  background: linear-gradient(135deg, var(--ad-entrepreneur-start), var(--ad-entrepreneur-end));
+}
+.entrepreneur:hover {
+  border-color: var(--ad-entrepreneur-start);
+}
+
+.store .iconWrapper {
+  background: linear-gradient(135deg, var(--ad-store-start), var(--ad-store-end));
+}
+.store:hover {
+  border-color: var(--ad-store-start);
+}
+
+.community .iconWrapper {
+  background: linear-gradient(135deg, #f43f5e, #fb7185);
+}
+.community:hover {
+  border-color: #f43f5e;
+}
+
+.default .iconWrapper {
+  background: linear-gradient(135deg, var(--ad-default-start), var(--ad-default-end));
+}
+
+@media (max-width: 480px) {
+  .sponsorsGrid {
+    grid-template-columns: 1fr;
+  }
+}

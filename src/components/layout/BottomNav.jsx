@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bus, Film, Calendar, Info } from 'lucide-react';
+import { Bus, Film, Heart, Info } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
 const BottomNav = () => {
@@ -13,7 +13,7 @@ const BottomNav = () => {
     location.pathname.startsWith('/rutas-externas');
 
   const isCinemaActive = location.pathname.startsWith('/cinema');
-  const isSemanaUActive = location.pathname.startsWith('/semana-u');
+  const isAliadosActive = location.pathname.startsWith('/aliados');
   const isAcercaActive = location.pathname.startsWith('/acerca');
 
   return (
@@ -39,15 +39,15 @@ const BottomNav = () => {
           <span className={styles.label}>Cine</span>
         </Link>
 
-        {/* <Link 
-          to="/semana-u" 
-          className={`${styles.navItem} ${isSemanaUActive ? styles.active : ''}`}
+        <Link
+          to="/aliados"
+          className={`${styles.navItem} ${isAliadosActive ? styles.active : ''}`}
         >
           <div className={styles.iconContainer}>
-            <Calendar size={20} strokeWidth={isSemanaUActive ? 2.5 : 2} />
+            <Heart size={20} strokeWidth={isAliadosActive ? 2.5 : 2} />
           </div>
-          <span className={styles.label}>Semana U</span>
-        </Link> */}
+          <span className={styles.label}>Aliados</span>
+        </Link>
 
         <Link
           to="/acerca"
