@@ -1,6 +1,7 @@
 import { Toaster } from 'sileo';
 import AdBanner from '../AdBanner';
 import EmergencyContact from '../EmergencyContact';
+import AddBubble from '../AddBubble';
 
 import BottomNav from './BottomNav';
 import styles from './MainLayout.module.css';
@@ -16,6 +17,7 @@ const MainLayout = ({ children }) => {
       </main>
 
       <EmergencyContact />
+      <AddBubble />
       <BottomNav />
     </div>
   );

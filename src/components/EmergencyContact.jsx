@@ -8,7 +8,7 @@ const EmergencyContact = () => {
   // Determinar visibilidad una sola vez al cargar
   const hours = new Date().getHours();
   const isNight = hours >= 19 || hours < 6; //Mayor a las 7 PM o menor a las 6 AM
-
+  //const isNight = true;
   if (!isNight) return null;
 
   const emergencyNumbers = [

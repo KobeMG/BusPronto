@@ -14,6 +14,16 @@
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
+
+  /* Ad Themes */
+  --ad-restaurant-start: #FF6B6B;
+  --ad-restaurant-end: #FF8E53;
+  --ad-entrepreneur-start: #6366F1;
+  --ad-entrepreneur-end: #A855F7;
+  --ad-store-start: #10B981;
+  --ad-store-end: #3B82F6;
+  --ad-default-start: #64748B;
+  --ad-default-end: #475569;
 }
 
 * {

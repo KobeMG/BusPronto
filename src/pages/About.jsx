@@ -144,7 +144,7 @@ const About = () => {
                     <footer className={styles.miniFooter}>
                         <p>© 2026 Kode Creative</p>
                         <p>La grandeza nace de pequeños comienzos. </p>
-                        <p>Version 2.0.0 - Actualización de Eventos</p>
+
                     </footer>
 
                 </div>
