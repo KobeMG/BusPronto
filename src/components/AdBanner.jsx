@@ -10,7 +10,7 @@ import {
   MessageCircle,
   UtensilsCrossed
 } from 'lucide-react';
-import { supabase } from '../lib/supabaseClient';
+import { fetchAdsData, shuffleArray, trackAdClick } from '../utils/adBannerUtils';
 import styles from './AdBanner.module.css';
 
 const ICON_MAP = {
@@ -22,10 +22,7 @@ const ICON_MAP = {
   restaurant: <UtensilsCrossed size={18} />
 };
 
-const shuffleArray = (array) => {
 
-  return [...array].sort(() => Math.random() - 0.5);
-};
 
 const AdBanner = () => {
   const [ads, setAds] = useState([]);
@@ -40,14 +37,9 @@ const AdBanner = () => {
 
   const fetchAds = async () => {
     try {
-      const { data, error } = await supabase
-        .from('ads')
-        .select('*')
-        .eq('active', true);
+      const data = await fetchAdsData();
 
-      if (error) throw error;
-
-      if (data && data.length > 0) {
+      if (data.length > 0) {
         const formattedAds = data.map(ad => ({
           ...ad,
           icon: ICON_MAP[ad.type] || <Info size={18} />
@@ -55,18 +47,14 @@ const AdBanner = () => {
         setAds(shuffleArray(formattedAds));
       }
     } catch (err) {
-      console.error('Error fetching ads:', err);
+      console.error('Error in AdBanner fetchAds:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAdClick = async (id) => {
-    try {
-      await supabase.rpc('increment_ad_clicks', { ad_id: id });
-    } catch (err) {
-      console.error('Error tracking click:', err);
-    }
+  const handleAdClick = (id) => {
+    trackAdClick(id);
   };
 
   if (loading) {
@@ -102,7 +90,7 @@ const AdBanner = () => {
                   <div className={styles.adHeader}>
                     <span className={styles.adTag}>{ad.title}</span>
                   </div>
-                  <p className={styles.adText}>{ad.description}</p>
+                  <p className={styles.adText}>{ad.addBannerMessage}</p>
                 </div>
                 {ad.link && (
                   <div className={styles.adFooter}>

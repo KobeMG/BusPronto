@@ -199,7 +199,7 @@ const AddBubble = () => {
 
           <div className={styles.cardBody}>
             <h4 className={styles.adTitle}>{ad.title}</h4>
-            <p className={styles.adDesc}>{ad.description}</p>
+            <p className={styles.adDesc}>{ad.addBubbleMessage}</p>
           </div>
 
           {ad.link && (
