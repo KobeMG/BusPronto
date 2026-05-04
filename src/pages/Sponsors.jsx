@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Heart, ExternalLink } from 'lucide-react';
+import { ExternalLink, Mail, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { trackAdClick } from '../utils/adBannerUtils';
@@ -32,7 +32,7 @@ const Sponsors = () => {
       <div className="glass-card">
         <PageHeader
           title="Nuestros Aliados"
-          icon={<Heart className={styles.headerIcon} size={28} />}
+
           description="Empresas y proyectos que ayudan a mantener BusPronto"
           showBackButton={true}
           backUrl="/"
@@ -64,6 +64,59 @@ const Sponsors = () => {
                   <p className={styles.sponsorDesc}>
                     {ad.description}
                   </p>
+
+                  {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
+                    <div className={styles.businessLinks}>
+                      {ad.whatsapp && (
+                        <a
+                          href={`https://wa.me/${ad.whatsapp.replace(/\D/g, '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${styles.businessLink} ${styles.whatsapp}`}
+                          title="Contactar por WhatsApp"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAdClick(ad.id);
+                          }}
+                        >
+                          <MessageCircle size={14} />
+                          <span>WhatsApp</span>
+                        </a>
+                      )}
+                      {ad.uber_eats && (
+                        <a
+                          href={ad.uber_eats}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${styles.businessLink} ${styles.uberEats}`}
+                          title="Pedir por Uber Eats"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAdClick(ad.id);
+                          }}
+                        >
+                          <ShoppingBag size={14} />
+                          <span>Uber Eats</span>
+                        </a>
+                      )}
+                      {ad.google_maps && (
+                        <a
+                          href={ad.google_maps}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${styles.businessLink} ${styles.googleMaps}`}
+                          title="Ver en Google Maps"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAdClick(ad.id);
+                          }}
+                        >
+                          <MapPin size={14} />
+                          <span>Maps</span>
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {ad.link && (
@@ -84,6 +137,19 @@ const Sponsors = () => {
             ))}
           </div>
         )}
+
+        <section className={styles.contactSection}>
+          <h3 className={styles.contactTitle}>¿Quiere ser parte de nuestros aliados?</h3>
+          <a
+            href="mailto:buspronto@kobemg.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.contactBtn}
+          >
+            <Mail size={20} />
+            Contactar
+          </a>
+        </section>
       </div>
     </>
   );

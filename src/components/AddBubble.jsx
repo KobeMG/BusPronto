@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink } from 'lucide-react';
+import { X, ExternalLink, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import { trackAdClick, calculateSnapX, getAppBounds } from '../utils/addBubbleUtils';
 import { AD_THEMES } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
@@ -58,10 +58,10 @@ const AddBubble = () => {
     if (!ad || windowDimensions.width === 0) return;
 
     if (isOpen) {
-      // Centramos la tarjeta (ancho de 280px definido en CSS)
+      // Centramos la tarjeta (ancho de 320px definido en CSS)
       const { appLeft, appWidth } = getAppBounds(windowDimensions.width);
       controls.start({
-        x: appLeft + (appWidth / 2) - 140,
+        x: appLeft + (appWidth / 2) - 160,
         y: (windowDimensions.height / 2) - 150,
         transition: { type: 'spring', stiffness: 200, damping: 25 }
       });
@@ -172,6 +172,25 @@ const AddBubble = () => {
           onClick={() => { setIsOpen(true); setShowTooltip(false); }}
         >
           {theme.icon}
+          {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
+            <div className={styles.indicators}>
+              {ad.whatsapp && (
+                <div className={`${styles.indicator} ${styles.whatsappIndicator}`} title="WhatsApp">
+                  <MessageCircle size={8} />
+                </div>
+              )}
+              {ad.uber_eats && (
+                <div className={`${styles.indicator} ${styles.uberIndicator}`} title="Uber Eats">
+                  <ShoppingBag size={8} />
+                </div>
+              )}
+              {ad.google_maps && (
+                <div className={`${styles.indicator} ${styles.mapsIndicator}`} title="Google Maps">
+                  <MapPin size={8} />
+                </div>
+              )}
+            </div>
+          )}
         </motion.div>
       ) : (
         <motion.div
@@ -193,6 +212,56 @@ const AddBubble = () => {
           <div className={styles.cardBody}>
             <h4 className={styles.adTitle}>{ad.title}</h4>
             <p className={styles.adDesc}>{ad.addBubbleMessage}</p>
+
+            {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
+              <div className={styles.businessLinksExpanded}>
+                {ad.whatsapp && (
+                  <a
+                    href={`https://wa.me/${ad.whatsapp.replace(/\D/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles.businessLink} ${styles.whatsapp}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAdClick(ad.id);
+                    }}
+                  >
+                    <MessageCircle size={14} />
+                    <span>WhatsApp</span>
+                  </a>
+                )}
+                {ad.uber_eats && (
+                  <a
+                    href={ad.uber_eats}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles.businessLink} ${styles.uberEats}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAdClick(ad.id);
+                    }}
+                  >
+                    <ShoppingBag size={14} />
+                    <span>Uber Eats</span>
+                  </a>
+                )}
+                {ad.google_maps && (
+                  <a
+                    href={ad.google_maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles.businessLink} ${styles.googleMaps}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAdClick(ad.id);
+                    }}
+                  >
+                    <MapPin size={14} />
+                    <span>Maps</span>
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           {ad.link && (

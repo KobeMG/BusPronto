@@ -1,12 +1,13 @@
 import React from 'react';
-import { 
-  Info, 
-  Sparkles, 
-  Bug, 
-  Heart, 
-  MessageCircle, 
-  UtensilsCrossed, 
-  Store 
+import {
+  Info,
+  Sparkles,
+  Bug,
+  Heart,
+  MessageCircle,
+  UtensilsCrossed,
+  Store,
+  Mail
 } from 'lucide-react';
 
 /**
@@ -19,7 +20,8 @@ export const AD_ICON_COMPONENTS = {
   community: Heart,
   suggestion: MessageCircle,
   restaurant: UtensilsCrossed,
-  store: Store
+  store: Store,
+  mail: Mail,
 };
 
 /**
