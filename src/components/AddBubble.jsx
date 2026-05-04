@@ -58,10 +58,10 @@ const AddBubble = () => {
     if (!ad || windowDimensions.width === 0) return;
 
     if (isOpen) {
-      // Centramos la tarjeta (ancho de 320px definido en CSS)
+      // Centramos la tarjeta (ancho de 300px definido en CSS por el usuario)
       const { appLeft, appWidth } = getAppBounds(windowDimensions.width);
       controls.start({
-        x: appLeft + (appWidth / 2) - 160,
+        x: appLeft + (appWidth / 2) - 150,
         y: (windowDimensions.height / 2) - 150,
         transition: { type: 'spring', stiffness: 200, damping: 25 }
       });
