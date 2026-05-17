@@ -8,6 +8,12 @@ import './styles/global.css'
 // import './styles/themes/christmas.css'
 import App from './App.jsx'
 
+// Capturar evento beforeinstallprompt lo antes posible para la PWA
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window.deferredPrompt = e;
+});
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>
