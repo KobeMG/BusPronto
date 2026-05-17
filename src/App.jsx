@@ -34,11 +34,9 @@ function App() {
               <Route path="/rutas-externas/:routeId" element={<ExternalStopsList />} />
               <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
-              {/* <Route path="/semana-u" element={<SemanaU />} /> */}
               <Route path="/cinema" element={<Cinema />} />
               <Route path="/aliados" element={<Sponsors />} />
               <Route path="/acerca" element={<About />} />
-
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

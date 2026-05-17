@@ -19,10 +19,16 @@ const EmergencyContact = () => {
       description: 'Atención General'
     },
     {
-      name: 'Emergencias Médicas',
-      number: '25115807',
+      name: 'Apoyo Psicológico',
+      number: '25111909',
       icon: <HeartPulse size={20} />,
-      description: 'Oficina de Bienestar y Salud'
+      description: 'Atención Psicológica'
+    },
+    {
+      name: 'Comisión Contra el Hostigamiento Sexual',
+      number: '25114898',
+      icon: <Heart size={20} />,
+      description: 'Atención en casos de hostigamiento sexual'
     },
     {
       name: 'Emergencias 9-1-1',

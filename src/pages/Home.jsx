@@ -1,11 +1,41 @@
 import { Link } from 'react-router-dom';
-import { MapPin, ChevronRight } from 'lucide-react';
+import { MapPin, ChevronRight, Bell, BellRing, Loader2 } from 'lucide-react';
+import { sileo } from 'sileo';
+import { useNotifications } from '../hooks/useNotifications';
 
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
 import listStyles from '../components/ui/StopsList.module.css';
 
 const Home = () => {
+  const { isSubscribed, loading, subscribe } = useNotifications();
+
+  const handleSubscribe = async () => {
+    if (isSubscribed) {
+      sileo.info({
+        title: 'Ya estás suscrito',
+        description: 'Ya tienes las notificaciones activadas.',
+        position: 'top-center'
+      });
+      return;
+    }
+    
+    const success = await subscribe();
+    if (success) {
+      sileo.success({
+        title: '¡Suscrito!',
+        description: 'Ahora recibirás notificaciones importantes de BusPronto.',
+        position: 'top-center'
+      });
+    } else {
+      sileo.error({
+        title: 'Error',
+        description: 'No pudimos activar las notificaciones. Por favor, revisa los permisos de tu navegador.',
+        position: 'top-center'
+      });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -45,6 +75,30 @@ const Home = () => {
             </div>
             <ChevronRight size={20} />
           </Link>
+          
+          <button 
+            onClick={handleSubscribe} 
+            className={listStyles.stopLink}
+            style={{ 
+              background: 'transparent', 
+              border: 'none', 
+              width: '100%', 
+              cursor: isSubscribed || loading ? 'default' : 'pointer',
+              opacity: loading ? 0.7 : 1
+            }}
+            disabled={loading || isSubscribed}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              {loading ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : isSubscribed ? (
+                <BellRing size={20} style={{ color: 'var(--brand-primary)' }} />
+              ) : (
+                <Bell size={20} />
+              )}
+              <span>{loading ? 'Verificando...' : isSubscribed ? 'Alertas Activadas' : 'Activar Alertas'}</span>
+            </div>
+          </button>
         </div>
 
       </div>

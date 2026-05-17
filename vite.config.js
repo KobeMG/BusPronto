@@ -7,14 +7,16 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.js',
       registerType: 'autoUpdate',
-      workbox: {
+      injectManifest: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        skipWaiting: true,
-        clientsClaim: true,
       },
       devOptions: {
-        enabled: false
+        enabled: true,
+        type: 'module',
       },
       includeAssets: ['logo192x192.png', 'logo512x512.png', 'logo32x32.png', 'robots.txt', 'sitemap.xml', 'icons.svg'],
       manifest: {
