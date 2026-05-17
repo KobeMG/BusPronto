@@ -15,6 +15,7 @@ import MainLayout from './components/layout/MainLayout';
 import Cinema from './pages/Cinema';
 import About from './pages/About';
 import Sponsors from './pages/Sponsors';
+import Configuracion from './pages/Configuracion';
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="/cinema" element={<Cinema />} />
               <Route path="/aliados" element={<Sponsors />} />
               <Route path="/acerca" element={<About />} />
+              <Route path="/configuracion" element={<Configuracion />} />
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

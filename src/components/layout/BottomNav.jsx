@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bus, Film, Heart, Info } from 'lucide-react';
+import { Bus, Film, Heart, Info, Settings } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
 const BottomNav = () => {
@@ -15,6 +15,7 @@ const BottomNav = () => {
   const isCinemaActive = location.pathname.startsWith('/cinema');
   const isAliadosActive = location.pathname.startsWith('/aliados');
   const isAcercaActive = location.pathname.startsWith('/acerca');
+  const isConfigActive = location.pathname.startsWith('/configuracion');
 
   return (
     <div className={styles.bottomNavWrapper}>
@@ -47,6 +48,16 @@ const BottomNav = () => {
             <Heart size={20} strokeWidth={isAliadosActive ? 2.5 : 2} />
           </div>
           <span className={styles.label}>Aliados</span>
+        </Link>
+
+        <Link
+          to="/configuracion"
+          className={`${styles.navItem} ${isConfigActive ? styles.active : ''}`}
+        >
+          <div className={styles.iconContainer}>
+            <Settings size={20} strokeWidth={isConfigActive ? 2.5 : 2} />
+          </div>
+          <span className={styles.label}>Config.</span>
         </Link>
 
         <Link

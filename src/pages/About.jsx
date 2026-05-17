@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Instagram, Github, Globe, Linkedin, ExternalLink, Heart, Coffee, Phone, Copy, Check, Eye } from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin, ExternalLink, Coffee, Phone, Copy, Check, Eye } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import styles from './About.module.css';
 
@@ -15,6 +15,7 @@ const About = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
+
     return (
         <>
             <Helmet>
@@ -31,6 +32,7 @@ const About = () => {
                 />
 
                 <div className={styles.content}>
+                    
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Desarrollo</h2>
                         <p className={styles.text}>
@@ -144,7 +146,6 @@ const About = () => {
                     <footer className={styles.miniFooter}>
                         <p>© 2026 Kode Creative</p>
                         <p>La grandeza nace de pequeños comienzos. </p>
-
                     </footer>
 
                 </div>

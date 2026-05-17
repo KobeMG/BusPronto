@@ -113,7 +113,7 @@ const PLATFORM_LABELS = {
   desktop: { title: 'Instale BusPronto', browser: 'su navegador' },
 };
 
-export function InstallPWAModal({ isOpen, onClose, deferredPrompt, onNativeInstallSuccess }) {
+export function InstallPWAModal({ isOpen, onClose, deferredPrompt, onNativeInstallSuccess, customTitle, customSubtitle }) {
   const platform = detectPlatform();
   const steps = STEPS[platform] ?? STEPS.desktop;
   const labels = PLATFORM_LABELS[platform] ?? PLATFORM_LABELS.desktop;
@@ -158,9 +158,9 @@ export function InstallPWAModal({ isOpen, onClose, deferredPrompt, onNativeInsta
         <div className={styles.header}>
           <div className={styles.headerIcon}>📲</div>
           <div className={styles.headerText}>
-            <h2 className={styles.title}>{labels.title}</h2>
+            <h2 className={styles.title}>{customTitle || labels.title}</h2>
             <p className={styles.subtitle}>
-              Instale la app para recibir alertas y acceder más rápido
+              {customSubtitle || 'Instale la app para recibir alertas y acceder más rápido'}
             </p>
           </div>
           <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
