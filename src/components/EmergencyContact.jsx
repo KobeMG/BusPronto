@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, ShieldAlert, X, HeartPulse, Shield } from 'lucide-react';
+import { Phone, ShieldAlert, X, HeartPulse, Shield, Heart } from 'lucide-react';
 import styles from './EmergencyContact.module.css';
 
 const EmergencyContact = () => {
