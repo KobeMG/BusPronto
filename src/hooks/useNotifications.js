@@ -34,6 +34,10 @@ export function useNotifications() {
         throw new Error('Permiso de notificación denegado');
       }
 
+      if (!VAPID_PUBLIC_KEY) {
+        throw new Error('VITE_VAPID_PUBLIC_KEY is not defined in environment variables');
+      }
+
       // Crear suscripción
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
