@@ -39,6 +39,7 @@ function App() {
               <Route path="/aliados" element={<Sponsors />} />
               <Route path="/acerca" element={<About />} />
               <Route path="/configuracion" element={<Configuracion />} />
+              <Route path="/semana-u" element={<SemanaU />} />
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Instagram, Github, Globe, Linkedin, ExternalLink, Coffee, Phone, Copy, Check, Eye } from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin, ExternalLink, Mail, Coffee, Phone, Copy, Check, Eye } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import styles from './About.module.css';
 
@@ -32,7 +32,7 @@ const About = () => {
                 />
 
                 <div className={styles.content}>
-                    
+
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Desarrollo</h2>
                         <p className={styles.text}>
@@ -45,9 +45,13 @@ const About = () => {
                                 <Instagram size={24} />
                                 <span>Instagram</span>
                             </a>
-                            <a href="https://github.com/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
+                            {/* <a href="https://github.com/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
                                 <Github size={24} />
                                 <span>GitHub</span>
+                            </a> */}
+                            <a href="mailto:buspronto@kobemg.com" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
+                                <Mail size={24} />
+                                <span>Correo</span>
                             </a>
                             <a href="https://linkedin.com/in/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
                                 <Linkedin size={24} />
@@ -59,7 +63,7 @@ const About = () => {
                             </a>
                         </div>
                     </section>
-
+                    {/* 
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Apoyar el Proyecto</h2>
                         <p className={styles.text}>
@@ -67,7 +71,6 @@ const About = () => {
                         </p>
 
                         <div className={styles.supportContainer}>
-                            {/* Opción Ko-fi */}
                             <div className={styles.supportOption}>
                                 <div className={styles.supportIcon} style={{ background: '#29abe0' }}>
                                     <Coffee size={24} color="white" />
@@ -85,8 +88,6 @@ const About = () => {
                                     Ko-fi
                                 </a>
                             </div>
-
-                            {/* Opción SINPE */}
                             <div className={`${styles.supportOption} ${showSinpe ? styles.activeSinpe : ''}`}>
                                 <div className={styles.supportIcon} style={{ background: '#10b981' }}>
                                     <Phone size={24} color="white" />
@@ -122,7 +123,7 @@ const About = () => {
                                 )}
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Nota Importante</h2>

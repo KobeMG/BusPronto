@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bus, Film, Heart, Info, Settings } from 'lucide-react';
+import { Bus, Film, Heart, Info, Settings, Calendar } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
 const BottomNav = () => {
@@ -51,6 +51,16 @@ const BottomNav = () => {
         </Link>
 
         <Link
+          to="/semana-u"
+          className={`${styles.navItem}`}
+        >
+          <div className={styles.iconContainer}>
+            <Calendar size={20} strokeWidth={2.5} />
+          </div>
+          <span className={styles.label}>Semana U</span>
+        </Link>
+
+        <Link
           to="/configuracion"
           className={`${styles.navItem} ${isConfigActive ? styles.active : ''}`}
         >
@@ -59,6 +69,8 @@ const BottomNav = () => {
           </div>
           <span className={styles.label}>Config.</span>
         </Link>
+
+
 
         <Link
           to="/acerca"
