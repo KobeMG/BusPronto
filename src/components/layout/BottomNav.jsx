@@ -50,7 +50,7 @@ const BottomNav = () => {
           <span className={styles.label}>Aliados</span>
         </Link>
 
-        <Link
+        {/*         <Link
           to="/semana-u"
           className={`${styles.navItem}`}
         >
@@ -58,7 +58,7 @@ const BottomNav = () => {
             <Calendar size={20} strokeWidth={2.5} />
           </div>
           <span className={styles.label}>Semana U</span>
-        </Link>
+        </Link> */}
 
         <Link
           to="/configuracion"
