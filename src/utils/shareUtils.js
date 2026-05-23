@@ -40,7 +40,7 @@ export const shareContent = async (shareData, successDescription) => {
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.error('Error sharing:', err);
-        const textToCopy = shareData.text && shareData.url 
+        const textToCopy = shareData.text && shareData.url
           ? `${shareData.text}\n\nMás información en: ${shareData.url}`
           : (shareData.url || shareData.text);
         const success = await copyToClipboardText(textToCopy, successDescription);
@@ -49,7 +49,7 @@ export const shareContent = async (shareData, successDescription) => {
       return { success: false, error: 'User aborted' };
     }
   } else {
-    const textToCopy = shareData.text && shareData.url 
+    const textToCopy = shareData.text && shareData.url
       ? `${shareData.text}\n\nMás información en: ${shareData.url}`
       : (shareData.url || shareData.text);
     const success = await copyToClipboardText(textToCopy, successDescription);
@@ -63,7 +63,7 @@ export const shareContent = async (shareData, successDescription) => {
 export const shareApp = async () => {
   const shareData = {
     title: 'BusPronto – Horarios Bus UCR',
-    text: 'Consulta el próximo bus UCR en tiempo real. ¡No pierdas tu bus!',
+    text: 'Consulte el próximo bus UCR en tiempo real. ¡No pierda su bus!',
     url: 'https://www.buspronto.lat/',
   };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Smartphone, Bell, BellRing, Loader2, Check, Share2 } from 'lucide-react';
+import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2 } from 'lucide-react';
 import { sileo } from 'sileo';
 import PageHeader from '../components/ui/PageHeader';
 import { InstallPWAModal } from '../components/InstallPWAModal';
@@ -22,6 +22,9 @@ const Configuracion = () => {
 
     // Hook de notificaciones
     const { isSubscribed, loading: notificationsLoading, pushSupport, subscribe } = useNotifications();
+
+    // Detectar si el usuario bloqueó los permisos manualmente en el navegador
+    const isBlocked = 'Notification' in window && Notification.permission === 'denied';
 
     useEffect(() => {
         // Verificar si ya está ejecutándose como PWA instalada
@@ -92,6 +95,17 @@ const Configuracion = () => {
             return;
         }
 
+        // Si el usuario ya bloqueó los permisos manualmente en el navegador
+        if ('Notification' in window && Notification.permission === 'denied') {
+            sileo.info({
+                title: 'Notificaciones bloqueadas',
+                description: 'Ha bloqueado las notificaciones. Para activarlas, haga clic en el ícono 🔒 a la izquierda de la barra de URL y cambie el permiso a "Permitir".',
+                position: 'top-center',
+                duration: 7000
+            });
+            return;
+        }
+
         // Si todo está bien, mostramos nuestro Soft Prompt
         setIsNotificationPromptOpen(true);
     };
@@ -158,18 +172,21 @@ const Configuracion = () => {
 
                             <div className={styles.settingCard}>
                                 <div className={styles.settingInfo}>
-                                    <div className={`${styles.settingIcon} ${isSubscribed ? styles.success : styles.primary}`}>
-                                        {isSubscribed ? <BellRing size={24} /> : <Bell size={24} />}
+                                    <div className={`${styles.settingIcon} ${isSubscribed ? styles.success : isBlocked ? styles.blocked : styles.primary}`}>
+                                        {isSubscribed ? <BellRing size={24} /> : isBlocked ? <BellOff size={24} /> : <Bell size={24} />}
                                     </div>
                                     <div className={styles.settingText}>
                                         <h3 className={styles.settingTitle}>Alertas y Notificaciones</h3>
                                         <p className={styles.settingDescription}>
-                                            Reciba avisos automáticos sobre cambios de horario y atrasos de buses.
+                                            {isBlocked
+                                                ? 'Ha bloqueado las notificaciones en este navegador.'
+                                                : 'Reciba avisos automáticos sobre cambios de horario y atrasos de buses.'
+                                            }
                                         </p>
                                     </div>
                                 </div>
                                 <button
-                                    className={`${styles.settingAction} ${isSubscribed ? styles.active : ''}`}
+                                    className={`${styles.settingAction} ${isSubscribed ? styles.active : isBlocked ? styles.blocked : ''}`}
                                     onClick={handleAlertsClick}
                                     disabled={notificationsLoading || isSubscribed}
                                 >
@@ -177,6 +194,8 @@ const Configuracion = () => {
                                         <><Loader2 size={16} className="animate-spin" /> Verificando...</>
                                     ) : isSubscribed ? (
                                         <><Check size={16} /> Activadas</>
+                                    ) : isBlocked ? (
+                                        <><BellOff size={16} /> Bloqueadas</>
                                     ) : (
                                         'Activar Alertas'
                                     )}

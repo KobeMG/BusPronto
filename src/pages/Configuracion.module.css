@@ -144,6 +144,22 @@
     filter: none;
 }
 
+.settingIcon.blocked {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+    color: var(--warning);
+}
+
+.settingAction.blocked {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.settingAction.blocked:hover:not(:disabled) {
+    background: rgba(245, 158, 11, 0.2);
+    transform: scale(1.03);
+    filter: none;
+}
+
 .appInfo {
     margin-top: 1.5rem;
     padding: 1.25rem;
