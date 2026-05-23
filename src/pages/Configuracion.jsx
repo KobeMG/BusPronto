@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Smartphone, Bell, BellRing, Loader2, Check } from 'lucide-react';
+import { Smartphone, Bell, BellRing, Loader2, Check, Share2 } from 'lucide-react';
 import { sileo } from 'sileo';
 import PageHeader from '../components/ui/PageHeader';
 import { InstallPWAModal } from '../components/InstallPWAModal';
 import { NotificationPromptModal } from '../components/NotificationPromptModal';
 import { useNotifications } from '../hooks/useNotifications';
 import styles from './Configuracion.module.css';
+import { shareApp } from '../utils/shareUtils';
 
 const Configuracion = () => {
     // Estado para modales
@@ -179,6 +180,26 @@ const Configuracion = () => {
                                     ) : (
                                         'Activar Alertas'
                                     )}
+                                </button>
+                            </div>
+
+                            <div className={styles.settingCard}>
+                                <div className={styles.settingInfo}>
+                                    <div className={`${styles.settingIcon} ${styles.primary}`}>
+                                        <Share2 size={24} />
+                                    </div>
+                                    <div className={styles.settingText}>
+                                        <h3 className={styles.settingTitle}>Compartir Aplicación</h3>
+                                        <p className={styles.settingDescription}>
+                                            Comparta el enlace de BusPronto con sus amigos y compañeros de la UCR.
+                                        </p>
+                                    </div>
+                                </div>
+                                <button
+                                    className={styles.settingAction}
+                                    onClick={shareApp}
+                                >
+                                    Compartir
                                 </button>
                             </div>
 

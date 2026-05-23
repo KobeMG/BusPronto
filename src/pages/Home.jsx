@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Share2 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
 import listStyles from '../components/ui/StopsList.module.css';
+import pageHeaderStyles from '../components/ui/PageHeader.module.css';
+import { shareApp } from '../utils/shareUtils';
 
 const Home = () => {
   return (
@@ -27,6 +29,15 @@ const Home = () => {
               <span style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '0.5rem' }}>I Ciclo 2026</span>
               Seleccione el tipo de consulta que desea realizar.
             </>
+          }
+          actionButton={
+            <button 
+              className={pageHeaderStyles.actionButton} 
+              onClick={shareApp} 
+              title="Compartir BusPronto"
+            >
+              <Share2 size={22} />
+            </button>
           }
         />
 

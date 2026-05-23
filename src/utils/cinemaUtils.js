@@ -1,5 +1,10 @@
+import { shareContent } from './shareUtils';
+
 /**
- * Lógica para compartir una película del Cine Universitario
+ * Lógica para compartir una película del Cine Universitario.
+ * @param {Object} movie - Objeto con la información de la película.
+ * @param {string} formattedDate - Fecha formateada.
+ * @param {string} formattedTime - Hora formateada.
  */
 export const shareMovie = async (movie, formattedDate, formattedTime) => {
     const { title, location_name, virtual } = movie;
@@ -14,24 +19,5 @@ export const shareMovie = async (movie, formattedDate, formattedTime) => {
         url: 'https://www.buspronto.lat/cine'
     };
 
-    if (navigator.share) {
-        try {
-            await navigator.share(shareData);
-            return { success: true, method: 'native' };
-        } catch (err) {
-            if (err.name !== 'AbortError') {
-                console.error('Error sharing:', err);
-                return { success: false, error: err };
-            }
-            return { success: false, error: 'User aborted' };
-        }
-    } else {
-        try {
-            await navigator.clipboard.writeText(`${shareData.text}\n\nMás funciones en: ${shareData.url}`);
-            return { success: true, method: 'clipboard' };
-        } catch (err) {
-            console.error('Error copying to clipboard:', err);
-            return { success: false, error: err };
-        }
-    }
+    return await shareContent(shareData, 'Información de la película copiada al portapapeles.');
 };

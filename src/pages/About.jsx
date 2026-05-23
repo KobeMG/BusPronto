@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Instagram, Github, Globe, Linkedin, ExternalLink, Mail, Coffee, Phone, Copy, Check, Eye } from 'lucide-react';
+import { Instagram, Github, Globe, Linkedin, ExternalLink, Mail, Coffee, Phone, Copy, Check, Eye, Share2 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import styles from './About.module.css';
+import { shareApp } from '../utils/shareUtils';
 
 const About = () => {
     const [showSinpe, setShowSinpe] = useState(false);
@@ -126,6 +127,17 @@ const About = () => {
                     </section> */}
 
                     <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Compartir la Aplicación</h2>
+                        <p className={styles.text}>
+                            ¿Le ha sido útil BusPronto? Compártala con sus compañeros para que nadie vuelva a perder el bus.
+                        </p>
+                        <button className={styles.shareProjectCard} onClick={shareApp}>
+                            <Share2 size={20} />
+                            <span>Compartir BusPronto</span>
+                        </button>
+                    </section>
+
+                    <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Nota Importante</h2>
                         <div className={styles.disclaimerCard}>
                             <p className={styles.disclaimerText}>
@@ -146,7 +158,7 @@ const About = () => {
 
                     <footer className={styles.miniFooter}>
                         <p>© 2026 Kode Creative</p>
-                        <p>La grandeza nace de pequeños comienzos. </p>
+                        <p>La grandeza nace de pequeños comienzos.</p>
                     </footer>
 
                 </div>

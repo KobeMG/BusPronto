@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { sileo } from 'sileo';
 import { MapPin, Video, Calendar, Clock, Film, Share2 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -23,15 +22,7 @@ const Cinema = () => {
     const formattedDate = formatDate(activeMovie.screening_date);
     const formattedTime = formatTime(activeMovie.screening_time);
     
-    const result = await shareMovie(activeMovie, formattedDate, formattedTime);
-    if (result.success && result.method === 'clipboard') {
-      sileo.success({
-        title: '¡Copiado!',
-        description: 'Información de la película copiada al portapapeles.',
-        position: 'top-center',
-        duration: 2500
-      });
-    }
+    await shareMovie(activeMovie, formattedDate, formattedTime);
   };
 
   return (
