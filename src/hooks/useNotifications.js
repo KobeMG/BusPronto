@@ -128,7 +128,15 @@ export function useNotifications() {
         .from('push_subscriptions')
         .insert([{ subscription }]);
 
-      if (error) throw error;
+      if (error) {
+        // Código 23505 es violación de restricción única en PostgreSQL (ya registrado)
+        if (error.code === '23505') {
+          console.info('Este dispositivo ya se encuentra registrado para recibir alertas.');
+          setIsSubscribed(true);
+          return { success: true };
+        }
+        throw error;
+      }
 
       setIsSubscribed(true);
       return { success: true };
