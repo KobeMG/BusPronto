@@ -8,7 +8,6 @@ import ExternalStopsList from './pages/ExternalStopsList';
 import BusStop from './pages/BusStop';
 import ExternalBusStop from './pages/ExternalBusStop';
 import Eventos from './pages/Eventos';
-//import useTheme from './hooks/useTheme';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 
@@ -20,9 +19,6 @@ import Configuracion from './pages/Configuracion';
 const queryClient = new QueryClient();
 
 function App() {
-  // Aplicar tema automáticamente según la temporada
-  //useTheme(); 
-
   return (
     <QueryClientProvider client={queryClient}>
       <FavoritesProvider>
