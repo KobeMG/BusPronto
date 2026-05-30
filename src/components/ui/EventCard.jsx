@@ -1,6 +1,6 @@
 import { MapPin, Video, Globe, ExternalLink, Clock, Share2 } from 'lucide-react';
 import { sileo } from 'sileo';
-import { formatEventTime, shareEvent, getEventModalityConfig } from '../../utils/semanaUUtils';
+import { formatEventTime, shareEvent, getEventModalityConfig } from '../../utils/eventosUtils';
 import styles from './EventCard.module.css';
 
 const MODALITY_ICONS = {
@@ -9,7 +9,7 @@ const MODALITY_ICONS = {
   hibrido: <Globe size={14} />,
 };
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, isHighlighted }) => {
   const { title, organizer, location, modality, is_active, google_maps, start_time } = event;
   const formattedTime = formatEventTime(start_time);
 
@@ -31,7 +31,10 @@ const EventCard = ({ event }) => {
   };
 
   return (
-    <div className={`${styles.card} ${!is_active ? styles.cancelled : ''}`}>
+    <div 
+      id={`event-card-${event.id}`}
+      className={`${styles.card} ${!is_active ? styles.cancelled : ''} ${isHighlighted ? styles.highlighted : ''}`}
+    >
       <div className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
         <div className={styles.headerRight}>
@@ -61,7 +64,7 @@ const EventCard = ({ event }) => {
       {formattedTime && (
         <div className={styles.infoRow}>
           <div className={styles.icon}><Clock size={14} /></div>
-          <span className={styles.locationText}>{formattedTime}</span>
+          <span className={styles.locationText}>Desde las {formattedTime}</span>
         </div>
       )}
 

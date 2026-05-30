@@ -44,12 +44,12 @@ export const formatEventTime = (timeString) => {
  */
 export const shareEvent = async (event, formattedTime) => {
     const { title, organizer, location } = event;
-    
-    const shareText = `¡Mirá este evento de Semana U!\n\n🎭 ${title}\n🎪 Organiza: ${organizer || 'Organización UCR'}\n📍 Lugar: ${location || 'Por definir'}${formattedTime ? `\n⏰ Hora: ${formattedTime}` : ''}`;
+
+    const shareText = `¡Mirá este evento!\n\n🎭 ${title}\n🎪 Organiza: ${organizer || 'Organización UCR'}\n📍 Lugar: ${location || 'Por definir'}${formattedTime ? `\n⏰ Hora: ${formattedTime}` : ''}`;
     const shareData = {
-        title: `${title} - Semana U 2026`,
+        title: `${title}`,
         text: shareText,
-        url: 'https://www.buspronto.lat/semana-u'
+        url: `${window.location.origin}/eventos?id=${event.id}`
     };
 
     if (navigator.share) {

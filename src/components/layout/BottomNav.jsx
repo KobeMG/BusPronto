@@ -14,6 +14,7 @@ const BottomNav = () => {
 
   const isCinemaActive = location.pathname.startsWith('/cinema');
   const isAliadosActive = location.pathname.startsWith('/aliados');
+  const isEventosActive = location.pathname.startsWith('/eventos');
   const isAcercaActive = location.pathname.startsWith('/acerca');
   const isConfigActive = location.pathname.startsWith('/configuracion');
 
@@ -50,15 +51,15 @@ const BottomNav = () => {
           <span className={styles.label}>Aliados</span>
         </Link>
 
-        {/*         <Link
-          to="/semana-u"
-          className={`${styles.navItem}`}
+        <Link
+          to="/eventos"
+          className={`${styles.navItem} ${isEventosActive ? styles.active : ''}`}
         >
           <div className={styles.iconContainer}>
-            <Calendar size={20} strokeWidth={2.5} />
+            <Calendar size={20} strokeWidth={isEventosActive ? 2.5 : 2} />
           </div>
-          <span className={styles.label}>Semana U</span>
-        </Link> */}
+          <span className={styles.label}>Eventos</span>
+        </Link>
 
         <Link
           to="/configuracion"

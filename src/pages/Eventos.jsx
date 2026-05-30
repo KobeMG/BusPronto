@@ -6,22 +6,51 @@ import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import EventCard from '../components/ui/EventCard';
 import { useSemanaUQuery } from '../hooks/useSemanaUQuery';
-import { groupEventsByDate, formatDate } from '../utils/semanaUUtils';
-import styles from './SemanaU.module.css';
+import { groupEventsByDate, formatDate } from '../utils/eventosUtils';
+import styles from './Eventos.module.css';
 
-const SemanaU = () => {
+const Eventos = () => {
     const { data: events, isLoading, error } = useSemanaUQuery();
+
+    // Obtener ID de evento de la URL si existe
+    const sharedEventId = useMemo(() => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
+    }, []);
 
     // Agrupamos eventos por fecha
     const groupedEvents = useMemo(() => groupEventsByDate(events), [events]);
     const [activeTab, setActiveTab] = useState(null);
 
-    // Seleccionar el primer día por defecto cuando cargan los datos
+    // Seleccionar el primer día por defecto o el del evento compartido cuando cargan los datos
     useEffect(() => {
         if (groupedEvents && groupedEvents.length > 0 && !activeTab) {
+            if (sharedEventId) {
+                const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
+                if (foundEvent) {
+                    setActiveTab(foundEvent.event_date);
+                    return;
+                }
+            }
             setActiveTab(groupedEvents[0].date);
         }
-    }, [groupedEvents, activeTab]);
+    }, [groupedEvents, activeTab, events, sharedEventId]);
+
+    // Scroll automático al evento compartido
+    useEffect(() => {
+        if (sharedEventId && activeTab) {
+            const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
+            if (foundEvent && foundEvent.event_date === activeTab) {
+                const timer = setTimeout(() => {
+                    const element = document.getElementById(`event-card-${sharedEventId}`);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 200);
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [activeTab, events, sharedEventId]);
 
     // Configuración de Embla para los tabs
     const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -49,7 +78,7 @@ const SemanaU = () => {
     return (
         <div className="glass-card">
             <Helmet>
-                <title>Semana U 2026 – Agenda de Eventos | BusPronto (UCR)</title>
+                <title>Eventos | BusPronto (UCR)</title>
                 <meta name="description" content="Agenda completa de eventos para la Semana Universitaria 2026 en la UCR. Conciertos, talleres, y actividades en tiempo real." />
                 <link rel="canonical" href="https://www.buspronto.lat/semana-u" />
                 <meta property="og:title" content="Semana U 2026 – Agenda de Eventos | BusPronto (UCR)" />
@@ -61,7 +90,7 @@ const SemanaU = () => {
             </Helmet>
 
             <PageHeader
-                title="Agenda Semana U 2026"
+                title="Agenda de Eventos"
                 description={
                     <>
                         Consulte las redes de la{" "}
@@ -118,7 +147,7 @@ const SemanaU = () => {
                                 <div className={styles.eventsGrid}>
                                     {eventList.map((event, index) => (
                                         <div key={event.id} style={{ animationDelay: `${index * 0.05}s` }} className={styles.animatedCard}>
-                                            <EventCard event={event} />
+                                            <EventCard event={event} isHighlighted={sharedEventId && String(event.id) === String(sharedEventId)} />
                                         </div>
                                     ))}
                                 </div>
@@ -131,4 +160,4 @@ const SemanaU = () => {
     );
 };
 
-export default SemanaU;
+export default Eventos;

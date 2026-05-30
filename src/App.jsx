@@ -7,7 +7,7 @@ import ExternalRoutes from './pages/ExternalRoutes';
 import ExternalStopsList from './pages/ExternalStopsList';
 import BusStop from './pages/BusStop';
 import ExternalBusStop from './pages/ExternalBusStop';
-import SemanaU from './pages/SemanaU';
+import Eventos from './pages/Eventos';
 //import useTheme from './hooks/useTheme';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
@@ -39,7 +39,7 @@ function App() {
               <Route path="/aliados" element={<Sponsors />} />
               <Route path="/acerca" element={<About />} />
               <Route path="/configuracion" element={<Configuracion />} />
-              {/* <Route path="/semana-u" element={<SemanaU />} /> */}
+              <Route path="/eventos" element={<Eventos />} />
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
