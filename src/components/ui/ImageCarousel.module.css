@@ -1,0 +1,238 @@
+/* ─── Embla Carousel ─── */
+
+.embla {
+  position: relative;
+  width: 100%;
+  height: var(--carousel-height, 160px);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: var(--carousel-margin, 12px 0 16px 0);
+  border: 1px solid var(--carousel-border, rgba(255, 255, 255, 0.05));
+  box-shadow: var(--carousel-shadow, 0 4px 15px rgba(0, 0, 0, 0.3));
+  background: var(--carousel-bg, rgba(0, 0, 0, 0.2));
+}
+
+.emblaViewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.emblaContainer {
+  display: flex;
+  height: 100%;
+}
+
+.emblaSlide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  position: relative;
+}
+
+.carouselImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.carouselImage:hover {
+  transform: scale(1.03);
+}
+
+/* ─── Buttons ─── */
+
+.carouselBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  z-index: 2;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  padding: 0 0 2px 0;
+}
+
+.carouselBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+/* ─── Dots ─── */
+
+.carouselDots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.carouselDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  padding: 0;
+}
+
+.carouselDot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.activeDot {
+  background: white;
+  transform: scale(1.2);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+/* ─── Lightbox ─── */
+
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightboxFadeIn 0.25s ease;
+}
+
+@keyframes lightboxFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightboxContent {
+  position: relative;
+  max-width: 92vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightboxZoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes lightboxZoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.lightboxImage {
+  max-width: 92vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  user-select: none;
+}
+
+.lightboxClose {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10001;
+}
+
+.lightboxClose:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.lightboxBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0 0 3px 0;
+}
+
+.lightboxBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.lightboxPrev {
+  left: max(16px, calc(50% - 48vw));
+}
+
+.lightboxNext {
+  right: max(16px, calc(50% - 48vw));
+}
+
+.lightboxCounter {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}

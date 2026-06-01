@@ -276,12 +276,39 @@
   transform: translateY(1px);
 }
 
+.adLogoExpanded {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 8px 0 12px 0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+
 @media (prefers-color-scheme: dark) {
   .expandedCard {
     background: rgba(30, 30, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   }
+
+  .carouselContainer {
+    border-color: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+
 
   .adTitle {
     color: #f1f1f1;

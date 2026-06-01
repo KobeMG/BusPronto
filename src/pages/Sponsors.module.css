@@ -183,6 +183,15 @@
   background: linear-gradient(135deg, var(--ad-default-start), var(--ad-default-end));
 }
 
+.sponsorLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+
+
 @media (max-width: 480px) {
   .sponsorsGrid {
     grid-template-columns: 1fr;

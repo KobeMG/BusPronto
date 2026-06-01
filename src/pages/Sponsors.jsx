@@ -1,21 +1,35 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ExternalLink, Mail, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
-import { trackAdClick } from '../utils/adBannerUtils';
+import { trackAdClick } from '../utils/adTracking';
 import { getAdIcon } from '../utils/adThemeUtils';
-import { useAdsQuery } from '../hooks/useAdsQuery';
+import { useAdsByField } from '../hooks/useAdsByField';
+import ImageCarousel from '../components/ui/ImageCarousel';
 import styles from './Sponsors.module.css';
 
-const Sponsors = () => {
-  const { data: adsRaw = [], isLoading: loading } = useAdsQuery();
+const SponsorLogoOrIcon = ({ logo, icon, title }) => {
+  const [hasError, setHasError] = useState(false);
 
-  const ads = useMemo(() => {
-    return (adsRaw || []).filter(
-      ad => ad.description && ad.description.trim() !== ''
+  if (logo && !hasError) {
+    return (
+      <img
+        src={logo}
+        alt={title}
+        className={styles.sponsorLogo}
+        onError={() => setHasError(true)}
+      />
     );
-  }, [adsRaw]);
+  }
+
+  return icon;
+};
+
+
+
+const Sponsors = () => {
+  const { data: ads = [], isLoading: loading } = useAdsByField('description');
 
   const handleAdClick = (id) => {
     trackAdClick(id);
@@ -55,7 +69,7 @@ const Sponsors = () => {
               >
                 <div className={styles.cardHeader}>
                   <div className={styles.iconWrapper}>
-                    {getAdIcon(ad.type, 24)}
+                    <SponsorLogoOrIcon logo={ad.logo} icon={getAdIcon(ad.type, 24)} title={ad.title} />
                   </div>
                   <h3 className={styles.sponsorTitle}>{ad.title}</h3>
                 </div>
@@ -64,6 +78,10 @@ const Sponsors = () => {
                   <p className={styles.sponsorDesc}>
                     {ad.description}
                   </p>
+
+                  {ad.images && ad.images.length > 0 && (
+                    <ImageCarousel images={ad.images} title={ad.title} />
+                  )}
 
                   {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
                     <div className={styles.businessLinks}>

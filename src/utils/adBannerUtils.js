@@ -29,14 +29,4 @@ export const fetchAdsData = async () => {
   }
 };
 
-/**
- * Registra el clic de un anuncio.
- * @param {string} id 
- */
-export const trackAdClick = async (id) => {
-  try {
-    await supabase.rpc('increment_ad_clicks', { ad_id: id });
-  } catch (err) {
-    console.error('Error tracking click:', err);
-  }
-};
+

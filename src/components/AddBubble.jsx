@@ -1,10 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
-import { trackAdClick, calculateSnapX, getAppBounds } from '../utils/addBubbleUtils';
+import { calculateSnapX, getAppBounds } from '../utils/adBubbleUtils';
+import { trackAdClick } from '../utils/adTracking';
 import { AD_THEMES } from '../utils/adThemeUtils';
-import { useAdsQuery } from '../hooks/useAdsQuery';
+import { useAdsByField } from '../hooks/useAdsByField';
+import ImageCarousel from './ui/ImageCarousel';
 import styles from './AddBubble.module.css';
+
+const ExpandedLogo = ({ logo, fallbackIcon, title }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (logo && !hasError) {
+    return (
+      <img
+        src={logo}
+        alt={title}
+        className={styles.adLogoExpanded}
+        onError={() => setHasError(true)}
+      />
+    );
+  }
+
+  return fallbackIcon;
+};
+
+
 
 const AddBubble = () => {
   const [ad, setAd] = useState(null);
@@ -13,7 +34,7 @@ const AddBubble = () => {
   const [showTooltip, setShowTooltip] = useState(true);
   const [isRightSide, setIsRightSide] = useState(true);
 
-  const { data: adsRaw = [] } = useAdsQuery();
+  const { data: adsRaw = [] } = useAdsByField('addBubbleMessage');
 
   const controls = useAnimation();
   const [windowDimensions, setWindowDimensions] = useState({
@@ -31,24 +52,19 @@ const AddBubble = () => {
 
   useEffect(() => {
     if (adsRaw.length > 0 && !ad) {
-      // Filtrar anuncios que tienen mensaje para la burbuja
-      const filtered = adsRaw.filter(a => a.addBubbleMessage && a.addBubbleMessage.trim() !== '');
+      const randomAd = adsRaw[Math.floor(Math.random() * adsRaw.length)];
       
-      if (filtered.length > 0) {
-        const randomAd = filtered[Math.floor(Math.random() * filtered.length)];
-        
-        let randomPhrase = '¡Mira esto!';
-        if (randomAd.phrases && randomAd.phrases.length > 0) {
-          randomPhrase = randomAd.phrases[Math.floor(Math.random() * randomAd.phrases.length)];
-        }
-
-        const timer = setTimeout(() => {
-          setAd(randomAd);
-          setPhrase(randomPhrase);
-        }, 1000);
-        
-        return () => clearTimeout(timer);
+      let randomPhrase = '¡Mira esto!';
+      if (randomAd.phrases && randomAd.phrases.length > 0) {
+        randomPhrase = randomAd.phrases[Math.floor(Math.random() * randomAd.phrases.length)];
       }
+
+      const timer = setTimeout(() => {
+        setAd(randomAd);
+        setPhrase(randomPhrase);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
     }
   }, [adsRaw, ad]);
 
@@ -202,7 +218,7 @@ const AddBubble = () => {
         >
           <div className={styles.cardHeader}>
             <div className={styles.iconWrapperExpanded}>
-              {theme.icon}
+              <ExpandedLogo logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} />
             </div>
             <button className={styles.closeBtn} onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}>
               <X size={20} />
@@ -212,6 +228,11 @@ const AddBubble = () => {
           <div className={styles.cardBody}>
             <h4 className={styles.adTitle}>{ad.title}</h4>
             <p className={styles.adDesc}>{ad.addBubbleMessage}</p>
+            <ImageCarousel
+              className={styles.carouselContainer}
+              images={ad.images}
+              title={ad.title}
+            />
 
             {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
               <div className={styles.businessLinksExpanded}>

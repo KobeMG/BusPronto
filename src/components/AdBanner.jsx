@@ -1,14 +1,31 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { ExternalLink } from 'lucide-react';
-import { trackAdClick, shuffleArray } from '../utils/adBannerUtils';
+import { shuffleArray } from '../utils/adBannerUtils';
 import { getAdIcon } from '../utils/adThemeUtils';
-import { useAdsQuery } from '../hooks/useAdsQuery';
+import { useAdsByField } from '../hooks/useAdsByField';
 import styles from './AdBanner.module.css';
 
+const AdLogoOrIcon = ({ logo, icon, title }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (logo && !hasError) {
+    return (
+      <img
+        src={logo}
+        alt={title}
+        className={styles.adLogo}
+        onError={() => setHasError(true)}
+      />
+    );
+  }
+
+  return icon;
+};
+
 const AdBanner = () => {
-  const { data: adsRaw = [], isLoading: loading } = useAdsQuery();
+  const { data: adsRaw = [], isLoading: loading } = useAdsByField('addBannerMessage');
   
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 6000, stopOnInteraction: true })
@@ -17,9 +34,7 @@ const AdBanner = () => {
   const ads = useMemo(() => {
     if (!adsRaw || adsRaw.length === 0) return [];
     
-    const filtered = adsRaw.filter(ad => ad.addBannerMessage && ad.addBannerMessage.trim() !== '');
-    
-    const formatted = filtered.map(ad => ({
+    const formatted = adsRaw.map(ad => ({
       ...ad,
       icon: getAdIcon(ad.type, 18)
     }));
@@ -57,7 +72,7 @@ const AdBanner = () => {
           <div className={styles.emblaSlide} key={ad.id || idx}>
             <div className={`${styles.adCard} ${styles[ad.type]}`}>
               <div className={styles.iconWrapper}>
-                {ad.icon}
+                <AdLogoOrIcon logo={ad.logo} icon={ad.icon} title={ad.title} />
               </div>
               <div className={styles.adMainContent}>
                 <div className={styles.adBody}>
