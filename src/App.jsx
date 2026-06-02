@@ -12,7 +12,6 @@ import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 
 import Cinema from './pages/Cinema';
-import About from './pages/About';
 import Sponsors from './pages/Sponsors';
 import Configuracion from './pages/Configuracion';
 
@@ -33,7 +32,6 @@ function App() {
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
               <Route path="/cinema" element={<Cinema />} />
               <Route path="/aliados" element={<Sponsors />} />
-              <Route path="/acerca" element={<About />} />
               <Route path="/configuracion" element={<Configuracion />} />
               <Route path="/eventos" element={<Eventos />} />
               {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}

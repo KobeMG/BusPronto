@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2 } from 'lucide-react';
+import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2, Instagram, Mail, Linkedin, Globe, ExternalLink } from 'lucide-react';
 import { sileo } from 'sileo';
 import PageHeader from '../components/ui/PageHeader';
 import { InstallPWAModal } from '../components/InstallPWAModal';
@@ -223,6 +223,55 @@ const Configuracion = () => {
                             </div>
 
                         </div>
+                    </section>
+
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Acerca de</h2>
+
+                        <p className={styles.text}>
+                            Desarrollado con ❤️ por{' '}
+                            <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className={styles.link}>Kode Creative</a>.
+                        </p>
+
+                        <div className={styles.socialGrid}>
+                            <a href="https://instagram.com/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
+                                <Instagram size={24} />
+                                <span>Instagram</span>
+                            </a>
+                            <a href="mailto:buspronto@kobemg.com" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
+                                <Mail size={24} />
+                                <span>Correo</span>
+                            </a>
+                            <a href="https://linkedin.com/in/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
+                                <Linkedin size={24} />
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
+                                <Globe size={24} />
+                                <span>Web</span>
+                            </a>
+                        </div>
+
+                        <div className={styles.disclaimerCard}>
+                            <p className={styles.disclaimerText}>
+                                BusPronto es un <strong>proyecto independiente e informativo</strong>.
+                                No es una aplicación oficial de la Universidad de Costa Rica (UCR) ni de las empresas de transporte mencionadas.
+                            </p>
+                            <a
+                                href="https://www.ucr.ac.cr/acerca-u/campus/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.officialLink}
+                            >
+                                <ExternalLink size={16} />
+                                Ver horarios oficiales UCR
+                            </a>
+                        </div>
+
+                        <footer className={styles.miniFooter}>
+                            <p>© 2026 Kode Creative</p>
+                            <p>La grandeza nace de pequeños comienzos.</p>
+                        </footer>
                     </section>
                 </div>
             </div>
