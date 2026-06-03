@@ -14,6 +14,9 @@ import MainLayout from './components/layout/MainLayout';
 import Cinema from './pages/Cinema';
 import Sponsors from './pages/Sponsors';
 import Configuracion from './pages/Configuracion';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import ProtectedRoute from './components/admin/ProtectedRoute';
 
 const queryClient = new QueryClient();
 
@@ -22,8 +25,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <FavoritesProvider>
         <Router>
-          <MainLayout>
-            <Routes>
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/rutas-internas" element={<InternalRoutes />} />
               <Route path="/rutas-externas" element={<ExternalRoutes />} />
@@ -34,10 +39,9 @@ function App() {
               <Route path="/aliados" element={<Sponsors />} />
               <Route path="/configuracion" element={<Configuracion />} />
               <Route path="/eventos" element={<Eventos />} />
-              {/* Catch-all: cualquier otra ruta redirige al menú principal (Home) */}
               <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </MainLayout>
+            </Route>
+          </Routes>
         </Router>
       </FavoritesProvider>
     </QueryClientProvider>
