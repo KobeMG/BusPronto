@@ -1,14 +1,15 @@
 import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
-import { jwtVerify } from 'jose';
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+
+// Cliente admin con service role (para leer subscripciones y borrar)
+const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
 const publicVapidKey = Deno.env.get('VAPID_PUBLIC_KEY') ?? '';
 const privateVapidKey = Deno.env.get('VAPID_PRIVATE_KEY') ?? '';
-const jwtSecret = Deno.env.get('SUPABASE_JWT_SECRET') ?? '';
 
 webpush.setVapidDetails(
   'mailto:buspronto@kobemg.com',
@@ -31,7 +32,7 @@ Deno.serve(async (req) => {
       return new Response('Method Not Allowed', { headers, status: 405 });
     }
 
-    // Verificar autenticación JWT
+    // Verificar autenticación JWT usando el cliente de Supabase con el token del usuario
     const authHeader = req.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Token de autenticación requerido' }), {
@@ -41,21 +42,23 @@ Deno.serve(async (req) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const secret = new TextEncoder().encode(jwtSecret);
 
-    let payload;
-    try {
-      const result = await jwtVerify(token, secret);
-      payload = result.payload;
-    } catch {
+    // Crear cliente con el token del usuario para validarlo correctamente
+    const supabaseUser = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: `Bearer ${token}` } },
+    });
+
+    const { data: { user }, error: authError } = await supabaseUser.auth.getUser();
+
+    if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Token inválido o expirado' }), {
         headers: { ...headers, 'Content-Type': 'application/json' },
         status: 401,
       });
     }
 
-    // Verificar rol de administrador
-    const role = payload?.app_metadata?.role;
+    // Verificar rol de administrador en app_metadata
+    const role = user?.app_metadata?.role;
     if (role !== 'admin') {
       return new Response(JSON.stringify({ error: 'Acceso denegado: se requiere rol de administrador' }), {
         headers: { ...headers, 'Content-Type': 'application/json' },
@@ -71,7 +74,7 @@ Deno.serve(async (req) => {
 
     const payloadObj = JSON.stringify({ title, body, url: url || '/' });
 
-    const { data: subscriptions, error } = await supabase
+    const { data: subscriptions, error } = await supabaseAdmin
       .from('push_subscriptions')
       .select('*');
 
@@ -89,7 +92,7 @@ Deno.serve(async (req) => {
         } catch (error: any) {
           if (error.statusCode === 410 || error.statusCode === 404) {
             console.log(`Subscription ${sub.id} is invalid. Removing from DB...`);
-            await supabase.from('push_subscriptions').delete().eq('id', sub.id);
+            await supabaseAdmin.from('push_subscriptions').delete().eq('id', sub.id);
           }
           throw error;
         }
