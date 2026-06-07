@@ -1,14 +1,31 @@
+const getDatesInRange = (start, finish) => {
+    const dates = [];
+    const current = new Date(start + 'T12:00:00');
+    const end = new Date(finish + 'T12:00:00');
+    while (current <= end) {
+        dates.push(current.toISOString().split('T')[0]);
+        current.setDate(current.getDate() + 1);
+    }
+    return dates;
+};
+
 export const groupEventsByDate = (events) => {
     if (!events) return [];
 
     const groups = events.reduce((acc, event) => {
-        const dateStr = event.event_date;
-        if (!acc[dateStr]) acc[dateStr] = [];
-        acc[dateStr].push(event);
+        const { event_date_start: start, event_date_finish: finish } = event;
+        const dates = (finish && finish !== start) ? getDatesInRange(start, finish) : [start];
+
+        dates.forEach((dateStr) => {
+            if (!acc[dateStr]) acc[dateStr] = [];
+            if (!acc[dateStr].some(e => e.id === event.id)) {
+                acc[dateStr].push(event);
+            }
+        });
+
         return acc;
     }, {});
 
-    // Convertimos a array ordenado
     return Object.entries(groups)
         .sort(([a], [b]) => new Date(a) - new Date(b))
         .map(([date, eventList]) => ({
@@ -23,6 +40,24 @@ export const formatDate = (dateString) => {
         day: new Intl.DateTimeFormat('es-CR', { weekday: 'long' }).format(date),
         full: new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'long' }).format(date)
     };
+};
+
+export const formatDateRange = (startDateStr, finishDateStr) => {
+    if (!startDateStr) return null;
+    const start = new Date(startDateStr + 'T12:00:00');
+    const startFormatted = new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'long' }).format(start);
+
+    if (!finishDateStr || finishDateStr === startDateStr) return startFormatted;
+
+    const finish = new Date(finishDateStr + 'T12:00:00');
+
+    if (start.getMonth() === finish.getMonth() && start.getFullYear() === finish.getFullYear()) {
+        const month = new Intl.DateTimeFormat('es-CR', { month: 'long' }).format(start);
+        return `${start.getDate()} al ${finish.getDate()} de ${month}`;
+    }
+
+    const finishFormatted = new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'long' }).format(finish);
+    return `${startFormatted} → ${finishFormatted}`;
 };
 
 export const formatEventTime = (timeString) => {

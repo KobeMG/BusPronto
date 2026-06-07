@@ -1,6 +1,6 @@
 import { MapPin, Video, Globe, ExternalLink, Clock, Share2 } from 'lucide-react';
 import { sileo } from 'sileo';
-import { formatEventTime, shareEvent, getEventModalityConfig } from '../../utils/eventosUtils';
+import { formatEventTime, formatDateRange, shareEvent, getEventModalityConfig } from '../../utils/eventosUtils';
 import styles from './EventCard.module.css';
 
 const MODALITY_ICONS = {
@@ -10,8 +10,9 @@ const MODALITY_ICONS = {
 };
 
 const EventCard = ({ event, isHighlighted }) => {
-  const { title, organizer, location, modality, is_active, google_maps, start_time } = event;
+  const { title, organizer, location, modality, is_active, google_maps, registration_link, start_time, event_date_start, event_date_finish } = event;
   const formattedTime = formatEventTime(start_time);
+  const dateRange = formatDateRange(event_date_start, event_date_finish);
 
   const { type, className } = getEventModalityConfig(modality, styles);
   const icon = MODALITY_ICONS[type] || MODALITY_ICONS.presencial;
@@ -55,6 +56,14 @@ const EventCard = ({ event, isHighlighted }) => {
       <div className={styles.organizer}>
         {organizer || 'Organización UCR'}
       </div>
+
+      {dateRange && (
+        <div className={styles.infoRow}>
+          <div className={styles.icon}><Clock size={14} /></div>
+          <span className={styles.locationText}>{dateRange}</span>
+        </div>
+      )}
+
       <div className={styles.infoRow}>
         <div className={styles.icon}>{icon}</div>
         <span className={styles.locationText}>{location || 'Lugar por definir'}</span>
@@ -80,6 +89,22 @@ const EventCard = ({ event, isHighlighted }) => {
             onClick={(e) => e.stopPropagation()}
           >
             Abrir ubicación
+          </a>
+        </div>
+      )}
+
+      {registration_link && (
+        <div className={styles.infoRow}>
+          <div className={styles.icon}><ExternalLink size={14} /></div>
+          <a
+            href={registration_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.regLink}
+            title="Inscripción al evento"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Inscribirse
           </a>
         </div>
       )}

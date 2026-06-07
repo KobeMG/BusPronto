@@ -28,7 +28,7 @@ const Eventos = () => {
             if (sharedEventId) {
                 const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
                 if (foundEvent) {
-                    setActiveTab(foundEvent.event_date);
+                    setActiveTab(foundEvent.event_date_start);
                     return;
                 }
             }
@@ -40,7 +40,7 @@ const Eventos = () => {
     useEffect(() => {
         if (sharedEventId && activeTab) {
             const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
-            if (foundEvent && foundEvent.event_date === activeTab) {
+            if (foundEvent && foundEvent.event_date_start === activeTab) {
                 const timer = setTimeout(() => {
                     const element = document.getElementById(`event-card-${sharedEventId}`);
                     if (element) {
