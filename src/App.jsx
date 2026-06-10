@@ -17,6 +17,7 @@ import Configuracion from './pages/Configuracion';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/admin/ProtectedRoute';
+import QrRedirect from './pages/QrRedirect';
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/qr/:stopId" element={<QrRedirect />} />
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/rutas-internas" element={<InternalRoutes />} />
