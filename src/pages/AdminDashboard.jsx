@@ -32,6 +32,13 @@ import {
   deleteEvent,
   toggleEventVisibility,
 } from '../services/semanaU.service';
+import {
+  getAllAlertsAdmin,
+  createAlert,
+  updateAlert,
+  deleteAlert,
+  toggleAlertActive,
+} from '../services/alerts.service';
 import styles from './Admin.module.css';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -87,6 +94,17 @@ const AdminDashboard = () => {
   const [deleteTarget, setDeleteTarget] = useState(null); // event to confirm deletion
   const [togglingId, setTogglingId] = useState(null);
 
+  // ── Alerts state ──────────────────────────────────────────────────
+  const [alerts, setAlerts] = useState([]);
+  const [alertsLoading, setAlertsLoading] = useState(false);
+  const [alertsError, setAlertsError] = useState(null);
+  const [alertFormData, setAlertFormData] = useState({ title: '', message: '', active: true });
+  const [editingAlertId, setEditingAlertId] = useState(null); // null = create mode
+  const [savingAlert, setSavingAlert] = useState(false);
+  const [alertResult, setAlertResult] = useState(null);
+  const [deleteAlertTarget, setDeleteAlertTarget] = useState(null); // alert to confirm deletion
+  const [togglingAlertId, setTogglingAlertId] = useState(null);
+
   // ── Session ──────────────────────────────────────────────────────
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -133,6 +151,30 @@ const AdminDashboard = () => {
       fetchEvents();
     }
   }, [activeModule, fetchEvents]);
+
+  // ── Load alerts when switching to alerts tab ─────────────────────
+  const fetchAlerts = useCallback(async () => {
+    setAlertsLoading(true);
+    setAlertsError(null);
+    try {
+      const data = await getAllAlertsAdmin();
+      setAlerts(data);
+    } catch (err) {
+      setAlertsError(err.message || 'Error cargando alertas');
+    } finally {
+      setAlertsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeModule === 'alerts') {
+      fetchAlerts();
+    }
+  }, [activeModule, fetchAlerts]);
+
+  useEffect(() => {
+    fetchAlerts();
+  }, [fetchAlerts]);
 
   // ── Handlers ─────────────────────────────────────────────────────
   const handleLogout = async () => {
@@ -297,6 +339,88 @@ const AdminDashboard = () => {
     }
   };
 
+  // Alerts: form field change
+  const handleAlertFormChange = (field, value) => {
+    setAlertFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Alerts: start editing
+  const handleEditAlert = (alert) => {
+    setEditingAlertId(alert.id);
+    setAlertFormData({
+      title: alert.title || '',
+      message: alert.message || '',
+      active: alert.active ?? true,
+    });
+    setAlertResult(null);
+  };
+
+  // Alerts: cancel edit
+  const handleCancelAlertEdit = () => {
+    setEditingAlertId(null);
+    setAlertFormData({ title: '', message: '', active: true });
+    setAlertResult(null);
+  };
+
+  // Alerts: submit (create or update)
+  const handleAlertSubmit = async (e) => {
+    e.preventDefault();
+    setSavingAlert(true);
+    setAlertResult(null);
+
+    const payload = {
+      title: alertFormData.title.trim(),
+      message: alertFormData.message.trim(),
+      active: alertFormData.active,
+    };
+
+    try {
+      if (editingAlertId) {
+        await updateAlert(editingAlertId, payload);
+        setAlertResult({ success: true, message: '¡Alerta actualizada correctamente!' });
+      } else {
+        await createAlert(payload);
+        setAlertResult({ success: true, message: '¡Alerta creada correctamente!' });
+      }
+      setEditingAlertId(null);
+      setAlertFormData({ title: '', message: '', active: true });
+      await fetchAlerts();
+    } catch (err) {
+      setAlertResult({ error: err.message || 'Error al guardar la alerta.' });
+    } finally {
+      setSavingAlert(false);
+    }
+  };
+
+  // Alerts: toggle active status
+  const handleToggleAlertActive = async (alert) => {
+    setTogglingAlertId(alert.id);
+    try {
+      await toggleAlertActive(alert.id, alert.active);
+      setAlerts(prev =>
+        prev.map(a => a.id === alert.id ? { ...a, active: !a.active } : a)
+      );
+    } catch (err) {
+      console.error('Error toggling alert active state:', err);
+    } finally {
+      setTogglingAlertId(null);
+    }
+  };
+
+  // Alerts: confirm deletion
+  const handleDeleteAlertConfirm = async () => {
+    if (!deleteAlertTarget) return;
+    try {
+      await deleteAlert(deleteAlertTarget.id);
+      setAlerts(prev => prev.filter(a => a.id !== deleteAlertTarget.id));
+      if (editingAlertId === deleteAlertTarget.id) handleCancelAlertEdit();
+    } catch (err) {
+      console.error('Error deleting alert:', err);
+    } finally {
+      setDeleteAlertTarget(null);
+    }
+  };
+
   const templates = [
     {
       label: 'Cambio Parada',
@@ -417,6 +541,24 @@ const AdminDashboard = () => {
               <CalendarDays size={22} />
             </div>
           </Motion.div>
+
+          <Motion.div
+            className={styles.statCard}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <div className={styles.statInfo}>
+              <h3>Alertas de Bus</h3>
+              <div className={styles.statValue}>{alerts.length || '—'}</div>
+              <span className={`${styles.statBadge} ${styles.statBadgeNeutral}`}>
+                {alerts.filter(a => a.active).length} activas
+              </span>
+            </div>
+            <div className={styles.statIconContainer}>
+              <Bell size={22} />
+            </div>
+          </Motion.div>
         </section>
 
         {/* Module Tab Navigation */}
@@ -436,6 +578,14 @@ const AdminDashboard = () => {
           >
             <CalendarDays size={15} />
             Eventos
+          </button>
+          <button
+            id="tab-alerts"
+            className={`${styles.moduleTabBtn} ${activeModule === 'alerts' ? styles.moduleTabBtnActive : ''}`}
+            onClick={() => setActiveModule('alerts')}
+          >
+            <Bell size={15} />
+            Alertas de Bus
           </button>
         </nav>
 
@@ -1014,6 +1164,220 @@ const AdminDashboard = () => {
               </div>
             </Motion.div>
           )}
+
+          {/* ── MODULE: ALERTS ────────────────────────────────────── */}
+          {activeModule === 'alerts' && (
+            <Motion.div
+              key="alerts"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div className={styles.eventsModule}>
+
+                {/* LEFT: Alerts List */}
+                <div className={styles.eventsListPanel}>
+                  <div className={styles.cardHeader}>
+                    <h2 className={styles.cardTitle}>
+                      <Bell size={18} style={{ color: '#60a5fa' }} />
+                      Alertas Registradas
+                    </h2>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span className={styles.eventsCount}>{alerts.length} total</span>
+                      <button
+                        onClick={fetchAlerts}
+                        disabled={alertsLoading}
+                        className={styles.editBtn}
+                        title="Recargar alertas"
+                        style={{ padding: '0.3rem 0.5rem' }}
+                      >
+                        <RefreshCw size={14} style={alertsLoading ? { animation: 'spin 1s linear infinite' } : {}} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Result banner for alert ops */}
+                  <AnimatePresence mode="wait">
+                    {alertResult && (
+                      <Motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        className={alertResult.success ? styles.resultSuccess : styles.resultError}
+                        style={{ marginBottom: '1rem' }}
+                      >
+                        <div className={styles.resultTitle}>
+                          {alertResult.success
+                            ? <><CheckCircle2 size={15} /><span>{alertResult.message}</span></>
+                            : <><XCircle size={15} /><span>Error: {alertResult.error}</span></>
+                          }
+                        </div>
+                      </Motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div className={styles.eventsListScroll}>
+                    {alertsLoading ? (
+                      <div className={styles.emptyEventsState}>
+                        <Motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                          style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: '#3b82f6' }}
+                        />
+                        <p>Cargando alertas...</p>
+                      </div>
+                    ) : alertsError ? (
+                      <div className={styles.emptyEventsState}>
+                        <AlertTriangle size={32} style={{ color: '#f87171' }} />
+                        <p>{alertsError}</p>
+                      </div>
+                    ) : alerts.length === 0 ? (
+                      <div className={styles.emptyEventsState}>
+                        <Bell size={36} style={{ color: '#334155' }} />
+                        <p>No hay alertas registradas.</p>
+                        <p style={{ fontSize: '0.8rem', color: '#475569' }}>Crea la primera alerta con el formulario.</p>
+                      </div>
+                    ) : (
+                      alerts.map(alert => (
+                        <Motion.div
+                          key={alert.id}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`${styles.eventRow} ${editingAlertId === alert.id ? styles.eventRowEditing : ''}`}
+                        >
+                          <div className={styles.eventRowTop}>
+                            <div className={styles.eventRowMeta}>
+                              <span className={styles.eventRowTitle} title={alert.title}>
+                                {alert.title}
+                              </span>
+                              <div className={styles.eventRowDates} style={{ fontSize: '0.8rem', opacity: 0.8, color: '#94a3b8' }}>
+                                {alert.message}
+                              </div>
+                            </div>
+
+                            <div className={styles.eventRowActions}>
+                              {/* Active/Inactive toggle */}
+                              <button
+                                id={`toggle-active-${alert.id}`}
+                                className={`${styles.visibilityToggle} ${alert.active ? styles.visible : styles.hidden}`}
+                                onClick={() => handleToggleAlertActive(alert)}
+                                disabled={togglingAlertId === alert.id}
+                                title={alert.active ? 'Activa — click para desactivar' : 'Inactiva — click para activar'}
+                              >
+                                {alert.active ? <Eye size={12} /> : <EyeOff size={12} />}
+                                {alert.active ? 'Activa' : 'Inactiva'}
+                              </button>
+                              {/* Edit */}
+                              <button
+                                id={`edit-alert-${alert.id}`}
+                                className={styles.editBtn}
+                                onClick={() => handleEditAlert(alert)}
+                                title="Editar alerta"
+                              >
+                                <Pencil size={13} />
+                              </button>
+                              {/* Delete */}
+                              <button
+                                id={`delete-alert-${alert.id}`}
+                                className={styles.deleteBtn}
+                                onClick={() => setDeleteAlertTarget(alert)}
+                                title="Eliminar alerta"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          </div>
+                        </Motion.div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {/* RIGHT: Create / Edit Form */}
+                <div className={styles.eventFormCard}>
+                  <div className={styles.eventFormHeader}>
+                    <h2 className={styles.eventFormTitle}>
+                      {editingAlertId ? <><Pencil size={17} style={{ color: '#60a5fa' }} />Editar Alerta</> : <><Plus size={17} style={{ color: '#60a5fa' }} />Nueva Alerta</>}
+                    </h2>
+                    {editingAlertId && (
+                      <button className={styles.cancelEditBtn} onClick={handleCancelAlertEdit}>
+                        Cancelar edición
+                      </button>
+                    )}
+                  </div>
+
+                  <form className={styles.eventForm} onSubmit={handleAlertSubmit}>
+                    {/* Title */}
+                    <div className={styles.field}>
+                      <label className={styles.label} htmlFor="al-title">Título de la alerta *</label>
+                      <input
+                        id="al-title"
+                        type="text"
+                        className={styles.inputFieldNoIcon}
+                        placeholder="Ej: Atraso en Ruta Heredia"
+                        value={alertFormData.title}
+                        onChange={e => handleAlertFormChange('title', e.target.value)}
+                        required
+                        maxLength={50}
+                      />
+                    </div>
+
+                    {/* Message */}
+                    <div className={styles.field}>
+                      <label className={styles.label} htmlFor="al-message">Mensaje descriptivo *</label>
+                      <textarea
+                        id="al-message"
+                        className={styles.textarea}
+                        style={{ background: 'rgba(15, 23, 42, 0.3)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '0.75rem', padding: '0.75rem', color: '#fff', outline: 'none' }}
+                        placeholder="Detalle de la alerta..."
+                        rows={5}
+                        value={alertFormData.message}
+                        onChange={e => handleAlertFormChange('message', e.target.value)}
+                        required
+                        maxLength={250}
+                      />
+                    </div>
+
+                    {/* Checkbox */}
+                    <div className={styles.checkboxRow}>
+                      <label className={styles.checkboxLabel} htmlFor="al-active">
+                        <input
+                          id="al-active"
+                          type="checkbox"
+                          checked={alertFormData.active}
+                          onChange={e => handleAlertFormChange('active', e.target.checked)}
+                        />
+                        Alerta activa (se mostrará a los usuarios)
+                      </label>
+                    </div>
+
+                    <button
+                      id="al-submit"
+                      type="submit"
+                      className={styles.eventSubmitBtn}
+                      disabled={savingAlert}
+                    >
+                      {savingAlert ? (
+                        <>
+                          <Motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                            style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)', borderTopColor: '#fff' }}
+                          />
+                          Guardando...
+                        </>
+                      ) : editingAlertId ? (
+                        <><CheckCircle2 size={16} /> Guardar Cambios</>
+                      ) : (
+                        <><Plus size={16} /> Crear Alerta</>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </Motion.div>
+          )}
         </AnimatePresence>
       </div>
 
@@ -1054,6 +1418,53 @@ const AdminDashboard = () => {
                   id="delete-confirm"
                   className={styles.deleteConfirmDelete}
                   onClick={handleDeleteConfirm}
+                >
+                  <Trash2 size={14} style={{ display: 'inline', marginRight: 4 }} />
+                  Eliminar
+                </button>
+              </div>
+            </Motion.div>
+          </Motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Alert Confirmation Modal */}
+      <AnimatePresence>
+        {deleteAlertTarget && (
+          <Motion.div
+            className={styles.deleteConfirmOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setDeleteAlertTarget(null)}
+          >
+            <Motion.div
+              className={styles.deleteConfirmModal}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className={styles.deleteConfirmTitle}>
+                <AlertTriangle size={18} style={{ color: '#f87171' }} />
+                Eliminar Alerta
+              </div>
+              <p className={styles.deleteConfirmText}>
+                ¿Seguro que deseas eliminar la alerta <strong style={{ color: '#f1f5f9' }}>"{deleteAlertTarget.title}"</strong>?
+                Esta acción no se puede deshacer y desaparecerá para todos los usuarios.
+              </p>
+              <div className={styles.deleteConfirmActions}>
+                <button
+                  id="delete-alert-cancel"
+                  className={styles.deleteConfirmCancel}
+                  onClick={() => setDeleteAlertTarget(null)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  id="delete-alert-confirm"
+                  className={styles.deleteConfirmDelete}
+                  onClick={handleDeleteAlertConfirm}
                 >
                   <Trash2 size={14} style={{ display: 'inline', marginRight: 4 }} />
                   Eliminar
