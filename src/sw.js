@@ -1,7 +1,28 @@
-import { precacheAndRoute } from 'workbox-precaching';
+import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { clientsClaim } from 'workbox-core';
+
+// TRANSICIÓN: Forzar activación inmediata para que todos los usuarios
+// reciban el nuevo SW en su próxima visita sin tener que cerrar la app.
+// TODO: Quitar este listener después del primer deploy exitoso.
+self.addEventListener('install', () => {
+  self.skipWaiting();
+});
+
+// Tomar control de todos los tabs abiertos inmediatamente al activarse
+clientsClaim();
+
+// Escuchar el mensaje SKIP_WAITING que envía el prompt de actualización
+// Sin esto, el nuevo SW se queda en estado 'waiting' para siempre
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
 
 // Esto es vital para que VitePWA inyecte los archivos a cachear
 precacheAndRoute(self.__WB_MANIFEST);
+// Limpiar cachés de versiones anteriores
+cleanupOutdatedCaches();
 
 // Escuchar el evento 'push' del servidor
 self.addEventListener('push', (event) => {

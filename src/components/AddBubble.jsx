@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import { calculateSnapX, getAppBounds } from '../utils/adBubbleUtils';
-import { trackAdClick } from '../utils/adTracking';
+import { trackAdClick, trackAdImpression } from '../utils/adTracking';
 import { AD_THEMES } from '../utils/adThemeUtils';
 import { useAdsByField } from '../hooks/useAdsByField';
 import ImageCarousel from './ui/ImageCarousel';
@@ -37,6 +37,8 @@ const AddBubble = () => {
   const { data: adsRaw = [] } = useAdsByField('addBubbleMessage');
 
   const controls = useAnimation();
+  // Ref para rastrear la posición X real de la burbuja (controls.get no existe en framer-motion)
+  const currentXRef = useRef(null);
   const [windowDimensions, setWindowDimensions] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
     height: typeof window !== 'undefined' ? window.innerHeight : 0
@@ -62,6 +64,8 @@ const AddBubble = () => {
       const timer = setTimeout(() => {
         setAd(randomAd);
         setPhrase(randomPhrase);
+        // Contabilizar impresión: el anuncio fue seleccionado y se mostrará al usuario
+        trackAdImpression(randomAd.id);
       }, 1000);
       
       return () => clearTimeout(timer);
@@ -74,11 +78,23 @@ const AddBubble = () => {
     if (!ad || windowDimensions.width === 0) return;
 
     if (isOpen) {
-      // Centramos la tarjeta (ancho de 300px definido en CSS por el usuario)
+      // Centramos la tarjeta (ancho de 300px definido en CSS)
+      // CARD_HEIGHT dinámico: nunca supera el 85% de la pantalla (CSS hace el resto con max-height)
+      const CARD_HEIGHT = Math.min(430, windowDimensions.height * 0.85 - 20);
       const { appLeft, appWidth } = getAppBounds(windowDimensions.width);
+      const centeredX = appLeft + (appWidth / 2) - 150;
+      // Centra verticalmente pero garantiza que el footer siempre sea visible
+      const centeredY = Math.max(
+        10,
+        Math.min(
+          (windowDimensions.height - CARD_HEIGHT) / 2,
+          windowDimensions.height - CARD_HEIGHT - 16
+        )
+      );
+      currentXRef.current = centeredX;
       controls.start({
-        x: appLeft + (appWidth / 2) - 150,
-        y: (windowDimensions.height / 2) - 150,
+        x: centeredX,
+        y: centeredY,
         transition: { type: 'spring', stiffness: 200, damping: 25 }
       });
     } else {
@@ -86,18 +102,29 @@ const AddBubble = () => {
       // Usamos setTimeout para que se ejecute justo después del primer render (montaje del DOM)
       const timer = setTimeout(() => {
         const { appRight } = getAppBounds(windowDimensions.width);
-        const currentX = typeof controls.get === 'function' ? controls.get().x : appRight - 70;
-        const snapX = calculateSnapX(currentX || appRight - 70, windowDimensions.width);
+        // Usamos el ref para obtener la posición real; fallback al borde derecho en el primer render
+        const knownX = currentXRef.current !== null ? currentXRef.current : appRight - 70;
+        const snapX = calculateSnapX(knownX, windowDimensions.width);
+        const safeY = Math.min(
+          Math.max(10, windowDimensions.height / 2),
+          windowDimensions.height - 80
+        );
+
+        // Sincronizamos isRightSide con la posición calculada
+        const { appLeft, appRight: ar } = getAppBounds(windowDimensions.width);
+        setIsRightSide(snapX > appLeft + (ar - appLeft) / 2);
+        currentXRef.current = snapX;
 
         controls.start({
           x: snapX,
-          y: windowDimensions.height / 2, // ¡Muy importante para que no se quede en y: -100!
+          y: safeY,
           transition: { type: 'spring', stiffness: 200, damping: 25 }
         });
       }, 50);
       return () => clearTimeout(timer);
     }
-  }, [ad, isOpen, windowDimensions.width, windowDimensions.height, controls]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ad, isOpen, windowDimensions.width, windowDimensions.height]);
 
 
 
@@ -116,6 +143,7 @@ const AddBubble = () => {
     const { appLeft, appRight } = getAppBounds(windowDimensions.width);
     const appCenter = appLeft + (appRight - appLeft) / 2;
     setIsRightSide(snapX > appCenter);
+    currentXRef.current = snapX;
 
     controls.start({
       x: snapX,
@@ -132,21 +160,25 @@ const AddBubble = () => {
   const bounds = getAppBounds(windowDimensions.width);
   const theme = AD_THEMES[ad.type] || AD_THEMES.default;
 
+  // El tamaño del elemento draggable: 60px burbuja, 300px tarjeta expandida
+  const elementSize = isOpen ? 300 : 60;
+  const dragConstraints = {
+    left: bounds.appLeft + 10,
+    right: Math.max(bounds.appLeft + 10, bounds.appRight - elementSize - 10),
+    top: 10,
+    bottom: windowDimensions.height - elementSize - 10
+  };
+
   return (
     <motion.div
       className={styles.container}
-      drag
-      dragConstraints={{
-        left: bounds.appLeft + 10,
-        right: bounds.appRight - 70,
-        top: 10,
-        bottom: windowDimensions.height - 70
-      }}
+      drag={!isOpen}
+      dragConstraints={dragConstraints}
       dragMomentum={false}
       onDragStart={() => setShowTooltip(false)}
       onDragEnd={handleDragEnd}
       animate={controls}
-      initial={{ x: -100, y: -100 }}
+      initial={false}
       style={{
         position: 'fixed',
         top: 0,

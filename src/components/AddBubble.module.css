@@ -134,6 +134,8 @@
 
 .expandedCard {
   width: 300px;
+  /* Nunca superar el 85% de la pantalla para que el footer siempre sea visible */
+  max-height: calc(85dvh - 20px);
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   border-radius: 20px;
@@ -144,6 +146,7 @@
   gap: 12px;
   transform-origin: center;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 .cardHeader {
@@ -187,6 +190,18 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* Permite que el cuerpo haga scroll cuando el contenido es muy largo,
+     manteniendo el footer (botón Ordenar) siempre visible */
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  /* Ocultar scrollbar visualmente pero mantener funcionalidad */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cardBody::-webkit-scrollbar {
+  display: none;
 }
 
 .adTitle {

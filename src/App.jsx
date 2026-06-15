@@ -10,6 +10,7 @@ import ExternalBusStop from './pages/ExternalBusStop';
 import Eventos from './pages/Eventos';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
+import UpdatePrompt from './components/UpdatePrompt';
 
 import Cinema from './pages/Cinema';
 import Sponsors from './pages/Sponsors';
@@ -45,6 +46,8 @@ function App() {
             </Route>
           </Routes>
         </Router>
+        {/* Prompt de actualización: aparece cuando hay una nueva versión del SW */}
+        <UpdatePrompt />
       </FavoritesProvider>
     </QueryClientProvider>
   );
