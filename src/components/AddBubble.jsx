@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
-import { calculateSnapX, getAppBounds } from '../utils/adBubbleUtils';
-import { trackAdClick, trackAdImpression } from '../utils/adTracking';
+import { calculateSnapX, getAppBounds, trackAdClick, trackAdImpression } from '../utils/adUtils';
 import { AD_THEMES } from '../utils/adThemeUtils';
-import { useAdsByField } from '../hooks/useAdsByField';
+import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from './ui/ImageCarousel';
 import styles from './AddBubble.module.css';
 
@@ -34,7 +33,8 @@ const AddBubble = () => {
   const [showTooltip, setShowTooltip] = useState(true);
   const [isRightSide, setIsRightSide] = useState(true);
 
-  const { data: adsRaw = [] } = useAdsByField('addBubbleMessage');
+  const { data: allAds = [] } = useAdsQuery();
+  const adsRaw = useMemo(() => allAds.filter(ad => ad.addBubbleMessage && ad.addBubbleMessage.trim() !== ''), [allAds]);
 
   const controls = useAnimation();
   // Ref para rastrear la posición X real de la burbuja (controls.get no existe en framer-motion)

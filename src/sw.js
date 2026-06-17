@@ -1,12 +1,7 @@
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
 
-// TRANSICIÓN: Forzar activación inmediata para que todos los usuarios
-// reciban el nuevo SW en su próxima visita sin tener que cerrar la app.
-// TODO: Quitar este listener después del primer deploy exitoso.
-self.addEventListener('install', () => {
-  self.skipWaiting();
-});
+
 
 // Tomar control de todos los tabs abiertos inmediatamente al activarse
 clientsClaim();

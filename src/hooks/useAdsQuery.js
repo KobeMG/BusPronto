@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAdsData } from '../utils/adBannerUtils';
+import { fetchAdsData } from '../utils/adUtils';
 
 /**
  * Hook to fetch all active ads with React Query for caching and optimization.

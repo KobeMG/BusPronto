@@ -2,9 +2,9 @@ import React, { useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { ExternalLink } from 'lucide-react';
-import { shuffleArray } from '../utils/adBannerUtils';
+import { trackAdClick } from '../utils/adUtils';
 import { getAdIcon } from '../utils/adThemeUtils';
-import { useAdsByField } from '../hooks/useAdsByField';
+import { useAdsQuery } from '../hooks/useAdsQuery';
 import styles from './AdBanner.module.css';
 
 const AdLogoOrIcon = ({ logo, icon, title }) => {
@@ -24,17 +24,20 @@ const AdLogoOrIcon = ({ logo, icon, title }) => {
   return icon;
 };
 
+const shuffleArray = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
 const AdBanner = () => {
-  const { data: adsRaw = [], isLoading: loading } = useAdsByField('addBannerMessage');
+  const { data: adsRaw = [], isLoading: loading } = useAdsQuery();
+  const adsRawByField = useMemo(() => adsRaw.filter(ad => ad.addBannerMessage && ad.addBannerMessage.trim() !== ''), [adsRaw]);
   
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 6000, stopOnInteraction: true })
   ]);
 
   const ads = useMemo(() => {
-    if (!adsRaw || adsRaw.length === 0) return [];
+    if (!adsRawByField || adsRawByField.length === 0) return [];
     
-    const formatted = adsRaw.map(ad => ({
+    const formatted = adsRawByField.map(ad => ({
       ...ad,
       icon: getAdIcon(ad.type, 18)
     }));

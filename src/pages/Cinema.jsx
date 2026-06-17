@@ -5,7 +5,7 @@ import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import CinemaCarousel from '../components/CinemaCarousel';
 import { useCinemaQuery } from '../hooks/useCinemaQuery';
-import { shareMovie } from '../utils/cinemaUtils';
+import { shareMovie } from '../utils/shareUtils';
 import styles from './Cinema.module.css';
 import { formatDate, formatTime } from '../utils/dateHelpers';
 

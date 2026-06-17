@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ExternalLink, Mail, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
-import { trackAdClick } from '../utils/adTracking';
+import { trackAdClick } from '../utils/adUtils';
 import { getAdIcon } from '../utils/adThemeUtils';
-import { useAdsByField } from '../hooks/useAdsByField';
+import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from '../components/ui/ImageCarousel';
 import styles from './Sponsors.module.css';
 
@@ -29,7 +29,8 @@ const SponsorLogoOrIcon = ({ logo, icon, title }) => {
 
 
 const Sponsors = () => {
-  const { data: ads = [], isLoading: loading } = useAdsByField('description');
+  const { data: allAds = [], isLoading: loading } = useAdsQuery();
+  const ads = useMemo(() => allAds.filter(ad => ad.description && ad.description.trim() !== ''), [allAds]);
 
   const handleAdClick = (id) => {
     trackAdClick(id);
