@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ExternalLink, Mail, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
