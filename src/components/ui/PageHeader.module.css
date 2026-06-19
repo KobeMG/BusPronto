@@ -83,3 +83,25 @@
   background: var(--surface-color);
 }
 
+@keyframes ring {
+
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  20%,
+  60% {
+    transform: rotate(15deg);
+  }
+
+  40%,
+  80% {
+    transform: rotate(-15deg);
+  }
+}
+
+.ring {
+  animation: ring 0.6s ease-in-out infinite;
+  transform-origin: center 4px;
+}

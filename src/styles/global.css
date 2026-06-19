@@ -59,6 +59,21 @@ body {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
+.home-logo {
+  display: block;
+  margin: 0 auto 1.5rem auto;
+  height: 140px;
+  width: 140px;
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.home-logo:hover {
+  transform: scale(1.05);
+}
+
+
 
 
 

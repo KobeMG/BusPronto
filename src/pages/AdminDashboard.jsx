@@ -156,7 +156,7 @@ const AdminDashboard = () => {
             onClick={() => setActiveModule('notifications')}
           >
             <Bell size={15} />
-            Notificaciones
+            Notificaciones en Tiempo Real
           </button>
           <button
             id="tab-events"

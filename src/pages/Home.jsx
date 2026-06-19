@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Bell } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
+import BusLogo from '../components/ui/BusLogo';
 import listStyles from '../components/ui/StopsList.module.css';
 import pageHeaderStyles from '../components/ui/PageHeader.module.css';
 import { useAlertsQuery } from '../hooks/useAlertsQuery';
@@ -47,6 +48,7 @@ const Home = () => {
       </Helmet>
       
       <div className="glass-card">
+        <BusLogo className="home-logo" />
         <PageHeader
           title="BusPronto (UCR)"
           description={
@@ -56,14 +58,14 @@ const Home = () => {
             </>
           }
           actionButton={
-            <button 
-              className={pageHeaderStyles.actionButton} 
+              <button 
+              className={pageHeaderStyles.actionButton}
               onClick={() => setIsAlertsOpen(true)} 
               title="Alertas de Autobús"
               style={{ position: 'relative' }}
               id="alerts-bell-btn"
             >
-              <Bell size={22} />
+              <Bell size={22} className={hasUnseenAlerts ? pageHeaderStyles.ring : ''} />
               {hasUnseenAlerts && (
                 <span 
                   style={{
