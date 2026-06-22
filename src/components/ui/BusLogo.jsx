@@ -5,16 +5,22 @@ const MESSAGES = [
   "¡Tengo una amiga llamada Pepper!",
   "Soy lo mas cercano a una mascota que tenemos en la U",
   "CORRE!",
-  "No te vayas sin tomar agüita, hace calor",
-  "Apúrate, que arranco!",
-  "¿Si prometen las pelis de hoy?",
-  "Con estas lluvias me iré en lancha",
-  "Hoy estás más guapo/a que ayer",
-  "Siempre tengo hambre",
-  "Hola, soy Laiky"
+  "Postúlenme como la mascota de la U, yo sí llego a tiempo.",
+  "¿Que hace un bus en el psicólogo? Buscando su ruta en la vida.",
+  "¿Cuál es el juego favorito de los buses? ¡El escondite en la hora pico!",
+  "¿Por qué el chofer del bus siempre está feliz? Porque tiene un publico que lo sigue a todas partes.",
+  "¿Hidrátate. Tu cerebro (y tu promedio) te lo van a agradecer.",
+  "¿Este examen no define tu futuro. ¡Sigue adelante!",
+  "¿Qué tienen en común los exámenes finales y los buses? Que ambos llegan cuando menos te lo esperas.",
+  "¿No te rindas! Si yo puedo seguir rodando, tú puedes seguir intentándolo.",
+  "Hola, soy Laiky",
+  "Respira profundo. Estás haciendo un gran trabajo, aunque hoy cueste verlo.",
+  "¿Saliendo con hambre? Revisá lo que ofrecen los Aliados.",
+  "Si algo me ha enseñado mi recorrido, es que cada parada es una oportunidad para mejorar. ¡Seguí adelante!",
+  "¿Ya viste que se estrena hoy en el cine de la U?"
 ];
 
-const BusLogo = ({ className = '', color = '#7e6ee6' }) => {
+const BusLogo = ({ className = '', color = 'var(--bus-logo-color)' }) => {
   const [isGreeting, setIsGreeting] = useState(true);
   const [message, setMessage] = useState('');
   const [isMessageVisible, setIsMessageVisible] = useState(false);
