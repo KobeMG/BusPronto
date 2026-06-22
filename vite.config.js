@@ -18,7 +18,7 @@ export default defineConfig({
         enabled: true,
         type: 'module',
       },
-      includeAssets: ['logo192x192.png', 'logo512x512.png', 'logo32x32.png', 'robots.txt', 'sitemap.xml', 'icons.svg'],
+      includeAssets: ['logo192x192.png', 'logo512x512.png', 'logo32x32.png', 'bus-logo.svg', 'robots.txt', 'sitemap.xml', 'icons.svg'],
       manifest: {
         name: 'BusPronto',
         short_name: 'BusPronto',
@@ -27,6 +27,12 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         icons: [
+          {
+            src: '/bus-logo.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'any'
+          },
           {
             src: '/logo192x192.png',
             sizes: '192x192',
