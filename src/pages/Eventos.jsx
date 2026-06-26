@@ -5,12 +5,12 @@ import useEmblaCarousel from 'embla-carousel-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import EventCard from '../components/ui/EventCard';
-import { useSemanaUQuery } from '../hooks/useSemanaUQuery';
+import { useEventsQuery } from '../hooks/useEventsQuery';
 import { groupEventsByDate, formatDate } from '../utils/eventosUtils';
 import styles from './Eventos.module.css';
 
 const Eventos = () => {
-    const { data: events, isLoading, error } = useSemanaUQuery();
+    const { data: events, isLoading, error } = useEventsQuery();
 
     // Obtener ID de evento de la URL si existe
     const sharedEventId = useMemo(() => {

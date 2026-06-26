@@ -21,11 +21,12 @@ import {
   updateEvent,
   deleteEvent,
   toggleEventVisibility,
-} from '../../services/semanaU.service';
+} from '../../services/events.service';
 import styles from '../../pages/Admin.module.css';
 
 const EMPTY_FORM = {
   title: '',
+  description: '',
   organizer: '',
   location: '',
   modality: 'Presencial',
@@ -87,6 +88,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
     setEditingId(event.id);
     setFormData({
       title: event.title || '',
+      description: event.description || '',
       organizer: event.organizer || '',
       location: event.location || '',
       modality: event.modality || 'Presencial',
@@ -120,6 +122,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
 
     const payload = {
       title: formData.title.trim(),
+      description: formData.description.trim() || null,
       organizer: formData.organizer.trim() || null,
       location: formData.location.trim() || null,
       modality: formData.modality,
@@ -360,6 +363,21 @@ const AdminEvents = ({ onStatsUpdate }) => {
                 value={formData.title}
                 onChange={(e) => handleFormChange('title', e.target.value)}
                 required
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="ev-description">
+                Descripción <span className={styles.optional}>(opcional)</span>
+              </label>
+              <textarea
+                id="ev-description"
+                className={styles.inputFieldNoIcon}
+                placeholder="Descripción detallada del evento..."
+                value={formData.description}
+                onChange={(e) => handleFormChange('description', e.target.value)}
+                rows={3}
+                style={{ resize: 'vertical', minHeight: '80px' }}
               />
             </div>
 

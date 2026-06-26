@@ -7,7 +7,7 @@ import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from './ui/ImageCarousel';
 import styles from './AddBubble.module.css';
 
-const ExpandedLogo = ({ logo, fallbackIcon, title }) => {
+const LogoOrIcon = ({ logo, fallbackIcon, title, className }) => {
   const [hasError, setHasError] = useState(false);
 
   if (logo && !hasError) {
@@ -15,7 +15,7 @@ const ExpandedLogo = ({ logo, fallbackIcon, title }) => {
       <img
         src={logo}
         alt={title}
-        className={styles.adLogoExpanded}
+        className={className}
         onError={() => setHasError(true)}
       />
     );
@@ -219,7 +219,7 @@ const AddBubble = () => {
           whileTap={{ scale: 0.95 }}
           onClick={() => { setIsOpen(true); setShowTooltip(false); }}
         >
-          {theme.icon}
+          <LogoOrIcon logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} className={styles.adLogoBubble} />
           {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
             <div className={styles.indicators}>
               {ad.whatsapp && (
@@ -250,7 +250,7 @@ const AddBubble = () => {
         >
           <div className={styles.cardHeader}>
             <div className={styles.iconWrapperExpanded}>
-              <ExpandedLogo logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} />
+              <LogoOrIcon logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} className={styles.adLogoExpanded} />
             </div>
             <button className={styles.closeBtn} onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}>
               <X size={20} />

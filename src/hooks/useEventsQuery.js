@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUniversityEvents } from '../services/semanaU.service';
+import { getUniversityEvents } from '../services/events.service';
 
-export const useSemanaUQuery = () => {
+export const useEventsQuery = () => {
     return useQuery({
         queryKey: ['universityEvents'],
         queryFn: getUniversityEvents,
