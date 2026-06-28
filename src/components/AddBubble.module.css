@@ -14,42 +14,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px var(--ad-theme-color), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  /* box-shadow: 0 8px 24px var(--ad-theme-color), inset 0 2px 4px rgba(255, 255, 255, 0.3); */
   cursor: grab;
   border: 2px solid rgba(255, 255, 255, 0.8);
   position: relative;
-}
-
-.indicators {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.indicator {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.uberIndicator {
-  background: #06C167;
-}
-
-.whatsappIndicator {
-  background: #25D366;
-}
-
-.mapsIndicator {
-  background: #4285F4;
 }
 
 .bubble:active {

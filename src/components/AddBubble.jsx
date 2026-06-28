@@ -220,25 +220,6 @@ const AddBubble = () => {
           onClick={() => { setIsOpen(true); setShowTooltip(false); }}
         >
           <LogoOrIcon logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} className={styles.adLogoBubble} />
-          {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
-            <div className={styles.indicators}>
-              {ad.whatsapp && (
-                <div className={`${styles.indicator} ${styles.whatsappIndicator}`} title="WhatsApp">
-                  <MessageCircle size={8} />
-                </div>
-              )}
-              {ad.uber_eats && (
-                <div className={`${styles.indicator} ${styles.uberIndicator}`} title="Uber Eats">
-                  <ShoppingBag size={8} />
-                </div>
-              )}
-              {ad.google_maps && (
-                <div className={`${styles.indicator} ${styles.mapsIndicator}`} title="Google Maps">
-                  <MapPin size={8} />
-                </div>
-              )}
-            </div>
-          )}
         </motion.div>
       ) : (
         <motion.div

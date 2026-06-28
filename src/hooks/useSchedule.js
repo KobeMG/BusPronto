@@ -21,17 +21,18 @@ export const useSchedule = (baseSchedule) => {
   const todayIndex = new Date().getDay();
   const todayName = DAYS_ES[todayIndex];
 
-  // Filtrar horarios que aplican para el día seleccionado
+  // Filtrar horarios: en vista 'timer' siempre usa día actual, en 'schedule' usa día seleccionado
+  const dayToFilter = view === 'timer' ? todayName : selectedDay;
+
   const schedule = useMemo(() => {
     return (baseSchedule || []).filter(s => {
       if (!s.days || !Array.isArray(s.days)) return true;
-      if (selectedDay === 'Lunes') {
-        // En nuestro DaySelector, 'Lunes' representa el bloque Lunes-Viernes
+      if (dayToFilter === 'Lunes') {
         return s.days.some(d => ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].includes(d));
       }
-      return s.days.includes(selectedDay);
+      return s.days.includes(dayToFilter);
     });
-  }, [baseSchedule, selectedDay]);
+  }, [baseSchedule, dayToFilter]);
 
   // Obtener el próximo bus solo si el día seleccionado es HOY para resaltarlo
   const { nextBus } = useMemo(() => {
