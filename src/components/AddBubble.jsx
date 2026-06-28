@@ -172,6 +172,7 @@ const AddBubble = () => {
   return (
     <motion.div
       className={styles.container}
+      data-clarity-mask="true"
       drag={!isOpen}
       dragConstraints={dragConstraints}
       dragMomentum={false}
