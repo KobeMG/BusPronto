@@ -57,9 +57,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Verificar rol de administrador en app_metadata
-    const role = user?.app_metadata?.role;
-    if (role !== 'admin') {
+    // Verificar rol de administrador en la tabla de roles
+    const { data: userRoles, error: roleError } = await supabaseAdmin
+      .from('user_roles')
+      .select('role:roles(name)')
+      .eq('user_id', user.id);
+
+    if (roleError || !userRoles?.some((r: any) => r.role?.name === 'admin')) {
       return new Response(JSON.stringify({ error: 'Acceso denegado: se requiere rol de administrador' }), {
         headers: { ...headers, 'Content-Type': 'application/json' },
         status: 403,

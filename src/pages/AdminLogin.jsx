@@ -46,6 +46,7 @@ const AdminLogin = () => {
             </div>
 
             <h1 className={styles.loginHeroTitle}>BusPronto</h1>
+            <h3 className={styles.loginHeroTitle}>por Kode Creative</h3>
             <p className={styles.loginHeroDescription}>
               Gestiona el sistema de información en tiempo real, envía avisos críticos y notificaciones push directas a los dispositivos de los pasajeros.
             </p>

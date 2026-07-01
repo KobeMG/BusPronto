@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2, Instagram, Mail, Linkedin, Globe, ExternalLink } from 'lucide-react';
+import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2, Instagram, Mail, Linkedin, Globe, ExternalLink, MessageSquare } from 'lucide-react';
 import { sileo } from 'sileo';
 import PageHeader from '../components/ui/PageHeader';
 import { InstallPWAModal } from '../components/InstallPWAModal';
 import { NotificationPromptModal } from '../components/NotificationPromptModal';
+import { SugerenciasModal } from '../components/SugerenciasModal';
 import { useNotifications } from '../hooks/useNotifications';
 import styles from './Configuracion.module.css';
 import { shareApp } from '../utils/shareUtils';
@@ -13,6 +14,7 @@ const Configuracion = () => {
     // Estado para modales
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isNotificationPromptOpen, setIsNotificationPromptOpen] = useState(false);
+    const [isSugerenciasOpen, setIsSugerenciasOpen] = useState(false);
 
     // Estado para la PWA
     const [isStandalone, setIsStandalone] = useState(false);
@@ -222,6 +224,26 @@ const Configuracion = () => {
                                 </button>
                             </div>
 
+                            <div className={styles.settingCard}>
+                                <div className={styles.settingInfo}>
+                                    <div className={`${styles.settingIcon} ${styles.primary}`}>
+                                        <MessageSquare size={24} />
+                                    </div>
+                                    <div className={styles.settingText}>
+                                        <h3 className={styles.settingTitle}>Opiniones y Sugerencias</h3>
+                                        <p className={styles.settingDescription}>
+                                            Ayúdenos a mejorar compartiendo su opinión o sugerencia sobre la app.
+                                        </p>
+                                    </div>
+                                </div>
+                                <button
+                                    className={styles.settingAction}
+                                    onClick={() => setIsSugerenciasOpen(true)}
+                                >
+                                    Escribir
+                                </button>
+                            </div>
+
                         </div>
                     </section>
 
@@ -298,6 +320,11 @@ const Configuracion = () => {
                 onClose={() => setIsNotificationPromptOpen(false)}
                 onAccept={handleAcceptNotifications}
                 loading={notificationsLoading}
+            />
+
+            <SugerenciasModal
+                isOpen={isSugerenciasOpen}
+                onClose={() => setIsSugerenciasOpen(false)}
             />
         </>
     );
