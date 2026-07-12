@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion as Motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, LogIn, BellRing, Navigation, Terminal } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import styles from './Admin.module.css';
 
@@ -30,73 +30,17 @@ const AdminLogin = () => {
 
   return (
     <div className={styles.adminPage}>
-      <div className={styles.loginSplitContainer}>
-        {/* Left Side: Hero Panel (visible on desktop) */}
-        <div className={styles.loginHeroPanel}>
-          <div className={styles.loginHeroGrid} />
-          <Motion.div
-            className={styles.loginHeroContent}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className={styles.loginHeroBadge}>
-              <Terminal size={14} />
-              <span>Consola del Administrador</span>
-            </div>
-
-            <h1 className={styles.loginHeroTitle}>BusPronto</h1>
-            <h3 className={styles.loginHeroTitle}>por Kode Creative</h3>
-            <p className={styles.loginHeroDescription}>
-              Gestiona el sistema de información en tiempo real, envía avisos críticos y notificaciones push directas a los dispositivos de los pasajeros.
-            </p>
-
-            <div className={styles.loginHeroFeatures}>
-              <Motion.div
-                className={styles.featureItem}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              >
-                <div className={styles.featureIconWrapper}>
-                  <BellRing size={20} />
-                </div>
-                <div>
-                  <h3 className={styles.featureTitle}>Notificaciones Push Instantáneas</h3>
-                  <p className={styles.featureText}>Envía alertas sobre cambios de rutas, horarios y emergencias directamente a la pantalla de bloqueo.</p>
-                </div>
-              </Motion.div>
-
-              <Motion.div
-                className={styles.featureItem}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-              >
-                <div className={styles.featureIconWrapper}>
-                  <Navigation size={20} />
-                </div>
-                <div>
-                  <h3 className={styles.featureTitle}>Control Total de Tránsito</h3>
-                  <p className={styles.featureText}>Modifica rutas y actualiza el estado de las paradas nacionales e internacionales.</p>
-                </div>
-              </Motion.div>
-            </div>
-          </Motion.div>
-        </div>
-
-        {/* Right Side: Form Panel */}
-        <div className={styles.loginFormPanel}>
-          <Motion.div
-            className={styles.loginCard}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <div className={styles.loginHeader}>
-              <h2 className={styles.loginTitle}>¡Hola de nuevo!</h2>
-              <p className={styles.loginSubtitle}>¿Cómo conquistaremos el mundo hoy?</p>
-            </div>
+      <div className={styles.loginFormPanel}>
+        <Motion.div
+          className={styles.loginCard}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div className={styles.loginHeader}>
+            <h2 className={styles.loginTitle}>¡Hola de nuevo!</h2>
+            <p className={styles.loginSubtitle}>¿Cómo conquistaremos el mundo hoy?</p>
+          </div>
 
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.field}>
@@ -186,8 +130,7 @@ const AdminLogin = () => {
                 )}
               </Motion.button>
             </form>
-          </Motion.div>
-        </div>
+        </Motion.div>
       </div>
     </div>
   );

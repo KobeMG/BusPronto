@@ -1,6 +1,6 @@
 import { getExternalStops, getExternalStopDetails } from './externalRoute.service';
 
-const SUPPORTED_ROUTES = ['alajuela', 'heredia', 'tibas'];
+const SUPPORTED_ROUTES = ['alajuela', 'heredia'];
 
 const registry = Object.fromEntries(
   SUPPORTED_ROUTES.map(route => [

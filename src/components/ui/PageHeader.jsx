@@ -22,7 +22,7 @@ const PageHeader = ({ title, icon, description, showBackButton = false, backUrl 
         )}
 
         {/* Title & Icon */}
-        <h1 className={styles.title} style={{ margin: 0, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 40px' }}>
+        <h1 className={styles.title} style={{ margin: 0, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 48px' }}>
           {icon && <span style={{ marginRight: '0.5rem', display: 'flex' }}>{icon}</span>}
           {title}
         </h1>

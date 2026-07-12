@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Bell } from 'lucide-react';
+import { ChevronRight, Bell, MessageSquare } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
 import BusLogo from '../components/ui/BusLogo';
@@ -8,11 +8,14 @@ import listStyles from '../components/ui/StopsList.module.css';
 import pageHeaderStyles from '../components/ui/PageHeader.module.css';
 import { useAlertsQuery } from '../hooks/useAlertsQuery';
 import AlertsModal from '../components/ui/AlertsModal';
+import { SugerenciasModal } from '../components/SugerenciasModal';
+import { shareApp } from '../utils/shareUtils';
 
 const Home = () => {
   const { data: alerts = [], isLoading, isError } = useAlertsQuery();
   const [isAlertsOpen, setIsAlertsOpen] = useState(false);
   const [hasUnseenAlerts, setHasUnseenAlerts] = useState(false);
+  const [isSugerenciasOpen, setIsSugerenciasOpen] = useState(false);
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -46,28 +49,28 @@ const Home = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
       </Helmet>
-      
+
       <div className="glass-card">
         <BusLogo className="home-logo" />
         <PageHeader
           title="BusPronto (UCR)"
           description={
             <>
-              <span style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '0.5rem' }}>I Ciclo 2026</span>
+              <span style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '0.5rem' }}>Interciclo 2026</span>
               Seleccione el tipo de consulta que desea realizar.
             </>
           }
           actionButton={
-              <button 
+            <button
               className={pageHeaderStyles.actionButton}
-              onClick={() => setIsAlertsOpen(true)} 
+              onClick={() => setIsAlertsOpen(true)}
               title="Alertas de Autobús"
               style={{ position: 'relative' }}
               id="alerts-bell-btn"
             >
               <Bell size={22} className={hasUnseenAlerts ? pageHeaderStyles.ring : ''} />
               {hasUnseenAlerts && (
-                <span 
+                <span
                   style={{
                     position: 'absolute',
                     top: '4px',
@@ -78,7 +81,7 @@ const Home = () => {
                     borderRadius: '50%',
                     border: '2px solid rgba(30, 35, 45, 0.95)',
                     boxShadow: '0 0 8px #ef4444'
-                  }} 
+                  }}
                   id="alerts-bell-badge"
                 />
               )}
@@ -100,6 +103,13 @@ const Home = () => {
             </div>
             <ChevronRight size={20} />
           </Link>
+
+          <button className={listStyles.stopLink} onClick={() => setIsSugerenciasOpen(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <MessageSquare size={20} />
+              <span>Enviar sugerencia</span>
+            </div>
+          </button>
         </div>
       </div>
 
@@ -110,6 +120,11 @@ const Home = () => {
         loading={isLoading}
         error={isError}
         onSeenUpdated={handleSeenUpdated}
+      />
+
+      <SugerenciasModal
+        isOpen={isSugerenciasOpen}
+        onClose={() => setIsSugerenciasOpen(false)}
       />
     </>
   );

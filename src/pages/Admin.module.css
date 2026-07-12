@@ -1,7 +1,6 @@
 /* Global Reset for Admin Page */
 .adminPage {
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 50%, #151821 0%, #0f1115 100%);
   color: var(--text-primary, #ffffff);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   position: relative;
@@ -15,7 +14,6 @@
   left: -10%;
   width: 40%;
   height: 40%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -27,168 +25,23 @@
   right: -10%;
   width: 40%;
   height: 40%;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
 /* ==========================================
-   SPLIT-SCREEN LOGIN LAYOUT
+   LOGIN FORM LAYOUT
    ========================================== */
 
-.loginSplitContainer {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-/* Hero Panel (Left Side) */
-.loginHeroPanel {
-  flex: 1.2;
-  background: linear-gradient(135deg, #090c10 0%, #161d2b 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 4rem 5rem;
-  position: relative;
-  overflow: hidden;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.loginHeroPanel::before {
-  content: '';
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15), transparent 40%),
-              radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.15), transparent 40%);
-  top: -50%;
-  left: -50%;
-  animation: backgroundDrift 20s infinite alternate linear;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes backgroundDrift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  100% { transform: translate(5%, 5%) rotate(5deg); }
-}
-
-/* Hero Panel Decorative Grid */
-.loginHeroGrid {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: center;
-  z-index: 1;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 90%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 90%);
-}
-
-.loginHeroContent {
-  position: relative;
-  z-index: 2;
-  max-width: 540px;
-}
-
-.loginHeroBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #60a5fa;
-  padding: 0.35rem 0.85rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
-}
-
-.loginHeroTitle {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, #ffffff 40%, #a5f3fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
-}
-
-.loginHeroDescription {
-  font-size: 1.125rem;
-  color: #94a3b8;
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
-}
-
-/* Feature Pillars in Login Hero */
-.loginHeroFeatures {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  width: 100%;
-}
-
-.featureItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 1rem;
-  transition: all 0.3s ease;
-}
-
-.featureItem:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(59, 130, 246, 0.2);
-  transform: translateX(4px);
-}
-
-.featureIconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 0.75rem;
-  color: #3b82f6;
-  flex-shrink: 0;
-}
-
-.featureTitle {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #f8fafc;
-  margin-bottom: 0.15rem;
-}
-
-.featureText {
-  font-size: 0.85rem;
-  color: #64748b;
-  line-height: 1.4;
-}
-
-/* Form Panel (Right Side) */
 .loginFormPanel {
-  flex: 0.9;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 3rem 2rem;
+  background: radial-gradient(circle at 50% 50%, #151821 0%, #0f1115 100%);
   position: relative;
+  z-index: 1;
 }
 
 .loginCard {
@@ -270,7 +123,7 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-.inputField:focus + .inputIcon {
+.inputField:focus+.inputIcon {
   color: #3b82f6;
 }
 
@@ -391,9 +244,20 @@
 }
 
 @keyframes pulseGreen {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
 
 .userInfoWrapper {
@@ -718,7 +582,7 @@
   background: #000000;
   border: 8px solid #27272a;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6),
-              0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 0 0 1px rgba(255, 255, 255, 0.05);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -813,8 +677,15 @@
 }
 
 @keyframes bannerSlideIn {
-  from { transform: translateY(-30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .notificationHeader {
@@ -899,23 +770,13 @@
    ========================================== */
 
 @media (max-width: 1024px) {
-  /* Collapse Login Split */
-  .loginHeroPanel {
-    display: none;
-  }
-  
-  .loginFormPanel {
-    flex: 1;
-    background: radial-gradient(circle at 50% 50%, #151821 0%, #0f1115 100%);
-  }
-
   /* Collapse Dashboard Grid */
   .dashboardGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .simulatorCard {
-    display: none; /* Hide device simulator on tablets/mobiles */
+    display: none;
   }
 }
 
@@ -1535,4 +1396,3 @@
   background: rgba(239, 68, 68, 0.2);
   border-color: rgba(239, 68, 68, 0.5);
 }
-

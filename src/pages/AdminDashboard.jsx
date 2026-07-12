@@ -17,6 +17,7 @@ import AdminPushNotifications from '../components/admin/AdminPushNotifications';
 import AdminEvents from '../components/admin/AdminEvents';
 import AdminAlerts from '../components/admin/AdminAlerts';
 import AdminSuggestions from '../components/admin/AdminSuggestions';
+import AdminSchedules from '../components/admin/AdminSchedules';
 import styles from './Admin.module.css';
 
 const MODULE_PERMISSIONS = {
@@ -24,6 +25,7 @@ const MODULE_PERMISSIONS = {
   events: 'module.events',
   alerts: 'module.alerts',
   suggestions: 'module.suggestions',
+  schedules: 'module.schedules',
 };
 
 const AdminDashboard = () => {
@@ -264,6 +266,16 @@ const AdminDashboard = () => {
               Alertas de Bus
             </button>
           )}
+          {hasPermission(MODULE_PERMISSIONS.schedules) && (
+            <button
+              id="tab-schedules"
+              className={`${styles.moduleTabBtn} ${activeModule === 'schedules' ? styles.moduleTabBtnActive : ''}`}
+              onClick={() => setRequestedModule('schedules')}
+            >
+              <CalendarDays size={15} />
+              Horarios
+            </button>
+          )}
           {hasPermission(MODULE_PERMISSIONS.suggestions) && (
             <button
               id="tab-suggestions"
@@ -344,6 +356,18 @@ const AdminDashboard = () => {
               <AdminSuggestions
                 onStatsUpdate={(suggestions) => setStats((s) => ({ ...s, suggestions }))}
               />
+            </Motion.div>
+          )}
+
+          {activeModule === 'schedules' && hasPermission(MODULE_PERMISSIONS.schedules) && (
+            <Motion.div
+              key="schedules"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+            >
+              <AdminSchedules />
             </Motion.div>
           )}
         </AnimatePresence>

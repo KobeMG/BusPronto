@@ -1,23 +1,13 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Star } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { useInternalStopsQuery } from '../hooks/useInternalStopsQuery';
-import { useFavorites } from '../contexts/FavoritesContext';
 import PageHeader from '../components/ui/PageHeader';
 import listStyles from '../components/ui/StopsList.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const InternalRoutes = () => {
-  const { favorites } = useFavorites();
   const { data: stops = [], isLoading } = useInternalStopsQuery();
-
-  const sortedStops = [...stops].sort((a, b) => {
-    const aFav = favorites.includes(a.internal_id || a.id);
-    const bFav = favorites.includes(b.internal_id || b.id);
-    if (aFav && !bFav) return -1;
-    if (!aFav && bFav) return 1;
-    return 0;
-  });
 
   return (
     <>
@@ -42,13 +32,10 @@ const InternalRoutes = () => {
         <div className={listStyles.stopList}>
           {isLoading ? (
             <LoadingSpinner text="Cargando paradas..." />
-          ) : sortedStops.length > 0 ? (
-            sortedStops.map((stop) => (
-              <Link to={`/rutas-internas/parada/${stop.internal_id || stop.id}`} key={stop.id} className={listStyles.stopLink} style={{ position: 'relative' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  {favorites.includes(stop.internal_id || stop.id) && <Star size={16} fill="#f59e0b" color="#f59e0b" />}
-                  <span>{stop.name}</span>
-                </div>
+          ) : stops.length > 0 ? (
+            stops.map((stop) => (
+              <Link to={`/rutas-internas/parada/${stop.internal_id || stop.id}`} key={stop.id} className={listStyles.stopLink}>
+                <span>{stop.name}</span>
                 <ChevronRight size={20} />
               </Link>
             ))

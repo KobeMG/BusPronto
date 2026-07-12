@@ -8,7 +8,6 @@ import ExternalStopsList from './pages/ExternalStopsList';
 import BusStop from './pages/BusStop';
 import ExternalBusStop from './pages/ExternalBusStop';
 import Eventos from './pages/Eventos';
-import { FavoritesProvider } from './contexts/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 import UpdatePrompt from './components/UpdatePrompt';
 
@@ -25,8 +24,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <FavoritesProvider>
-        <Router>
+      <Router>
           <Routes>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
@@ -48,7 +46,6 @@ function App() {
         </Router>
         {/* Prompt de actualización: aparece cuando hay una nueva versión del SW */}
         <UpdatePrompt />
-      </FavoritesProvider>
     </QueryClientProvider>
   );
 }

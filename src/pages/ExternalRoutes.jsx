@@ -40,14 +40,6 @@ const ExternalRoutes = () => {
             </div>
             <ChevronRight size={20} />
           </Link>
-
-          <Link to={'/rutas-externas/tibas'} className={listStyles.stopLink} style={{ opacity: 1, pointerEvents: 'auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Tibás</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
         </div>
       </div>
     </>

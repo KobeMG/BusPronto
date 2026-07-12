@@ -39,24 +39,6 @@
   background: var(--surface-color);
 }
 
-.favoriteButton {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.favoriteButton:hover {
-  background: var(--surface-color);
-}
-
 .stopName {
   font-size: 1.5rem;
   font-weight: 600;

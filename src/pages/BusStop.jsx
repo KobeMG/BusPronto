@@ -1,8 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuery';
-import { useFavorites } from '../contexts/FavoritesContext';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
 import styles from '../components/ui/PageHeader.module.css';
@@ -19,7 +17,6 @@ import { useSchedule } from '../hooks/useSchedule';
 const BusStop = () => {
   const { stopId } = useParams();
   const navigate = useNavigate();
-  const { isFavorite, toggleFavorite } = useFavorites();
 
   const { data: stopData, isLoading } = useInternalStopDetailsQuery(stopId);
   
@@ -31,7 +28,6 @@ const BusStop = () => {
     todayName 
   } = useSchedule(stopData?.formattedSchedules);
 
-  const isFav = isFavorite(stopId);
   const stopName = stopData?.name || stopId?.replace('_', ' ');
 
   if (isLoading) {
@@ -80,11 +76,6 @@ const BusStop = () => {
         }
         showBackButton={true}
         backUrl="/rutas-internas"
-        actionButton={
-          <button className={styles.favoriteButton} onClick={() => toggleFavorite(stopId, stopName)}>
-            <Star size={24} fill={isFav ? '#f59e0b' : 'transparent'} color={isFav ? '#f59e0b' : 'var(--text-secondary)'} />
-          </button>
-        }
       />
 
       <ViewToggle activeView={view} onViewChange={setView} />
