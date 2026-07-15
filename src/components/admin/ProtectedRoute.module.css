@@ -1,0 +1,31 @@
+.loadingScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #151821 0%, #0f1115 100%);
+  color: var(--text-primary, #fff);
+  gap: 1.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(59, 130, 246, 0.1);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+.loadingText {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #94a3b8);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

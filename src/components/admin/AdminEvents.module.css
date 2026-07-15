@@ -1,0 +1,480 @@
+/* Events module layout */
+.eventsModule {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Shared card header (duplicated from composer — ponytail: self-contained file) */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #f8fafc;
+}
+
+/* Shared form primitives (duplicated — ponytail: self-contained file) */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.optional {
+  color: #64748b;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.resultTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.resultSuccess {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: #34d399;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.resultSuccess p {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.resultError {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: #f87171;
+  font-size: 0.85rem;
+}
+
+/* Events list panel (left column) */
+.eventsListPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.eventsCount {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.eventsListScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-right: 0.25rem;
+}
+
+.eventRow {
+  background: rgba(15, 17, 21, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.eventRow:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  background: rgba(26, 29, 36, 0.6);
+}
+
+.eventRowEditing {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.eventRowTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.eventRowMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.eventRowTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventRowDates {
+  font-size: 0.75rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.eventRowActions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.visibilityToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.visibilityToggle.visible {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.visibilityToggle.hidden {
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.visibilityToggle:hover {
+  opacity: 0.8;
+}
+
+.editBtn {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.deleteBtn {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.eventRowBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.modalityBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  text-transform: capitalize;
+}
+
+.activeBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.08);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.18);
+}
+
+.inactiveBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.18);
+}
+
+.emptyEventsState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.emptyEventsState p {
+  font-size: 0.9rem;
+}
+
+/* Event form (right column / create + edit) */
+.eventFormCard {
+  background: rgba(26, 29, 36, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: sticky;
+  top: 1.5rem;
+}
+
+.eventFormHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.eventFormTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #f8fafc;
+}
+
+.cancelEditBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.cancelEditBtn:hover {
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.eventForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.eventFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.inputFieldNoIcon {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: rgba(15, 17, 21, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.25s ease;
+}
+
+.inputFieldNoIcon:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: rgba(15, 17, 21, 0.9);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.selectField {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: rgba(15, 17, 21, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  transition: all 0.25s ease;
+}
+
+.selectField:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.selectField option {
+  background: #1a1d24;
+  color: #ffffff;
+}
+
+.checkboxRow {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.eventSubmitBtn {
+  background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+  font-family: inherit;
+  margin-top: 0.25rem;
+}
+
+.eventSubmitBtn:hover:not(:disabled) {
+  opacity: 0.92;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+
+.eventSubmitBtn:disabled {
+  background: #334155;
+  color: #64748b;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Spinners (replaced Framer Motion rotate animation with CSS) */
+.spinnerLg {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinnerSm {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive — events module */
+@media (max-width: 1024px) {
+  .eventsModule {
+    grid-template-columns: 1fr;
+  }
+
+  .eventFormCard {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .eventFormGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -22,7 +22,8 @@ import {
   deleteEvent,
   toggleEventVisibility,
 } from '../../services/events.service';
-import styles from '../../pages/Admin.module.css';
+import styles from './AdminEvents.module.css';
+import DeleteConfirmModal from './DeleteConfirmModal';
 
 const EMPTY_FORM = {
   title: '',
@@ -236,11 +237,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
           <div className={styles.eventsListScroll}>
             {loading ? (
               <div className={styles.emptyEventsState}>
-                <Motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                  style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: '#3b82f6' }}
-                />
+                <div className={styles.spinnerLg} />
                 <p>Cargando eventos...</p>
               </div>
             ) : error ? (
@@ -259,10 +256,8 @@ const AdminEvents = ({ onStatsUpdate }) => {
               </div>
             ) : (
               events.map((event) => (
-                <Motion.div
+                <div
                   key={event.id}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
                   className={`${styles.eventRow} ${editingId === event.id ? styles.eventRowEditing : ''}`}
                 >
                   <div className={styles.eventRowTop}>
@@ -324,7 +319,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
                       </span>
                     )}
                   </div>
-                </Motion.div>
+                </div>
               ))
             )}
           </div>
@@ -516,11 +511,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
             >
               {saving ? (
                 <>
-                  <Motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                    style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)', borderTopColor: '#fff' }}
-                  />
+                  <div className={styles.spinnerSm} />
                   Guardando...
                 </>
               ) : editingId ? (
@@ -539,47 +530,14 @@ const AdminEvents = ({ onStatsUpdate }) => {
 
       <AnimatePresence>
         {deleteTarget && (
-          <Motion.div
-            className={styles.deleteConfirmOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setDeleteTarget(null)}
+          <DeleteConfirmModal
+            title="Eliminar Evento"
+            onConfirm={handleDeleteConfirm}
+            onCancel={() => setDeleteTarget(null)}
           >
-            <Motion.div
-              className={styles.deleteConfirmModal}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className={styles.deleteConfirmTitle}>
-                <AlertTriangle size={18} style={{ color: '#f87171' }} />
-                Eliminar Evento
-              </div>
-              <p className={styles.deleteConfirmText}>
-                ¿Seguro que deseas eliminar <strong style={{ color: '#f1f5f9' }}>"{deleteTarget.title}"</strong>?
-                Esta acción no se puede deshacer.
-              </p>
-              <div className={styles.deleteConfirmActions}>
-                <button
-                  id="delete-cancel"
-                  className={styles.deleteConfirmCancel}
-                  onClick={() => setDeleteTarget(null)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  id="delete-confirm"
-                  className={styles.deleteConfirmDelete}
-                  onClick={handleDeleteConfirm}
-                >
-                  <Trash2 size={14} style={{ display: 'inline', marginRight: 4 }} />
-                  Eliminar
-                </button>
-              </div>
-            </Motion.div>
-          </Motion.div>
+            ¿Seguro que deseas eliminar <strong style={{ color: '#f1f5f9' }}>"{deleteTarget.title}"</strong>?
+            Esta acción no se puede deshacer.
+          </DeleteConfirmModal>
         )}
       </AnimatePresence>
     </>

@@ -286,85 +286,6 @@
   color: #fff;
 }
 
-/* Modals */
-.deleteConfirmOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.deleteConfirmModal {
-  background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.deleteConfirmTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #f1f5f9;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.deleteConfirmText {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-}
-
-.deleteConfirmActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
-.deleteConfirmCancel {
-  background: rgba(255, 255, 255, 0.05);
-  color: #f1f5f9;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.deleteConfirmCancel:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.deleteConfirmDelete {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.deleteConfirmDelete:hover {
-  background: #dc2626;
-}
-
 .resultSuccess {
   background: rgba(34, 197, 94, 0.1);
   border: 1px solid rgba(34, 197, 94, 0.2);
@@ -387,4 +308,27 @@
   gap: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* Spinners (replaced Framer Motion rotate animation with CSS) */
+.spinnerLg {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinnerSm {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

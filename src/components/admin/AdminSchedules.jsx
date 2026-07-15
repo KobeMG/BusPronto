@@ -4,7 +4,6 @@ import {
   CalendarDays,
   Plus,
   Trash2,
-  AlertTriangle,
   CheckCircle2,
   XCircle,
   X,
@@ -21,6 +20,7 @@ import {
   deleteSchedule
 } from '../../services/schedules.service';
 import styles from './AdminSchedules.module.css';
+import DeleteConfirmModal from './DeleteConfirmModal';
 
 const DAYS_OF_WEEK = [
   'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'
@@ -73,7 +73,6 @@ const AdminSchedules = () => {
   const [loadingSchedules, setLoadingSchedules] = useState(false);
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   // Form State
@@ -96,7 +95,7 @@ const AdminSchedules = () => {
         setSystems(sysData);
         setStops(stopsData);
       } catch (err) {
-        setError('Error al cargar datos iniciales.');
+        setResult({ error: err.message || 'Error al cargar datos iniciales.' });
       } finally {
         setLoadingInitial(false);
       }
@@ -110,8 +109,8 @@ const AdminSchedules = () => {
         setRoutes(data);
         setSelectedRoute('');
         setSchedules([]);
-      }).catch(err => {
-        setError('Error al cargar las rutas.');
+      }).catch((err) => {
+        setResult({ error: err.message || 'Error al cargar las rutas.' });
       });
     } else {
       setRoutes([]);
@@ -127,7 +126,7 @@ const AdminSchedules = () => {
       const data = await getSchedulesByRoute(routeId);
       setSchedules(data);
     } catch (err) {
-      setError('Error al cargar horarios.');
+      setResult({ error: err.message || 'Error al cargar horarios.' });
     } finally {
       setLoadingSchedules(false);
     }
@@ -265,11 +264,7 @@ const AdminSchedules = () => {
   if (loadingInitial) {
     return (
       <div className={styles.emptyState}>
-        <Motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-          style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: '#3b82f6' }}
-        />
+        <div className={styles.spinnerLg} />
         <p>Cargando sistemas de transporte...</p>
       </div>
     );
@@ -328,12 +323,8 @@ const AdminSchedules = () => {
           <div className={styles.schedulesListScroll}>
             {loadingSchedules ? (
               <div className={styles.emptyState}>
-                 <Motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                  style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: '#3b82f6' }}
-                />
-                <p>Cargando horarios...</p>
+                 <div className={styles.spinnerLg} />
+                 <p>Cargando horarios...</p>
               </div>
             ) : !selectedRoute ? (
                <div className={styles.emptyState}>
@@ -347,10 +338,8 @@ const AdminSchedules = () => {
               </div>
             ) : (
               schedules.map(schedule => (
-                <Motion.div
+                <div
                   key={schedule.id}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
                   className={styles.scheduleRow}
                 >
                   <div className={styles.scheduleInfo}>
@@ -373,7 +362,7 @@ const AdminSchedules = () => {
                       <Trash2 size={14} />
                     </button>
                   </div>
-                </Motion.div>
+                </div>
               ))
             )}
           </div>
@@ -504,11 +493,7 @@ const AdminSchedules = () => {
             >
               {saving ? (
                 <>
-                  <Motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                    style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)', borderTopColor: '#fff' }}
-                  />
+                  <div className={styles.spinnerSm} />
                   Guardando...
                 </>
               ) : (
@@ -523,44 +508,13 @@ const AdminSchedules = () => {
 
       <AnimatePresence>
         {deleteTarget && (
-          <Motion.div
-            className={styles.deleteConfirmOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setDeleteTarget(null)}
+          <DeleteConfirmModal
+            title="Eliminar Horario"
+            onConfirm={handleDeleteConfirm}
+            onCancel={() => setDeleteTarget(null)}
           >
-            <Motion.div
-              className={styles.deleteConfirmModal}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className={styles.deleteConfirmTitle}>
-                <AlertTriangle size={18} style={{ color: '#f87171' }} />
-                Eliminar Horario
-              </div>
-              <p className={styles.deleteConfirmText}>
-                ¿Seguro que deseas eliminar el horario de las <strong style={{ color: '#f1f5f9' }}>{formatTime(deleteTarget.departure_time)}</strong>?
-              </p>
-              <div className={styles.deleteConfirmActions}>
-                <button
-                  className={styles.deleteConfirmCancel}
-                  onClick={() => setDeleteTarget(null)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  className={styles.deleteConfirmDelete}
-                  onClick={handleDeleteConfirm}
-                >
-                  <Trash2 size={14} style={{ display: 'inline', marginRight: 4 }} />
-                  Eliminar
-                </button>
-              </div>
-            </Motion.div>
-          </Motion.div>
+            ¿Seguro que deseas eliminar el horario de las <strong style={{ color: '#f1f5f9' }}>{formatTime(deleteTarget.departure_time)}</strong>?
+          </DeleteConfirmModal>
         )}
       </AnimatePresence>
     </>

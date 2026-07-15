@@ -10,10 +10,10 @@ import {
   Clock,
   RotateCcw,
   RefreshCw,
-  AlertTriangle,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 import styles from './AdminSuggestions.module.css';
+import DeleteConfirmModal from './DeleteConfirmModal';
 
 const AdminSuggestions = ({ onStatsUpdate }) => {
   const onStatsUpdateRef = useRef(onStatsUpdate);
@@ -239,44 +239,13 @@ const AdminSuggestions = ({ onStatsUpdate }) => {
 
       <AnimatePresence>
         {deleteTarget && (
-          <Motion.div
-            className={styles.deleteConfirmOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setDeleteTarget(null)}
+          <DeleteConfirmModal
+            title="Eliminar Sugerencia"
+            onConfirm={handleDeleteConfirm}
+            onCancel={() => setDeleteTarget(null)}
           >
-            <Motion.div
-              className={styles.deleteConfirmModal}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className={styles.deleteConfirmTitle}>
-                <AlertTriangle size={18} style={{ color: '#f87171' }} />
-                Eliminar Sugerencia
-              </div>
-              <p className={styles.deleteConfirmText}>
-                ¿Seguro que deseas eliminar esta sugerencia? Esta acción no se puede deshacer.
-              </p>
-              <div className={styles.deleteConfirmActions}>
-                <button
-                  className={styles.deleteConfirmCancel}
-                  onClick={() => setDeleteTarget(null)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  className={styles.deleteConfirmDelete}
-                  onClick={handleDeleteConfirm}
-                >
-                  <Trash2 size={14} style={{ display: 'inline', marginRight: 4 }} />
-                  Eliminar
-                </button>
-              </div>
-            </Motion.div>
-          </Motion.div>
+            ¿Seguro que deseas eliminar esta sugerencia? Esta acción no se puede deshacer.
+          </DeleteConfirmModal>
         )}
       </AnimatePresence>
     </>

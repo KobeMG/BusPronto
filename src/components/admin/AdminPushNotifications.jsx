@@ -10,7 +10,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
-import styles from '../../pages/Admin.module.css';
+import styles from './AdminPushNotifications.module.css';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
@@ -125,12 +125,7 @@ const AdminPushNotifications = ({ onResult }) => {
 
   return (
     <div className={styles.dashboardGrid}>
-      <Motion.div
-        className={styles.card}
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
+      <div className={styles.card}>
         <div className={styles.cardHeader}>
           <h2 className={styles.cardTitle}>
             <Sparkles size={18} style={{ color: '#60a5fa' }} />
@@ -142,16 +137,14 @@ const AdminPushNotifications = ({ onResult }) => {
           <span className={styles.sectionLabel}>Plantillas rápidas</span>
           <div className={styles.templatesList}>
             {TEMPLATES.map((tpl, i) => (
-              <Motion.button
+              <button
                 key={i}
                 type="button"
                 onClick={() => handleApplyTemplate(tpl.title, tpl.body, tpl.url)}
                 className={styles.templateBtn}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
                 {tpl.label}
-              </Motion.button>
+              </button>
             ))}
           </div>
         </div>
@@ -241,26 +234,14 @@ const AdminPushNotifications = ({ onResult }) => {
             )}
           </AnimatePresence>
 
-          <Motion.button
+          <button
             type="submit"
             className={styles.submitBtn}
             disabled={sending}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
           >
             {sending ? (
               <>
-                <Motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: '50%',
-                    border: '2px solid rgba(255, 255, 255, 0.2)',
-                    borderTopColor: '#ffffff',
-                  }}
-                />
+                <div className={styles.spinnerMd} />
                 <span>Procesando envíos en la cola...</span>
               </>
             ) : (
@@ -269,16 +250,11 @@ const AdminPushNotifications = ({ onResult }) => {
                 <span>Enviar Notificación Directa</span>
               </>
             )}
-          </Motion.button>
+          </button>
         </form>
-      </Motion.div>
+      </div>
 
-      <Motion.div
-        className={`${styles.card} ${styles.simulatorCard}`}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
+      <div className={`${styles.card} ${styles.simulatorCard}`}>
         <span className={styles.simulatorLabel}>Previsualización en móvil</span>
 
         <div className={styles.phoneFrame}>
@@ -338,7 +314,7 @@ const AdminPushNotifications = ({ onResult }) => {
             </div>
           </div>
         </div>
-      </Motion.div>
+      </div>
     </div>
   );
 };
