@@ -40,10 +40,10 @@ const Home = () => {
     <>
       <Helmet>
         <title>BusPronto – Horarios Bus UCR en Tiempo Real | Rutas Internas y Externas</title>
-        <meta name="description" content="Consulta el próximo bus UCR en tiempo real. Horarios del bus interno UCR and bus externo UCR a Alajuela y Heredia. Cronómetro en vivo para no perder tu bus." />
+        <meta name="description" content="Consulta el próximo bus UCR en tiempo real. Horarios del bus interno UCR y bus externo UCR a Alajuela, Heredia y Alajuelita. Cronómetro en vivo para no perder tu bus." />
         <link rel="canonical" href="https://www.buspronto.lat/" />
         <meta property="og:title" content="BusPronto – Horarios Bus UCR en Tiempo Real" />
-        <meta property="og:description" content="Consulta el próximo bus UCR en tiempo real. Bus interno UCR y bus externo UCR a Alajuela y Heredia. Cronómetro en vivo." />
+        <meta property="og:description" content="Consulta el próximo bus UCR en tiempo real. Bus interno UCR y bus externo UCR a Alajuela, Heredia y Alajuelita. Cronómetro en vivo." />
         <meta property="og:url" content="https://www.buspronto.lat/" />
         <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />

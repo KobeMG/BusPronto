@@ -93,16 +93,7 @@ const Eventos = () => {
                 title="Agenda de Eventos"
                 description={
                     <>
-                        Consulte las redes de la{" "}
-                        <a
-                            href="https://www.instagram.com/feucr/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}
-                        >
-                            FEUCR
-                        </a>{" "}
-                        para más información
+                        La UCR no es solo estudiar, también es disfrutar de eventos.
                     </>
                 }
                 showBackButton={true}

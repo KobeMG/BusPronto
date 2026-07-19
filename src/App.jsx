@@ -24,6 +24,8 @@ const AdminIndex = lazy(() => import('./components/admin/AdminLayout').then(m =>
 const AdminPushNotifications = lazy(() => import('./components/admin/AdminPushNotifications'));
 const AdminEvents = lazy(() => import('./components/admin/AdminEvents'));
 const AdminAlerts = lazy(() => import('./components/admin/AdminAlerts'));
+const AdminCinema = lazy(() => import('./components/admin/AdminCinema'));
+const AdminAliads = lazy(() => import('./components/admin/AdminAliads'));
 const AdminSuggestions = lazy(() => import('./components/admin/AdminSuggestions'));
 const AdminSchedules = lazy(() => import('./components/admin/AdminSchedules'));
 const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute'));
@@ -57,6 +59,8 @@ function App() {
               <Route path="notifications" element={<AdminPushNotifications />} />
               <Route path="events" element={<AdminEvents />} />
               <Route path="alerts" element={<AdminAlerts />} />
+              <Route path="cinema" element={<AdminCinema />} />
+              <Route path="aliados" element={<AdminAliads />} />
               <Route path="schedules" element={<AdminSchedules />} />
               <Route path="suggestions" element={<AdminSuggestions />} />
             </Route>

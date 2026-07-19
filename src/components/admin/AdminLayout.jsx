@@ -1,14 +1,16 @@
 import { useState, useEffect, Suspense } from 'react';
 import { NavLink, Outlet, useNavigate, Navigate } from 'react-router-dom';
 import {
-  Bell, CalendarDays, Send, MessageSquare, Clock,
-  LogOut, Menu, X, Activity, ShieldAlert,
+  Bell, CalendarDays, Send, MessageSquare, Clock, Film,
+  LogOut, Menu, X, Activity, ShieldAlert, Store,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 import { usePermissions } from '../../hooks/usePermissions';
 import styles from './AdminLayout.module.css';
 
 const MODULE_PERMISSIONS = {
+  cinema: 'module.cinema',
+  aliados: 'module.aliados',
   notifications: 'module.notifications',
   events: 'module.events',
   alerts: 'module.alerts',
@@ -17,6 +19,8 @@ const MODULE_PERMISSIONS = {
 };
 
 const NAV_ITEMS = [
+  { key: 'cinema', label: 'Cine', icon: Film },
+  { key: 'aliados', label: 'Aliados', icon: Store },
   { key: 'notifications', label: 'Notificaciones Push', icon: Send },
   { key: 'events', label: 'Eventos', icon: CalendarDays },
   { key: 'alerts', label: 'Notificaciones', icon: Bell },
