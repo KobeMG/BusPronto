@@ -8,11 +8,11 @@ const ExternalRoutes = () => {
   return (
     <>
       <Helmet>
-        <title>Bus Externo UCR – Horarios Alajuela, Heredia y Alajuelita | BusPronto</title>
-        <meta name="description" content="Horarios del bus externo UCR a Alajuela, Heredia y Alajuelita en tiempo real. Selecciona tu destino y ve cuánto falta para el próximo bus externo." />
+        <title>Bus Externo UCR – Horarios Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios y Pavas | BusPronto</title>
+        <meta name="description" content="Horarios del bus externo UCR a Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios y Pavas en tiempo real. Selecciona tu destino y ve cuánto falta para el próximo bus externo." />
         <link rel="canonical" href="https://www.buspronto.lat/rutas-externas" />
-        <meta property="og:title" content="Bus Externo UCR – Horarios Alajuela, Heredia y Alajuelita | BusPronto" />
-        <meta property="og:description" content="Horarios del bus externo UCR a Alajuela, Heredia y Alajuelita en tiempo real. Cronómetro en vivo." />
+        <meta property="og:title" content="Bus Externo UCR – Horarios Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios y Pavas | BusPronto" />
+        <meta property="og:description" content="Horarios del bus externo UCR a Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios y Pavas en tiempo real. Cronómetro en vivo." />
         <meta property="og:url" content="https://www.buspronto.lat/rutas-externas" />
         <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -44,6 +44,34 @@ const ExternalRoutes = () => {
           <Link to={'/rutas-externas/alajuelita'} className={listStyles.stopLink}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span>Alajuelita</span>
+            </div>
+            <ChevronRight size={20} />
+          </Link>
+
+          <Link to={'/rutas-externas/coronado'} className={listStyles.stopLink}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span>Coronado</span>
+            </div>
+            <ChevronRight size={20} />
+          </Link>
+
+          <Link to={'/rutas-externas/desamparados'} className={listStyles.stopLink}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span>Desamparados</span>
+            </div>
+            <ChevronRight size={20} />
+          </Link>
+
+          <Link to={'/rutas-externas/sanjuandedios'} className={listStyles.stopLink}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span>San Juan de Dios</span>
+            </div>
+            <ChevronRight size={20} />
+          </Link>
+
+          <Link to={'/rutas-externas/pavas'} className={listStyles.stopLink}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span>Pavas</span>
             </div>
             <ChevronRight size={20} />
           </Link>

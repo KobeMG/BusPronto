@@ -1,9 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { MapPin } from 'lucide-react';
 import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuery';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
 import styles from '../components/ui/PageHeader.module.css';
+import eventCardStyles from '../components/ui/EventCard.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 // Componentes UI
@@ -72,6 +74,11 @@ const BusStop = () => {
             <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '0.25rem', WebkitTextFillColor: 'initial' }}>
               Tarifa: GRATUITO
             </span>
+            {stopData?.address?.trim() && (
+              <a href={stopData.address} target="_blank" rel="noopener noreferrer" className={eventCardStyles.detailActionBtn} style={{ marginTop: '0.5rem' }}>
+                <MapPin size={15} /> Ver ubicación
+              </a>
+            )}
           </span>
         }
         showBackButton={true}

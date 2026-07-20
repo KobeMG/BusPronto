@@ -28,7 +28,7 @@ export const getExternalStops = async (route) => {
 export const getExternalStopDetails = async (route, stopId) => {
   try {
     const isNumeric = /^\d+$/.test(stopId);
-    let query = supabase.from('stops').select('id, name, internal_id');
+    let query = supabase.from('stops').select('id, name, internal_id, address');
 
     if (isNumeric) {
       query = query.or(`id.eq.${stopId},internal_id.eq.${stopId}`);
@@ -67,6 +67,7 @@ export const getExternalStopDetails = async (route, stopId) => {
       id: stopData.id,
       name: stopData.name,
       internal_id: stopData.internal_id,
+      address: stopData.address,
       formattedSchedules: Array.from(uniqueTimes.values()),
     };
   } catch (err) {
