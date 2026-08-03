@@ -1,8 +1,8 @@
-import { useState, useEffect, Suspense } from 'react';
+import { createElement, useState, useEffect, Suspense } from 'react';
 import { NavLink, Outlet, useNavigate, Navigate } from 'react-router-dom';
 import {
   Bell, CalendarDays, Send, MessageSquare, Clock, Film,
-  LogOut, Menu, X, Activity, ShieldAlert, Store,
+  LogOut, Menu, X, Activity, ShieldAlert, Store, Users, KeyRound,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 import { usePermissions } from '../../hooks/usePermissions';
@@ -16,6 +16,7 @@ const MODULE_PERMISSIONS = {
   alerts: 'module.alerts',
   schedules: 'module.schedules',
   suggestions: 'module.suggestions',
+  users: 'module.users',
 };
 
 const NAV_ITEMS = [
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
   { key: 'alerts', label: 'Notificaciones', icon: Bell },
   { key: 'schedules', label: 'Horarios', icon: Clock },
   { key: 'suggestions', label: 'Sugerencias', icon: MessageSquare },
+  { key: 'users', label: 'Usuarios', icon: Users },
 ];
 
 /** Index route: redirige al primer módulo con permiso */
@@ -100,7 +102,7 @@ const AdminLayout = () => {
         <nav className={styles.nav}>
           {NAV_ITEMS
             .filter(({ key }) => hasPermission(MODULE_PERMISSIONS[key]))
-            .map(({ key, label, icon: Icon }) => (
+            .map(({ key, label, icon }) => (
               <NavLink
                 key={key}
                 to={`/admin/${key}`}
@@ -109,7 +111,7 @@ const AdminLayout = () => {
                 }
                 onClick={() => setSidebarOpen(false)}
               >
-                <Icon size={17} />
+                {createElement(icon, { size: 17 })}
                 <span>{label}</span>
                 {key === 'suggestions' && pendingSuggestions > 0 && (
                   <span className={styles.badge}>{pendingSuggestions}</span>
@@ -124,6 +126,16 @@ const AdminLayout = () => {
             <span className={styles.userEmail}>{userEmail || '...'}</span>
             {roleName && <span className={styles.roleBadge}>{roleName}</span>}
           </div>
+          <NavLink
+            to="/admin/password"
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.navItemActive : ''}`
+            }
+            onClick={() => setSidebarOpen(false)}
+          >
+            <KeyRound size={16} />
+            <span>Cambiar contraseña</span>
+          </NavLink>
           <button onClick={handleLogout} className={styles.logoutBtn}>
             <LogOut size={15} />
             <span>Cerrar sesión</span>

@@ -28,6 +28,8 @@ const AdminCinema = lazy(() => import('./components/admin/AdminCinema'));
 const AdminAliads = lazy(() => import('./components/admin/AdminAliads'));
 const AdminSuggestions = lazy(() => import('./components/admin/AdminSuggestions'));
 const AdminSchedules = lazy(() => import('./components/admin/AdminSchedules'));
+const AdminUsers = lazy(() => import('./components/admin/AdminUsers'));
+const AdminPassword = lazy(() => import('./components/admin/AdminPassword'));
 const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute'));
 
 const AdminFallback = () => (
@@ -63,6 +65,8 @@ function App() {
               <Route path="aliados" element={<AdminAliads />} />
               <Route path="schedules" element={<AdminSchedules />} />
               <Route path="suggestions" element={<AdminSuggestions />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="password" element={<AdminPassword />} />
             </Route>
             <Route path="/qr/:stopId" element={<QrRedirect />} />
             <Route element={<MainLayout />}>
