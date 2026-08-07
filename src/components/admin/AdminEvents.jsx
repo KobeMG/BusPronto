@@ -38,15 +38,23 @@ const EMPTY_FORM = {
   registration_link: '',
   is_visible: true,
   is_active: true,
+  recurrence_days: [],
 };
 
-const formatDateRange = (start, finish) => {
+const formatDateRange = (start, finish, recurrenceDays) => {
   if (!start) return '\u2014';
   const opts = { day: 'numeric', month: 'short', timeZone: 'UTC' };
   const s = new Date(start + 'T12:00:00').toLocaleDateString('es-CR', opts);
-  if (!finish || finish === start) return s;
+  
+  let recStr = '';
+  if (recurrenceDays && recurrenceDays.length > 0) {
+    const dayNames = { 1: 'Lu', 2: 'Ma', 3: 'Mi', 4: 'Ju', 5: 'Vi', 6: 'Sá', 7: 'Do' };
+    recStr = ` (${recurrenceDays.map(d => dayNames[d]).join(', ')})`;
+  }
+
+  if (!finish || finish === start) return s + recStr;
   const f = new Date(finish + 'T12:00:00').toLocaleDateString('es-CR', opts);
-  return `${s} \u2192 ${f}`;
+  return `${s} \u2192 ${f}${recStr}`;
 };
 
 const AdminEvents = ({ onStatsUpdate }) => {
@@ -100,6 +108,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
       registration_link: event.registration_link || '',
       is_visible: event.is_visible ?? true,
       is_active: event.is_active ?? true,
+      recurrence_days: event.recurrence_days || [],
     });
     setResult(null);
   };
@@ -121,6 +130,41 @@ const AdminEvents = ({ onStatsUpdate }) => {
       return;
     }
 
+    // Validar que los días de recurrencia coincidan con el rango de fechas
+    if (formData.recurrence_days && formData.recurrence_days.length > 0) {
+      const start = new Date(formData.event_date_start + 'T12:00:00');
+      const finish = new Date((formData.event_date_finish || formData.event_date_start) + 'T12:00:00');
+      const diffTime = Math.abs(finish - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+      if (diffDays < 7) {
+        const daysInRange = [];
+        const current = new Date(start);
+        while (current <= finish) {
+          let dayIndex = current.getDay();
+          dayIndex = dayIndex === 0 ? 7 : dayIndex;
+          if (!daysInRange.includes(dayIndex)) {
+            daysInRange.push(dayIndex);
+          }
+          current.setDate(current.getDate() + 1);
+        }
+
+        const allInRange = formData.recurrence_days.every(d => daysInRange.includes(d));
+        if (!allInRange) {
+          const dayNames = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado', 7: 'Domingo' };
+          const rangeDaysStr = daysInRange.map(d => dayNames[d]).join(', ');
+          const invalidDays = formData.recurrence_days.filter(d => !daysInRange.includes(d));
+          const invalidDaysStr = invalidDays.map(d => dayNames[d]).join(', ');
+          
+          setResult({ 
+            error: `Conflicto de fechas: El rango configurado solo abarca [${rangeDaysStr}], pero los días [${invalidDaysStr}] no caen en ese rango.` 
+          });
+          setSaving(false);
+          return;
+        }
+      }
+    }
+
     const payload = {
       title: formData.title.trim(),
       description: formData.description.trim() || null,
@@ -134,6 +178,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
       registration_link: formData.registration_link.trim() || null,
       is_visible: formData.is_visible,
       is_active: formData.is_active,
+      recurrence_days: formData.recurrence_days && formData.recurrence_days.length > 0 ? formData.recurrence_days : null,
     };
 
     try {
@@ -267,7 +312,7 @@ const AdminEvents = ({ onStatsUpdate }) => {
                       </span>
                       <div className={styles.eventRowDates}>
                         <Calendar size={11} />
-                        {formatDateRange(event.event_date_start, event.event_date_finish)}
+                        {formatDateRange(event.event_date_start, event.event_date_finish, event.recurrence_days)}
                         {event.start_time && (
                           <>
                             <Clock size={11} />
@@ -425,6 +470,35 @@ const AdminEvents = ({ onStatsUpdate }) => {
                   min={formData.event_date_start}
                   onChange={(e) => handleFormChange('event_date_finish', e.target.value)}
                 />
+              </div>
+            </div>
+ 
+            <div className={styles.field}>
+              <label className={styles.label}>Días de la semana en que se repite <span className={styles.optional}>(opcional)</span></label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.25rem', marginBottom: '0.5rem' }}>
+                {[
+                  { value: 1, label: 'Lun' },
+                  { value: 2, label: 'Mar' },
+                  { value: 3, label: 'Mié' },
+                  { value: 4, label: 'Jue' },
+                  { value: 5, label: 'Vie' },
+                  { value: 6, label: 'Sáb' },
+                  { value: 7, label: 'Dom' },
+                ].map((d) => (
+                  <label key={d.value} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', color: '#e2e8f0', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={formData.recurrence_days?.includes(d.value)}
+                      onChange={(e) => {
+                        const updated = e.target.checked
+                          ? [...(formData.recurrence_days || []), d.value].sort()
+                          : (formData.recurrence_days || []).filter((val) => val !== d.value);
+                        handleFormChange('recurrence_days', updated);
+                      }}
+                    />
+                    {d.label}
+                  </label>
+                ))}
               </div>
             </div>
 

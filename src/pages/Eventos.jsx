@@ -6,7 +6,7 @@ import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import EventCard from '../components/ui/EventCard';
 import { useEventsQuery } from '../hooks/useEventsQuery';
-import { groupEventsByDate, formatDate } from '../utils/eventosUtils';
+import { groupEventsByDate } from '../utils/eventosUtils';
 import styles from './Eventos.module.css';
 
 const Eventos = () => {
@@ -28,11 +28,16 @@ const Eventos = () => {
             if (sharedEventId) {
                 const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
                 if (foundEvent) {
-                    setActiveTab(foundEvent.event_date_start);
-                    return;
+                    const firstDate = (foundEvent.event_dates && foundEvent.event_dates.length > 0) ? foundEvent.event_dates[0] : foundEvent.event_date_start;
+                    if (firstDate) {
+                        let dayIndex = new Date(firstDate + 'T12:00:00').getDay();
+                        dayIndex = dayIndex === 0 ? 7 : dayIndex;
+                        setActiveTab(String(dayIndex));
+                        return;
+                    }
                 }
             }
-            setActiveTab(groupedEvents[0].date);
+            setActiveTab(groupedEvents[0].id);
         }
     }, [groupedEvents, activeTab, events, sharedEventId]);
 
@@ -40,14 +45,22 @@ const Eventos = () => {
     useEffect(() => {
         if (sharedEventId && activeTab) {
             const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
-            if (foundEvent && foundEvent.event_date_start === activeTab) {
-                const timer = setTimeout(() => {
-                    const element = document.getElementById(`event-card-${sharedEventId}`);
-                    if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (foundEvent) {
+                const firstDate = (foundEvent.event_dates && foundEvent.event_dates.length > 0) ? foundEvent.event_dates[0] : foundEvent.event_date_start;
+                if (firstDate) {
+                    let eventDayIndex = new Date(firstDate + 'T12:00:00').getDay();
+                    eventDayIndex = eventDayIndex === 0 ? 7 : eventDayIndex;
+                    
+                    if (String(eventDayIndex) === activeTab) {
+                        const timer = setTimeout(() => {
+                            const element = document.getElementById(`event-card-${sharedEventId}`);
+                            if (element) {
+                                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }, 200);
+                        return () => clearTimeout(timer);
                     }
-                }, 200);
-                return () => clearTimeout(timer);
+                }
             }
         }
     }, [activeTab, events, sharedEventId]);
@@ -62,7 +75,7 @@ const Eventos = () => {
     // Asegurar que el tab activo esté a la vista al cambiar
     useEffect(() => {
         if (emblaApi && activeTab) {
-            const index = groupedEvents.findIndex(item => item.date === activeTab);
+            const index = groupedEvents.findIndex(item => item.id === activeTab);
             if (index !== -1) emblaApi.scrollTo(index);
         }
     }, [emblaApi, activeTab, groupedEvents]);
@@ -111,17 +124,18 @@ const Eventos = () => {
                     {/* Tabs de Navegación por Día (ahora con Embla para scroll por mouse) */}
                     <div className={styles.emblaTabs} ref={emblaRef}>
                         <div className={styles.tabsContainer}>
-                            {groupedEvents.map(({ date }) => {
-                                const { day, full } = formatDate(date);
-                                const isActive = activeTab === date;
+                            {groupedEvents.map(({ id, dayName }) => {
+                                const isActive = activeTab === id;
                                 return (
-                                    <div key={date} className={styles.tabSlide}>
+                                    <div key={id} className={styles.tabSlide}>
                                         <button
                                             className={`${styles.tabButton} ${isActive ? styles.activeTab : ''}`}
-                                            onClick={() => setActiveTab(date)}
+                                            onClick={() => setActiveTab(id)}
+                                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
                                         >
-                                            <span className={styles.tabDayName}>{day}</span>
-                                            <span className={styles.tabFullDate}>{full}</span>
+                                            <span className={styles.tabDayName} style={{ fontSize: '1rem', textTransform: 'capitalize' }}>
+                                                {dayName}
+                                            </span>
                                         </button>
                                     </div>
                                 );
@@ -130,11 +144,11 @@ const Eventos = () => {
                     </div>
 
                     {/* Contenido del Día Seleccionado */}
-                    {groupedEvents.map(({ date, eventList }) => {
-                        if (date !== activeTab) return null;
+                    {groupedEvents.map(({ id, eventList }) => {
+                        if (id !== activeTab) return null;
 
                         return (
-                            <section key={date} className={styles.daySection}>
+                            <section key={id} className={styles.daySection}>
                                 <div className={styles.eventsGrid}>
                                     {eventList.map((event, index) => (
                                         <div key={event.id} style={{ animationDelay: `${index * 0.05}s` }} className={styles.animatedCard}>

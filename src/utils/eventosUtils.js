@@ -13,23 +13,47 @@ export const groupEventsByDate = (events) => {
     if (!events) return [];
 
     const groups = events.reduce((acc, event) => {
-        const { event_date_start: start, event_date_finish: finish } = event;
-        const dates = (finish && finish !== start) ? getDatesInRange(start, finish) : [start];
+        const { event_date_start: start, event_date_finish: finish, recurrence_days } = event;
+        let dates = (finish && finish !== start) ? getDatesInRange(start, finish) : [start];
+
+        if (recurrence_days && recurrence_days.length > 0) {
+            dates = dates.filter((dateStr) => {
+                const dateObj = new Date(dateStr + 'T12:00:00');
+                let dayIndex = dateObj.getDay();
+                dayIndex = dayIndex === 0 ? 7 : dayIndex; // 1 = Lunes, 7 = Domingo
+                return recurrence_days.includes(dayIndex);
+            });
+        }
 
         dates.forEach((dateStr) => {
-            if (!acc[dateStr]) acc[dateStr] = [];
-            if (!acc[dateStr].some(e => e.id === event.id)) {
-                acc[dateStr].push(event);
+            const dateObj = new Date(dateStr + 'T12:00:00');
+            let dayIndex = dateObj.getDay();
+            dayIndex = dayIndex === 0 ? 7 : dayIndex;
+
+            if (!acc[dayIndex]) acc[dayIndex] = [];
+            if (!acc[dayIndex].some(e => e.id === event.id)) {
+                acc[dayIndex].push(event);
             }
         });
 
         return acc;
     }, {});
 
+    const dayNames = {
+        1: 'Lunes',
+        2: 'Martes',
+        3: 'Miércoles',
+        4: 'Jueves',
+        5: 'Viernes',
+        6: 'Sábado',
+        7: 'Domingo'
+    };
+
     return Object.entries(groups)
-        .sort(([a], [b]) => new Date(a) - new Date(b))
-        .map(([date, eventList]) => ({
-            date,
+        .sort(([a], [b]) => Number(a) - Number(b))
+        .map(([id, eventList]) => ({
+            id,
+            dayName: dayNames[id],
             eventList
         }));
 };

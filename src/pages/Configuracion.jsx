@@ -17,8 +17,10 @@ const Configuracion = () => {
     const [isSugerenciasOpen, setIsSugerenciasOpen] = useState(false);
 
     // Estado para la PWA
-    const [isStandalone, setIsStandalone] = useState(false);
-    const [deferredPrompt, setDeferredPrompt] = useState(null);
+    const [isStandalone, setIsStandalone] = useState(
+        () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true
+    );
+    const [deferredPrompt, setDeferredPrompt] = useState(() => window.deferredPrompt || null);
     const [installCustomTitle, setInstallCustomTitle] = useState('');
     const [installCustomSubtitle, setInstallCustomSubtitle] = useState('');
 
@@ -29,15 +31,6 @@ const Configuracion = () => {
     const isBlocked = 'Notification' in window && Notification.permission === 'denied';
 
     useEffect(() => {
-        // Verificar si ya está ejecutándose como PWA instalada
-        const isStandalonePWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        setIsStandalone(isStandalonePWA);
-
-        // Si ya se capturó el prompt globalmente en window
-        if (window.deferredPrompt) {
-            setDeferredPrompt(window.deferredPrompt);
-        }
-
         const handleBeforeInstallPrompt = (e) => {
             e.preventDefault();
             setDeferredPrompt(e);
@@ -230,10 +223,25 @@ const Configuracion = () => {
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Acerca de</h2>
 
-                        <p className={styles.text}>
-                            Desarrollado con ❤️ por{' '}
-                            <a href="https://kobemg.com/" target="_blank" rel="noopener noreferrer" className={styles.link}>Kode Creative</a>.
-                        </p>
+                        <div className={styles.creatorCard}>
+                            <div className={styles.creatorAvatar} aria-hidden="true">KM</div>
+                            <div className={styles.creatorInfo}>
+                                <span className={styles.creatorEyebrow}>CREADOR DE BUSPRONTO</span>
+                                <h3 className={styles.creatorName}>Kobe Moya</h3>
+                                <p className={styles.creatorRole}>Desarrollador independiente · Kode Creative</p>
+                                <p className={styles.creatorDescription}>
+                                    Diseñé y mantengo BusPronto como un proyecto independiente para hacer más accesible la información de transporte de la UCR.
+                                </p>
+                                <a
+                                    href="https://kobemg.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.creatorLink}
+                                >
+                                    Conoce mi trabajo <ExternalLink size={14} />
+                                </a>
+                            </div>
+                        </div>
 
                         <div className={styles.socialGrid}>
                             <a href="https://instagram.com/kobemg" target="_blank" rel="noopener noreferrer" className={styles.socialCard}>
@@ -271,7 +279,7 @@ const Configuracion = () => {
                         </div>
 
                         <footer className={styles.miniFooter}>
-                            <p>© 2026 Kode Creative</p>
+                            <p>© 2026 Kobe Moya · Kode Creative</p>
                             <p>La grandeza nace de pequeños comienzos.</p>
                         </footer>
                     </section>
