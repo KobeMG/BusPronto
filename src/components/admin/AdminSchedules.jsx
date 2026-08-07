@@ -37,15 +37,15 @@ const guessStopsForRoute = (routeName, allStops) => {
   const findBestStop = (partText, otherPartText) => {
     if (partText.toLowerCase() === 'ucr') {
       const otherKeyword = otherPartText.toLowerCase();
-      const match = allStops.find(s => 
-        s.name.toLowerCase().includes('ucr') && 
+      const match = allStops.find(s =>
+        s.name.toLowerCase().includes('ucr') &&
         s.name.toLowerCase().includes(otherKeyword)
       );
       if (match) return match.id.toString();
     }
 
-    const containsMatch = allStops.find(s => 
-      s.name.toLowerCase().includes(partText.toLowerCase()) && 
+    const containsMatch = allStops.find(s =>
+      s.name.toLowerCase().includes(partText.toLowerCase()) &&
       !s.name.toLowerCase().includes('ucr')
     );
     if (containsMatch) return containsMatch.id.toString();
@@ -135,7 +135,7 @@ const AdminSchedules = () => {
   useEffect(() => {
     if (selectedRoute) {
       loadSchedules(selectedRoute);
-      
+
       // Auto-populate stops based on route name format "Origin a Destination"
       const currentRoute = routes.find(r => r.id.toString() === selectedRoute);
       if (currentRoute && stops.length > 0) {
@@ -173,7 +173,7 @@ const AdminSchedules = () => {
   const addTimeFromInput = () => {
     const times = timeInput.split(',').map(t => t.trim()).filter(t => t !== '');
     const validTimes = [];
-    
+
     times.forEach(t => {
       // Basic time validation HH:MM
       const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -220,15 +220,15 @@ const AdminSchedules = () => {
 
     // Create array of schedule objects to insert
     const schedulesToInsert = timesList.map(time => {
-       // Ensure time format matches time column (HH:MM:SS is often expected by postgres, but HH:MM works if mapped)
-       const departureTime = time.includes(':') && time.length === 5 ? `${time}:00` : time;
-       return {
-         route_id: parseInt(selectedRoute),
-         origin_stop_id: parseInt(formData.origin_stop_id),
-         destination_stop_id: parseInt(formData.destination_stop_id),
-         departure_time: departureTime,
-         days: formData.days
-       };
+      // Ensure time format matches time column (HH:MM:SS is often expected by postgres, but HH:MM works if mapped)
+      const departureTime = time.includes(':') && time.length === 5 ? `${time}:00` : time;
+      return {
+        route_id: parseInt(selectedRoute),
+        origin_stop_id: parseInt(formData.origin_stop_id),
+        destination_stop_id: parseInt(formData.destination_stop_id),
+        departure_time: departureTime,
+        days: formData.days
+      };
     });
 
     try {
@@ -323,14 +323,14 @@ const AdminSchedules = () => {
           <div className={styles.schedulesListScroll}>
             {loadingSchedules ? (
               <div className={styles.emptyState}>
-                 <div className={styles.spinnerLg} />
-                 <p>Cargando horarios...</p>
+                <div className={styles.spinnerLg} />
+                <p>Cargando horarios...</p>
               </div>
             ) : !selectedRoute ? (
-               <div className={styles.emptyState}>
-                 <CalendarDays size={36} style={{ color: '#334155' }} />
-                 <p>Selecciona un sistema y una ruta para ver los horarios.</p>
-               </div>
+              <div className={styles.emptyState}>
+                <CalendarDays size={36} style={{ color: '#334155' }} />
+                <p>Selecciona un sistema y una ruta para ver los horarios.</p>
+              </div>
             ) : schedules.length === 0 ? (
               <div className={styles.emptyState}>
                 <Clock size={36} style={{ color: '#334155' }} />
@@ -376,9 +376,9 @@ const AdminSchedules = () => {
               Carga Masiva de Horarios
             </h2>
           </div>
-          
+
           <form className={styles.formBody} onSubmit={handleSubmit}>
-             <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait">
               {result && (
                 <Motion.div
                   initial={{ opacity: 0, y: -8 }}
@@ -405,7 +405,7 @@ const AdminSchedules = () => {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}><MapPin size={12} style={{display:'inline'}}/> Parada de Origen *</label>
+              <label className={styles.label}><MapPin size={12} style={{ display: 'inline' }} /> Parada de Origen *</label>
               <select
                 className={styles.inputField}
                 value={formData.origin_stop_id}
@@ -418,7 +418,7 @@ const AdminSchedules = () => {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}><MapPin size={12} style={{display:'inline'}}/> Parada de Destino *</label>
+              <label className={styles.label}><MapPin size={12} style={{ display: 'inline' }} /> Parada de Destino *</label>
               <select
                 className={styles.inputField}
                 value={formData.destination_stop_id}
@@ -449,40 +449,40 @@ const AdminSchedules = () => {
             <div className={styles.field}>
               <label className={styles.label}>Horas de Salida (Formato 24h, ej: 06:20) *</label>
               <div className={styles.timesInputContainer}>
-                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <input
-                      type="text"
-                      className={styles.inputField}
-                      placeholder="06:20, 07:00..."
-                      value={timeInput}
-                      onChange={(e) => setTimeInput(e.target.value)}
-                      onKeyDown={handleTimeKeyDown}
-                      onBlur={addTimeFromInput}
-                    />
-                    <button 
-                      type="button" 
-                      onClick={addTimeFromInput}
-                      style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '0.5rem', padding: '0 1rem', color: '#fff', cursor: 'pointer' }}
-                    >
-                      Añadir
-                    </button>
-                 </div>
-                 
-                 {timesList.length > 0 && (
-                   <div style={{ marginTop: '0.5rem', padding: '0.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '0.5rem' }}>
-                     {timesList.map(time => (
-                       <span key={time} className={styles.timeTag}>
-                         {time}
-                         <button type="button" onClick={() => removeTime(time)} className={styles.removeTimeBtn}>
-                           <X size={12} />
-                         </button>
-                       </span>
-                     ))}
-                   </div>
-                 )}
-                 <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-                   * Presiona Enter o usa comas para separar múltiples horas.
-                 </div>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <input
+                    type="text"
+                    className={styles.inputField}
+                    placeholder="06:20, 07:00..."
+                    value={timeInput}
+                    onChange={(e) => setTimeInput(e.target.value)}
+                    onKeyDown={handleTimeKeyDown}
+                    onBlur={addTimeFromInput}
+                  />
+                  <button
+                    type="button"
+                    onClick={addTimeFromInput}
+                    style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '0.5rem', padding: '0 1rem', color: '#fff', cursor: 'pointer' }}
+                  >
+                    Añadir
+                  </button>
+                </div>
+
+                {timesList.length > 0 && (
+                  <div style={{ marginTop: '0.5rem', padding: '0.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '0.5rem' }}>
+                    {timesList.map(time => (
+                      <span key={time} className={styles.timeTag}>
+                        {time}
+                        <button type="button" onClick={() => removeTime(time)} className={styles.removeTimeBtn}>
+                          <X size={12} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                  * Presiona Enter o usa comas para separar múltiples horas.
+                </div>
               </div>
             </div>
 

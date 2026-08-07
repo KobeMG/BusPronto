@@ -56,7 +56,7 @@ const Home = () => {
           title="BusPronto (UCR)"
           description={
             <>
-              <span style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '0.5rem' }}>Interciclo 2026</span>
+              <span style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '0.5rem' }}>II Semestre 2026-2</span>
               Seleccione el tipo de consulta que desea realizar.
             </>
           }

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { MapPin, Video, Globe, ExternalLink, Clock, Share2, X } from 'lucide-react';
 import { sileo } from 'sileo';
 import { formatEventTime, formatDateRange, shareEvent, getEventModalityConfig } from '../../utils/eventosUtils';
@@ -20,6 +21,14 @@ const EventCard = ({ event, isHighlighted }) => {
   const icon = MODALITY_ICONS[type] || MODALITY_ICONS.presencial;
 
   const hasDetail = Boolean(description);
+
+  // Bloquear scroll del body cuando el modal está abierto
+  useEffect(() => {
+    if (!isDetailOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [isDetailOpen]);
 
   const handleShare = async (e) => {
     e.stopPropagation();
@@ -124,8 +133,8 @@ const EventCard = ({ event, isHighlighted }) => {
         )}
       </div>
 
-      {/* Modal de detalle — solo se renderiza si hay descripción */}
-      {isDetailOpen && (
+      {/* Modal de detalle — renderizado en body para evitar containing blocks */}
+      {isDetailOpen && createPortal(
         <div className={styles.detailOverlay} onClick={() => setIsDetailOpen(false)} id={`event-detail-overlay-${event.id}`}>
           <div
             className={styles.detailModal}
@@ -181,7 +190,7 @@ const EventCard = ({ event, isHighlighted }) => {
                     </a>
                   )}
                   {registration_link && (
-                    <a href={registration_link} target="_blank" rel="noopener noreferrer" className={styles.detailActionBtn}>
+                    <a href={registration_link} target="_blank" rel="noopener noreferrer" className={styles.detailActionBtnReg}>
                       <ExternalLink size={15} /> Inscribirse
                     </a>
                   )}
@@ -189,7 +198,8 @@ const EventCard = ({ event, isHighlighted }) => {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

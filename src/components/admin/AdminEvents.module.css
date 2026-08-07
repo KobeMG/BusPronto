@@ -356,6 +356,14 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
+.inputFieldNoIcon[type="date"] {
+  color-scheme: dark;
+}
+
+.inputFieldNoIcon[type="time"] {
+  color-scheme: dark;
+}
+
 .selectField {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -459,7 +467,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive — events module */

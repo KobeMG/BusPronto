@@ -141,19 +141,25 @@
 
 
 .mapsLink {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
   color: var(--accent-primary);
-  padding: 0.35rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 0.5rem;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.08);
   transition: all 0.2s ease;
 }
 
 .mapsLink:hover {
-  background: var(--accent-primary);
-  color: white;
-  transform: scale(1.1);
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #93c5fd;
 }
 
 .regLink {
@@ -369,6 +375,19 @@
 .detailActionBtn:hover {
   background: rgba(59, 130, 246, 0.18);
   border-color: rgba(59, 130, 246, 0.4);
+}
+
+.detailActionBtnReg {
+  composes: detailActionBtn;
+  color: #a78bfa;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  background: rgba(167, 139, 250, 0.08);
+}
+
+.detailActionBtnReg:hover {
+  background: rgba(167, 139, 250, 0.2);
+  border-color: rgba(167, 139, 250, 0.5);
+  color: #c4b5fd;
 }
 
 @keyframes detailFadeIn {

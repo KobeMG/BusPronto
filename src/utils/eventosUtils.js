@@ -54,7 +54,7 @@ export const groupEventsByDate = (events) => {
         .map(([id, eventList]) => ({
             id,
             dayName: dayNames[id],
-            eventList
+            eventList: eventList.sort((a, b) => (a.start_time || '').localeCompare(b.start_time || ''))
         }));
 };
 
