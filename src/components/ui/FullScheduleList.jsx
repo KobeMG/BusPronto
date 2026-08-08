@@ -41,7 +41,7 @@ const FullScheduleList = ({ schedule, nextBusTime }) => {
                   </div>
                   {item.destination && (
                     <div className={styles.destWrap}>
-                      <span>{item.destination}</span>
+                      <span>{'Rumbo a: ' + item.destination}</span>
                     </div>
                   )}
 

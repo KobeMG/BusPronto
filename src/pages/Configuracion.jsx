@@ -228,9 +228,9 @@ const Configuracion = () => {
                             <div className={styles.creatorInfo}>
                                 <span className={styles.creatorEyebrow}>CREADOR DE BUSPRONTO</span>
                                 <h3 className={styles.creatorName}>Kobe Moya</h3>
-                                <p className={styles.creatorRole}>Desarrollador independiente · Kode Creative</p>
+                                <p className={styles.creatorRole}>Fundador de Kode Creative</p>
                                 <p className={styles.creatorDescription}>
-                                    Diseñé y mantengo BusPronto como un proyecto independiente para hacer más accesible la información de transporte de la UCR.
+                                    Estudiante de Dirección de Empresas de la UCR. Actual desarrollador y administrador de BusPronto.
                                 </p>
                                 <a
                                     href="https://kobemg.com/"
@@ -279,7 +279,7 @@ const Configuracion = () => {
                         </div>
 
                         <footer className={styles.miniFooter}>
-                            <p>© 2026 Kobe Moya · Kode Creative</p>
+                            <p>© 2026 Kobe Williams Moya Guido · Kode Creative</p>
                             <p>La grandeza nace de pequeños comienzos.</p>
                         </footer>
                     </section>
