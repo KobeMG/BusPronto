@@ -22,48 +22,40 @@ const Eventos = () => {
     const groupedEvents = useMemo(() => groupEventsByDate(events), [events]);
     const [activeTab, setActiveTab] = useState(null);
 
-    // Seleccionar el primer día por defecto o el del evento compartido cuando cargan los datos
-    useEffect(() => {
-        if (groupedEvents && groupedEvents.length > 0 && !activeTab) {
-            if (sharedEventId) {
-                const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
-                if (foundEvent) {
-                    const firstDate = (foundEvent.event_dates && foundEvent.event_dates.length > 0) ? foundEvent.event_dates[0] : foundEvent.event_date_start;
-                    if (firstDate) {
-                        let dayIndex = new Date(firstDate + 'T12:00:00').getDay();
-                        dayIndex = dayIndex === 0 ? 7 : dayIndex;
-                        setActiveTab(String(dayIndex));
-                        return;
-                    }
-                }
-            }
-            setActiveTab(groupedEvents[0].id);
+    // ponytail: día del evento compartido y tab inicial derivados, no estado dentro de un efecto
+    const sharedEventDay = useMemo(() => {
+        if (!sharedEventId || !events?.length) return null;
+        const foundEvent = events.find(e => String(e.id) === String(sharedEventId));
+        if (!foundEvent) return null;
+        const firstDate = (foundEvent.event_dates && foundEvent.event_dates.length > 0) ? foundEvent.event_dates[0] : foundEvent.event_date_start;
+        if (!firstDate) return null;
+        const dayIndex = new Date(firstDate + 'T12:00:00').getDay();
+        return dayIndex === 0 ? 7 : dayIndex;
+    }, [sharedEventId, events]);
+
+    const initialTab = useMemo(() => {
+        if (!groupedEvents || groupedEvents.length === 0) return null;
+        if (sharedEventDay !== null && groupedEvents.some(g => g.id === String(sharedEventDay))) {
+            return String(sharedEventDay);
         }
-    }, [groupedEvents, activeTab, events, sharedEventId]);
+        return groupedEvents[0].id;
+    }, [groupedEvents, sharedEventDay]);
+
+    const activeTabValue = activeTab ?? initialTab;
 
     // Scroll automático al evento compartido
     useEffect(() => {
-        if (sharedEventId && activeTab) {
-            const foundEvent = events?.find(e => String(e.id) === String(sharedEventId));
-            if (foundEvent) {
-                const firstDate = (foundEvent.event_dates && foundEvent.event_dates.length > 0) ? foundEvent.event_dates[0] : foundEvent.event_date_start;
-                if (firstDate) {
-                    let eventDayIndex = new Date(firstDate + 'T12:00:00').getDay();
-                    eventDayIndex = eventDayIndex === 0 ? 7 : eventDayIndex;
-                    
-                    if (String(eventDayIndex) === activeTab) {
-                        const timer = setTimeout(() => {
-                            const element = document.getElementById(`event-card-${sharedEventId}`);
-                            if (element) {
-                                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                        }, 200);
-                        return () => clearTimeout(timer);
-                    }
+        if (!sharedEventId || !activeTabValue) return;
+        if (sharedEventDay !== null && String(sharedEventDay) === activeTabValue) {
+            const timer = setTimeout(() => {
+                const element = document.getElementById(`event-card-${sharedEventId}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            }
+            }, 200);
+            return () => clearTimeout(timer);
         }
-    }, [activeTab, events, sharedEventId]);
+    }, [activeTabValue, sharedEventDay, sharedEventId]);
 
     // Configuración de Embla para los tabs
     const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -74,11 +66,11 @@ const Eventos = () => {
 
     // Asegurar que el tab activo esté a la vista al cambiar
     useEffect(() => {
-        if (emblaApi && activeTab) {
-            const index = groupedEvents.findIndex(item => item.id === activeTab);
+        if (emblaApi && activeTabValue) {
+            const index = groupedEvents.findIndex(item => item.id === activeTabValue);
             if (index !== -1) emblaApi.scrollTo(index);
         }
-    }, [emblaApi, activeTab, groupedEvents]);
+    }, [emblaApi, activeTabValue, groupedEvents]);
 
     if (isLoading) {
         return (
@@ -125,7 +117,7 @@ const Eventos = () => {
                     <div className={styles.emblaTabs} ref={emblaRef}>
                         <div className={styles.tabsContainer}>
                             {groupedEvents.map(({ id, dayName }) => {
-                                const isActive = activeTab === id;
+                                const isActive = activeTabValue === id;
                                 return (
                                     <div key={id} className={styles.tabSlide}>
                                         <button
@@ -145,7 +137,7 @@ const Eventos = () => {
 
                     {/* Contenido del Día Seleccionado */}
                     {groupedEvents.map(({ id, eventList }) => {
-                        if (id !== activeTab) return null;
+                        if (id !== activeTabValue) return null;
 
                         return (
                             <section key={id} className={styles.daySection}>

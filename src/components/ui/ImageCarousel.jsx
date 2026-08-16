@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import useEmblaCarousel from 'embla-carousel-react';
 import { X } from 'lucide-react';
@@ -81,20 +81,23 @@ const Lightbox = ({ images, title, startIndex, onClose }) => {
 
 const ImageCarousel = ({ images, title, className }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  // ponytail: useSyncExternalStore evita efecto que llame setState (mismo caso que CinemaCarousel)
+  const subscribe = useCallback(
+    (cb) => {
+      if (!emblaApi) return () => {};
+      emblaApi.on('select', cb);
+      return () => emblaApi.off('select', cb);
+    },
+    [emblaApi],
+  );
 
-  useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.on('select', onSelect);
-    onSelect();
-    return () => emblaApi.off('select', onSelect);
-  }, [emblaApi, onSelect]);
+  const selectedIndex = useSyncExternalStore(
+    subscribe,
+    () => (emblaApi ? emblaApi.selectedScrollSnap() : 0),
+    () => 0,
+  );
 
   const scrollTo = useCallback((index) => {
     if (!emblaApi) return;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Bell, MessageSquare } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
@@ -10,29 +10,28 @@ import { useAlertsQuery } from '../hooks/useAlertsQuery';
 import AlertsModal from '../components/ui/AlertsModal';
 import { SugerenciasModal } from '../components/SugerenciasModal';
 
+const computeHasUnseenAlerts = (alerts) => {
+  if (alerts.length === 0) return false;
+  try {
+    const seenIdsString = localStorage.getItem('bp_seen_alerts');
+    const seenIds = seenIdsString ? JSON.parse(seenIdsString) : [];
+    return alerts.some((alert) => !seenIds.includes(alert.id));
+  } catch {
+    return false;
+  }
+};
+
 const Home = () => {
   const { data: alerts = [], isLoading, isError } = useAlertsQuery();
   const [isAlertsOpen, setIsAlertsOpen] = useState(false);
-  const [hasUnseenAlerts, setHasUnseenAlerts] = useState(false);
   const [isSugerenciasOpen, setIsSugerenciasOpen] = useState(false);
+  // ponytail: solo fuerza un re-render al marcar vistas; el resto es estado derivado
+  const [, bumpSeen] = useState(0);
 
-  useEffect(() => {
-    if (alerts.length > 0) {
-      try {
-        const seenIdsString = localStorage.getItem('bp_seen_alerts');
-        const seenIds = seenIdsString ? JSON.parse(seenIdsString) : [];
-        const hasUnseen = alerts.some((alert) => !seenIds.includes(alert.id));
-        setHasUnseenAlerts(hasUnseen);
-      } catch (err) {
-        console.warn('Error reading seen alerts from localStorage:', err);
-      }
-    } else {
-      setHasUnseenAlerts(false);
-    }
-  }, [alerts]);
+  const hasUnseenAlerts = computeHasUnseenAlerts(alerts);
 
   const handleSeenUpdated = () => {
-    setHasUnseenAlerts(false);
+    bumpSeen((v) => v + 1);
   };
 
   return (

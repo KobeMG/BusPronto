@@ -1,5 +1,5 @@
 import { useRegisterSW } from 'virtual:pwa-register/react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, X } from 'lucide-react';
 import styles from './UpdatePrompt.module.css';
 
@@ -26,7 +26,7 @@ const UpdatePrompt = () => {
   return (
     <AnimatePresence>
       {needRefresh && (
-        <motion.div
+        <Motion.div
           className={styles.toast}
           role="alert"
           aria-live="polite"
@@ -56,7 +56,7 @@ const UpdatePrompt = () => {
               <X size={16} />
             </button>
           </div>
-        </motion.div>
+        </Motion.div>
       )}
     </AnimatePresence>
   );

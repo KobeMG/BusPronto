@@ -27,15 +27,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/*.{jsx}'],
-    rules: { 'no-unused-vars': ['off'] },
-  },
-  {
-    files: ['**/*.{js}', '!src/sw.js'],
-    languageOptions: { globals: globals.browser },
-  },
-  {
     files: ['src/sw.js'],
-    languageOptions: { globals: globals.serviceworker },
+    languageOptions: { globals: { ...globals.browser, ...globals.serviceworker } },
   },
 ])

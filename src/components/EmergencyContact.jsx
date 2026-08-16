@@ -39,7 +39,7 @@ const EmergencyContact = () => {
   ];
 
   const handleCall = (number) => {
-    window.location.href = `tel:${number}`;
+    window.location.assign(`tel:${number}`);
   };
 
   return (

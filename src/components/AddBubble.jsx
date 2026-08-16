@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion as Motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import { calculateSnapX, getAppBounds, trackAdClick, trackAdImpression } from '../utils/adUtils';
 import { AD_THEMES } from '../utils/adThemeUtils';
@@ -170,7 +170,7 @@ const AddBubble = () => {
   };
 
   return (
-    <motion.div
+    <Motion.div
       className={styles.container}
       data-clarity-mask="true"
       drag={!isOpen}
@@ -192,7 +192,7 @@ const AddBubble = () => {
     >
       <AnimatePresence>
         {!isOpen && showTooltip && (
-          <motion.div
+          <Motion.div
             className={`${styles.tooltip} ${isRightSide ? styles.right : styles.left}`}
             initial={{ opacity: 0, scale: 0.8, x: isRightSide ? -20 : 20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -209,21 +209,21 @@ const AddBubble = () => {
               </button>
             </div>
             <div className={styles.tooltipTail}></div>
-          </motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
 
       {!isOpen ? (
-        <motion.div
+        <Motion.div
           className={styles.bubble}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => { setIsOpen(true); setShowTooltip(false); }}
         >
           <LogoOrIcon logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} className={styles.adLogoBubble} />
-        </motion.div>
+        </Motion.div>
       ) : (
-        <motion.div
+        <Motion.div
           className={styles.expandedCard}
           initial={{ opacity: 0, scale: 0.5, borderRadius: 60 }}
           animate={{ opacity: 1, scale: 1, borderRadius: 20 }}
@@ -313,9 +313,9 @@ const AddBubble = () => {
               </a>
             </div>
           )}
-        </motion.div>
+        </Motion.div>
       )}
-    </motion.div>
+    </Motion.div>
   );
 };
 
