@@ -15,15 +15,27 @@ export default defineConfig([
     ],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
+      globals: globals.browser,
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
+  },
+  {
+    files: ['**/*.{jsx}'],
+    rules: { 'no-unused-vars': ['off'] },
+  },
+  {
+    files: ['**/*.{js}', '!src/sw.js'],
+    languageOptions: { globals: globals.browser },
+  },
+  {
+    files: ['src/sw.js'],
+    languageOptions: { globals: globals.serviceworker },
   },
 ])

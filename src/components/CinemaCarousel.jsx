@@ -1,31 +1,23 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useSyncExternalStore } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import styles from './CinemaCarousel.module.css';
 
 const CinemaCarousel = ({ movies, onSelectIndex }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'center' });
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const onSelect = useCallback((emblaApi) => {
-    const activeIndex = emblaApi.selectedScrollSnap();
-    setSelectedIndex(activeIndex);
-    if (onSelectIndex) {
-      onSelectIndex(activeIndex);
-    }
-  }, [onSelectIndex]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    onSelect(emblaApi);
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
-
-    return () => {
-      emblaApi.off('select', onSelect);
-      emblaApi.off('reInit', onSelect);
-    };
-  }, [emblaApi, onSelect]);
+  const selectedIndex = useSyncExternalStore(
+    (cb) => {
+      if (!emblaApi) return () => {};
+      emblaApi.on('select', cb);
+      emblaApi.on('reInit', cb);
+      return () => {
+        emblaApi.off('select', cb);
+        emblaApi.off('reInit', cb);
+      };
+    },
+    () => (emblaApi ? emblaApi.selectedScrollSnap() : 0),
+    () => 0,
+  );
 
   if (!movies || movies.length === 0) return null;
 

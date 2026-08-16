@@ -46,7 +46,7 @@ const AlertsModal = ({ isOpen, onClose, alerts = [], loading = false, error = fa
         hour: '2-digit',
         minute: '2-digit',
       });
-    } catch (e) {
+    } catch {
       return dateString;
     }
   };

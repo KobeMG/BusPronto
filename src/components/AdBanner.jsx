@@ -43,7 +43,7 @@ const AdBanner = () => {
     }));
     
     return shuffleArray(formatted);
-  }, [adsRaw]);
+  }, [adsRawByField]);
 
   const handleAdClick = (id) => {
     trackAdClick(id);

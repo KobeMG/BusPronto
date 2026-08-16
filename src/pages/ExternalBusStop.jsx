@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MapPin } from 'lucide-react';
 import { useExternalStopDetailsQuery } from '../hooks/useExternalStopDetailsQuery';
@@ -18,7 +18,6 @@ import { useSchedule } from '../hooks/useSchedule';
 
 const ExternalBusStop = () => {
     const { routeId, stopId } = useParams();
-    const navigate = useNavigate();
     const { data: stopData, isLoading, error } = useExternalStopDetailsQuery(routeId, stopId);
 
     // Migración a hook centralizado para limpieza del componente

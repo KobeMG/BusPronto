@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MapPin } from 'lucide-react';
 import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuery';
@@ -18,7 +18,6 @@ import { useSchedule } from '../hooks/useSchedule';
 
 const BusStop = () => {
   const { stopId } = useParams();
-  const navigate = useNavigate();
 
   const { data: stopData, isLoading } = useInternalStopDetailsQuery(stopId);
   

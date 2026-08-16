@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { MapPin, Video, Calendar, Clock, Film, Share2 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';

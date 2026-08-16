@@ -9,7 +9,6 @@ import pageHeaderStyles from '../components/ui/PageHeader.module.css';
 import { useAlertsQuery } from '../hooks/useAlertsQuery';
 import AlertsModal from '../components/ui/AlertsModal';
 import { SugerenciasModal } from '../components/SugerenciasModal';
-import { shareApp } from '../utils/shareUtils';
 
 const Home = () => {
   const { data: alerts = [], isLoading, isError } = useAlertsQuery();
