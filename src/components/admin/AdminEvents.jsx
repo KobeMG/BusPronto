@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2,
@@ -57,9 +57,7 @@ const formatDateRange = (start, finish, recurrenceDays) => {
   return `${s} \u2192 ${f}${recStr}`;
 };
 
-const AdminEvents = ({ onStatsUpdate }) => {
-  const onStatsUpdateRef = useRef(onStatsUpdate);
-  onStatsUpdateRef.current = onStatsUpdate;
+const AdminEvents = () => {
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -77,7 +75,6 @@ const AdminEvents = ({ onStatsUpdate }) => {
     try {
       const data = await getAllEventsAdmin();
       setEvents(data);
-      if (onStatsUpdateRef.current) onStatsUpdateRef.current(data);
     } catch (err) {
       setError(err.message || 'Error cargando eventos');
     } finally {
@@ -207,7 +204,6 @@ const AdminEvents = ({ onStatsUpdate }) => {
         e.id === event.id ? { ...e, is_visible: !e.is_visible } : e
       );
       setEvents(updated);
-      if (onStatsUpdateRef.current) onStatsUpdateRef.current(updated);
     } catch (err) {
       console.error('Error toggling visibility:', err);
     } finally {
@@ -221,7 +217,6 @@ const AdminEvents = ({ onStatsUpdate }) => {
       await deleteEvent(deleteTarget.id);
       const updated = events.filter((e) => e.id !== deleteTarget.id);
       setEvents(updated);
-      if (onStatsUpdateRef.current) onStatsUpdateRef.current(updated);
       if (editingId === deleteTarget.id) handleCancelEdit();
     } catch (err) {
       console.error('Error deleting event:', err);

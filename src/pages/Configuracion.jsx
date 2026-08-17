@@ -5,7 +5,6 @@ import { sileo } from 'sileo';
 import PageHeader from '../components/ui/PageHeader';
 import { InstallPWAModal } from '../components/InstallPWAModal';
 import { NotificationPromptModal } from '../components/NotificationPromptModal';
-import { SugerenciasModal } from '../components/SugerenciasModal';
 import { useNotifications } from '../hooks/useNotifications';
 import styles from './Configuracion.module.css';
 import { shareApp } from '../utils/shareUtils';
@@ -14,7 +13,6 @@ const Configuracion = () => {
     // Estado para modales
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isNotificationPromptOpen, setIsNotificationPromptOpen] = useState(false);
-    const [isSugerenciasOpen, setIsSugerenciasOpen] = useState(false);
 
     // Estado para la PWA
     const [isStandalone, setIsStandalone] = useState(
@@ -308,11 +306,6 @@ const Configuracion = () => {
                 onClose={() => setIsNotificationPromptOpen(false)}
                 onAccept={handleAcceptNotifications}
                 loading={notificationsLoading}
-            />
-
-            <SugerenciasModal
-                isOpen={isSugerenciasOpen}
-                onClose={() => setIsSugerenciasOpen(false)}
             />
         </>
     );

@@ -106,11 +106,11 @@ const STEPS = {
 };
 
 const PLATFORM_LABELS = {
-  ios: { title: 'Instale BusPronto en iPhone', browser: 'Safari' },
-  'android-chrome': { title: 'Instale BusPronto en Android', browser: 'Chrome' },
-  samsung: { title: 'Instale BusPronto en Android', browser: 'Samsung Internet' },
-  'android-firefox': { title: 'Instale BusPronto en Android', browser: 'Firefox' },
-  desktop: { title: 'Instale BusPronto', browser: 'su navegador' },
+  ios: { title: 'Instale BusPronto en iPhone' },
+  'android-chrome': { title: 'Instale BusPronto en Android' },
+  samsung: { title: 'Instale BusPronto en Android' },
+  'android-firefox': { title: 'Instale BusPronto en Android' },
+  desktop: { title: 'Instale BusPronto' },
 };
 
 export function InstallPWAModal({ isOpen, onClose, deferredPrompt, onNativeInstallSuccess, customTitle, customSubtitle }) {

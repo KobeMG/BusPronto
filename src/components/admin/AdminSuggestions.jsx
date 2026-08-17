@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import {
   MessageSquare,
@@ -15,9 +15,7 @@ import { supabase } from '../../lib/supabaseClient';
 import styles from './AdminSuggestions.module.css';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
-const AdminSuggestions = ({ onStatsUpdate }) => {
-  const onStatsUpdateRef = useRef(onStatsUpdate);
-  onStatsUpdateRef.current = onStatsUpdate;
+const AdminSuggestions = () => {
 
   const [suggestions, setSuggestions] = useState([]);
   const [filter, setFilter] = useState('pending'); // 'pending' | 'read' | 'archived'
@@ -36,10 +34,6 @@ const AdminSuggestions = ({ onStatsUpdate }) => {
 
       if (err) throw err;
       setSuggestions(data || []);
-
-      if (onStatsUpdateRef.current) {
-        onStatsUpdateRef.current(data || []);
-      }
     } catch (err) {
       console.error('Error cargando sugerencias:', err);
       setError('No se pudieron cargar las sugerencias.');
@@ -51,10 +45,6 @@ const AdminSuggestions = ({ onStatsUpdate }) => {
   useEffect(() => {
     fetchSuggestions();
   }, [fetchSuggestions]);
-
-  useEffect(() => {
-    if (onStatsUpdateRef.current) onStatsUpdateRef.current(suggestions);
-  }, [suggestions]);
 
   const updateStatus = async (id, newStatus) => {
     try {

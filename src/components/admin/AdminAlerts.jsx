@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import {
   Bell,
@@ -22,9 +22,7 @@ import {
 import styles from './AdminAlerts.module.css';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
-const AdminAlerts = ({ onStatsUpdate }) => {
-  const onStatsUpdateRef = useRef(onStatsUpdate);
-  onStatsUpdateRef.current = onStatsUpdate;
+const AdminAlerts = () => {
 
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,7 +40,6 @@ const AdminAlerts = ({ onStatsUpdate }) => {
     try {
       const data = await getAllAlertsAdmin();
       setAlerts(data);
-      if (onStatsUpdateRef.current) onStatsUpdateRef.current(data);
     } catch (err) {
       setError(err.message || 'Error cargando alertas');
     } finally {
@@ -111,7 +108,6 @@ const AdminAlerts = ({ onStatsUpdate }) => {
         a.id === alert.id ? { ...a, active: !a.active } : a
       );
       setAlerts(updated);
-      if (onStatsUpdateRef.current) onStatsUpdateRef.current(updated);
     } catch (err) {
       console.error('Error toggling alert active state:', err);
     } finally {
@@ -125,7 +121,6 @@ const AdminAlerts = ({ onStatsUpdate }) => {
       await deleteAlert(deleteTarget.id);
       const updated = alerts.filter((a) => a.id !== deleteTarget.id);
       setAlerts(updated);
-      if (onStatsUpdateRef.current) onStatsUpdateRef.current(updated);
       if (editingId === deleteTarget.id) handleCancelEdit();
     } catch (err) {
       console.error('Error deleting alert:', err);

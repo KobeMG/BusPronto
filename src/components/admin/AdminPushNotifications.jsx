@@ -41,7 +41,7 @@ const TEMPLATES = [
   },
 ];
 
-const AdminPushNotifications = ({ onResult }) => {
+const AdminPushNotifications = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [url, setUrl] = useState('');
@@ -111,7 +111,6 @@ const AdminPushNotifications = ({ onResult }) => {
           stats: data.stats,
         };
         setResult(successResult);
-        if (onResult) onResult(successResult);
         setTitle('');
         setBody('');
         setUrl('');
