@@ -18,7 +18,7 @@ export default defineConfig({
         enabled: true,
         type: 'module',
       },
-      includeAssets: ['logo192x192.png', 'logo512x512.png', 'logo32x32.png', 'bus-logo.svg', 'robots.txt', 'sitemap.xml', 'icons.svg'],
+      includeAssets: ['logo192x192.png', 'logo512x512.png', 'logo32x32.png', 'bus-logo.svg', 'robots.txt', 'sitemap.xml'],
       manifest: {
         name: 'BusPronto',
         short_name: 'BusPronto',
