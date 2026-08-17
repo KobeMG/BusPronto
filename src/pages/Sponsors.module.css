@@ -10,11 +10,6 @@
   color: var(--text-secondary);
 }
 
-.headerIcon {
-  color: var(--error);
-  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
-}
-
 .sponsorsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -228,14 +223,6 @@
   font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 0.75rem;
-}
-
-.contactDesc {
-  color: var(--text-secondary);
-  font-size: 1rem;
-  max-width: 500px;
-  margin: 0 auto 1.5rem;
-  line-height: 1.5;
 }
 
 .contactBtn {

@@ -131,16 +131,6 @@
   margin: 0;
 }
 
-.alertBadge {
-  background: var(--accent-primary, #3b82f6);
-  color: #ffffff;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.15rem 0.4rem;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
-}
-
 .alertMessage {
   font-size: 0.9rem;
   color: var(--text-secondary, #9ca3af);

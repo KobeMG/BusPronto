@@ -66,15 +66,7 @@
   transition: color 0.3s ease;
 }
 
-.tabFullDate {
-  font-size: 0.8rem;
-  font-weight: 500;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.activeTab .tabDayName,
-.activeTab .tabFullDate {
+.activeTab .tabDayName {
   color: white;
   opacity: 1;
 }
