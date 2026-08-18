@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { MapPin, Video, Globe, ExternalLink, Clock, Share2, X } from 'lucide-react';
-import { sileo } from 'sileo';
 import { formatEventTime, formatDateRange, shareEvent, getEventModalityConfig } from '../../utils/eventosUtils';
 import styles from './EventCard.module.css';
 
@@ -33,15 +32,7 @@ const EventCard = ({ event, isHighlighted }) => {
   const handleShare = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    const result = await shareEvent(event, formattedTime);
-    if (result.success && result.method === 'clipboard') {
-      sileo.success({
-        title: '¡Evento Copiado!',
-        description: 'La información se copió correctamente.',
-        position: 'top-center',
-        duration: 2500
-      });
-    }
+    await shareEvent(event, formattedTime);
   };
 
   const handleCardClick = () => {

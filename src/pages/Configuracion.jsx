@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2, Instagram, Mail, Linkedin, Globe, ExternalLink } from 'lucide-react';
-import { sileo } from 'sileo';
+import { toast } from '../utils/toast';
 import PageHeader from '../components/ui/PageHeader';
 import { InstallPWAModal } from '../components/InstallPWAModal';
 import { NotificationPromptModal } from '../components/NotificationPromptModal';
@@ -41,10 +41,9 @@ const Configuracion = () => {
             setIsStandalone(true);
             setDeferredPrompt(null);
             window.deferredPrompt = null;
-            sileo.success({
+            toast.success({
                 title: '¡Instalación exitosa!',
                 description: 'BusPronto se ha instalado correctamente en su dispositivo.',
-                position: 'top-center'
             });
         };
 
@@ -79,20 +78,18 @@ const Configuracion = () => {
 
         // Si el navegador de plano no soporta notificaciones
         if (!support.supported) {
-            sileo.error({
+            toast.error({
                 title: 'No compatible',
                 description: 'Su navegador actual no soporta notificaciones web.',
-                position: 'top-center'
             });
             return;
         }
 
         // Si el usuario ya bloqueó los permisos manualmente en el navegador
         if ('Notification' in window && Notification.permission === 'denied') {
-            sileo.info({
+            toast.info({
                 title: 'Notificaciones bloqueadas',
                 description: 'Ha bloqueado las notificaciones. Para activarlas, haga clic en el ícono 🔒 a la izquierda de la barra de URL y cambie el permiso a "Permitir".',
-                position: 'top-center',
                 duration: 7000
             });
             return;
@@ -105,18 +102,16 @@ const Configuracion = () => {
     const handleAcceptNotifications = async () => {
         const result = await subscribe();
         if (result.success) {
-            sileo.success({
+            toast.success({
                 title: '¡Suscrito!',
                 description: 'Usted recibirá alertas importantes de BusPronto.',
-                position: 'top-center'
             });
             setIsNotificationPromptOpen(false);
         } else {
             if (result.reason !== 'permission-denied') {
-                sileo.error({
+                toast.error({
                     title: 'Error',
                     description: 'No pudimos activar las notificaciones. Por favor, revise los permisos de su navegador.',
-                    position: 'top-center'
                 });
             }
             setIsNotificationPromptOpen(false);
@@ -290,10 +285,9 @@ const Configuracion = () => {
                 customSubtitle={installCustomSubtitle}
                 onNativeInstallSuccess={() => {
                     setIsStandalone(true);
-                    sileo.success({
+                    toast.success({
                         title: '¡Instalación iniciada!',
                         description: 'BusPronto se está instalando en su dispositivo.',
-                        position: 'top-center'
                     });
                 }}
             />

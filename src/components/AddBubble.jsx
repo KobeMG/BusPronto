@@ -6,26 +6,8 @@ import { AD_THEMES } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from './ui/ImageCarousel';
 import BusinessLinks from './BusinessLinks';
+import LogoOrIcon from './LogoOrIcon';
 import styles from './AddBubble.module.css';
-
-const LogoOrIcon = ({ logo, fallbackIcon, title, className }) => {
-  const [hasError, setHasError] = useState(false);
-
-  if (logo && !hasError) {
-    return (
-      <img
-        src={logo}
-        alt={title}
-        className={className}
-        onError={() => setHasError(true)}
-      />
-    );
-  }
-
-  return fallbackIcon;
-};
-
-
 
 const AddBubble = () => {
   const [ad, setAd] = useState(null);

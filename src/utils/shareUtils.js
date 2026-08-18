@@ -1,26 +1,24 @@
-import { sileo } from 'sileo';
+import { toast } from './toast.js';
 
 /**
- * Copia texto genérico al portapapeles y muestra notificaciones sileo.
+ * Copia texto genérico al portapapeles y muestra notificaciones toast.
  * @param {string} text - Texto a copiar.
  * @param {string} successDescription - Mensaje de éxito a mostrar.
  */
 export const copyToClipboardText = async (text, successDescription = 'Contenido copiado al portapapeles.') => {
   try {
     await navigator.clipboard.writeText(text);
-    sileo.success({
+    toast.success({
       title: '¡Copiado!',
       description: successDescription,
-      position: 'top-center',
       duration: 2500
     });
     return true;
   } catch (err) {
     console.error('Error copying to clipboard:', err);
-    sileo.error({
+    toast.error({
       title: 'Error al copiar',
       description: 'No se pudo copiar el contenido al portapapeles.',
-      position: 'top-center'
     });
     return false;
   }

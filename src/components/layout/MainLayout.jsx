@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { Toaster } from 'sileo';
+import Toaster from '../ui/Toaster';
 import AdBanner from '../AdBanner';
 import EmergencyContact from '../EmergencyContact';
 import AddBubble from '../AddBubble';
@@ -10,7 +10,7 @@ import styles from './MainLayout.module.css';
 const MainLayout = () => {
   return (
     <div className={styles.appContainer}>
-      <Toaster position="top-right" />
+      <Toaster />
       <AdBanner />
 
       <main className={styles.mainContent}>

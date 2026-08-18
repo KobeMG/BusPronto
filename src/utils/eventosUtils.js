@@ -1,3 +1,5 @@
+import { shareContent } from './shareUtils.js';
+
 const getDatesInRange = (start, finish) => {
     const dates = [];
     const current = new Date(start + 'T12:00:00');
@@ -111,26 +113,7 @@ export const shareEvent = async (event, formattedTime) => {
         url: `${window.location.origin}/eventos?id=${event.id}`
     };
 
-    if (navigator.share) {
-        try {
-            await navigator.share(shareData);
-            return { success: true, method: 'native' };
-        } catch (err) {
-            if (err.name !== 'AbortError') {
-                console.error('Error sharing:', err);
-                return { success: false, error: err };
-            }
-            return { success: false, error: 'User aborted' };
-        }
-    } else {
-        try {
-            await navigator.clipboard.writeText(`${shareData.text}\n\nMás eventos en: ${shareData.url}`);
-            return { success: true, method: 'clipboard' };
-        } catch (err) {
-            console.error('Error copying to clipboard:', err);
-            return { success: false, error: err };
-        }
-    }
+    return await shareContent(shareData, 'La información del evento se copió correctamente.');
 };
 
 /**

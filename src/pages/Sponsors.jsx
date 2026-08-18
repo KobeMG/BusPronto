@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ExternalLink, Mail } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -7,26 +7,8 @@ import { getAdIcon } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from '../components/ui/ImageCarousel';
 import BusinessLinks from '../components/BusinessLinks';
+import LogoOrIcon from '../components/LogoOrIcon';
 import styles from './Sponsors.module.css';
-
-const SponsorLogoOrIcon = ({ logo, icon, title }) => {
-  const [hasError, setHasError] = useState(false);
-
-  if (logo && !hasError) {
-    return (
-      <img
-        src={logo}
-        alt={title}
-        className={styles.sponsorLogo}
-        onError={() => setHasError(true)}
-      />
-    );
-  }
-
-  return icon;
-};
-
-
 
 const Sponsors = () => {
   const { data: allAds = [], isLoading: loading } = useAdsQuery();
@@ -68,7 +50,7 @@ const Sponsors = () => {
               >
                 <div className={styles.cardHeader}>
                   <div className={styles.iconWrapper}>
-                    <SponsorLogoOrIcon logo={ad.logo} icon={getAdIcon(ad.type, 24)} title={ad.title} />
+                    <LogoOrIcon logo={ad.logo} fallbackIcon={getAdIcon(ad.type, 24)} title={ad.title} className={styles.sponsorLogo} />
                   </div>
                   <h3 className={styles.sponsorTitle}>{ad.title}</h3>
                 </div>
