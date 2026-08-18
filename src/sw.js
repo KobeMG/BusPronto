@@ -1,10 +1,25 @@
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
-
-
+import { PUBLIC_VERSION } from './public-version';
 
 // Tomar control de todos los tabs abiertos inmediatamente al activarse
 clientsClaim();
+
+const VERSION_CACHE = 'bp-version';
+
+// Si solo cambiaron archivos de admin, el hash público es el mismo: activamos
+// el SW en silencio (skipWaiting) sin mostrar el prompt de actualización.
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(VERSION_CACHE);
+    const prev = await cache.match('public-version');
+    const prevVersion = prev ? await prev.text() : null;
+    await cache.put('public-version', new Response(PUBLIC_VERSION));
+    if (prevVersion && prevVersion === PUBLIC_VERSION) {
+      self.skipWaiting();
+    }
+  })());
+});
 
 // Escuchar el mensaje SKIP_WAITING que envía el prompt de actualización
 // Sin esto, el nuevo SW se queda en estado 'waiting' para siempre

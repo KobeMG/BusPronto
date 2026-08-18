@@ -29,3 +29,5 @@ supabase/.temp/
 AGENTS.md
 
 docs
+
+src/public-version.js

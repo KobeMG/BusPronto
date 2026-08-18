@@ -7,13 +7,10 @@ import ExternalRoutes from './pages/ExternalRoutes';
 import ExternalStopsList from './pages/ExternalStopsList';
 import BusStop from './pages/BusStop';
 import ExternalBusStop from './pages/ExternalBusStop';
-import Eventos from './pages/Eventos';
 import MainLayout from './components/layout/MainLayout';
 import UpdatePrompt from './components/UpdatePrompt';
+import LoadingSpinner from './components/ui/LoadingSpinner';
 
-import Cinema from './pages/Cinema';
-import Sponsors from './pages/Sponsors';
-import Configuracion from './pages/Configuracion';
 import QrRedirect from './pages/QrRedirect';
 
 // Admin — lazy-loaded: chunk separado, solo carga si se navega a /admin
@@ -30,6 +27,18 @@ const AdminSchedules = lazy(() => import('./components/admin/AdminSchedules'));
 const AdminUsers = lazy(() => import('./components/admin/AdminUsers'));
 const AdminPassword = lazy(() => import('./components/admin/AdminPassword'));
 const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute'));
+
+// Páginas secundarias — lazy: solo cargan al navegar
+const Cinema = lazy(() => import('./pages/Cinema'));
+const Sponsors = lazy(() => import('./pages/Sponsors'));
+const Configuracion = lazy(() => import('./pages/Configuracion'));
+const Eventos = lazy(() => import('./pages/Eventos'));
+
+const PageFallback = () => (
+  <div className="glass-card">
+    <LoadingSpinner text="Cargando..." />
+  </div>
+);
 
 const AdminFallback = () => (
   <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f1115', color: '#94a3b8', fontFamily: 'Inter, sans-serif' }}>
@@ -75,10 +84,10 @@ function App() {
               <Route path="/rutas-externas/:routeId" element={<ExternalStopsList />} />
               <Route path="/rutas-internas/parada/:stopId" element={<BusStop />} />
               <Route path="/rutas-externas/:routeId/:stopId" element={<ExternalBusStop />} />
-              <Route path="/cinema" element={<Cinema />} />
-              <Route path="/aliados" element={<Sponsors />} />
-              <Route path="/configuracion" element={<Configuracion />} />
-              <Route path="/eventos" element={<Eventos />} />
+              <Route path="/cinema" element={<Suspense fallback={<PageFallback />}><Cinema /></Suspense>} />
+              <Route path="/aliados" element={<Suspense fallback={<PageFallback />}><Sponsors /></Suspense>} />
+              <Route path="/configuracion" element={<Suspense fallback={<PageFallback />}><Configuracion /></Suspense>} />
+              <Route path="/eventos" element={<Suspense fallback={<PageFallback />}><Eventos /></Suspense>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>
