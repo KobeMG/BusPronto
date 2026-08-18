@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { MapPin } from 'lucide-react';
 import { useExternalStopDetailsQuery } from '../hooks/useExternalStopDetailsQuery';
 import BusTimer from '../components/BusTimer';
@@ -56,9 +55,7 @@ const ExternalBusStop = () => {
     if (!stopData) {
         return (
             <div className="glass-card">
-                <Helmet>
-                    <title>Ruta no encontrada - BusPronto</title>
-                </Helmet>
+                <title>Ruta no encontrada - BusPronto</title>
                 <PageHeader
                     title="Ruta no encontrada"
                     showBackButton={true}
@@ -71,14 +68,12 @@ const ExternalBusStop = () => {
 
     return (
         <div className="glass-card">
-            <Helmet>
-                <title>{`${stopName} – Bus Externo UCR | BusPronto`}</title>
-                <meta name="description" content={`Horarios del bus externo UCR desde ${stopName} en tiempo real. Cronómetro en vivo para no perder tu bus.`} />
-                <link rel="canonical" href={`https://www.buspronto.lat/rutas-externas/${routeId}/${stopId}`} />
-                <meta property="og:title" content={`${stopName} – Bus Externo UCR | BusPronto`} />
-                <meta property="og:description" content={`Ver cuánto falta para el próximo bus externo UCR desde ${stopName}. Cronómetro en vivo.`} />
-                <meta property="og:url" content={`https://www.buspronto.lat/rutas-externas/${routeId}/${stopId}`} />
-            </Helmet>
+            <title>{`${stopName} – Bus Externo UCR | BusPronto`}</title>
+            <meta name="description" content={`Horarios del bus externo UCR desde ${stopName} en tiempo real. Cronómetro en vivo para no perder tu bus.`} />
+            <link rel="canonical" href={`https://www.buspronto.lat/rutas-externas/${routeId}/${stopId}`} />
+            <meta property="og:title" content={`${stopName} – Bus Externo UCR | BusPronto`} />
+            <meta property="og:description" content={`Ver cuánto falta para el próximo bus externo UCR desde ${stopName}. Cronómetro en vivo.`} />
+            <meta property="og:url" content={`https://www.buspronto.lat/rutas-externas/${routeId}/${stopId}`} />
             <PageHeader
                 title={
                     <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

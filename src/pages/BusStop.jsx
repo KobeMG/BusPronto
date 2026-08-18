@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { MapPin } from 'lucide-react';
 import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuery';
 import BusTimer from '../components/BusTimer';
@@ -42,9 +41,7 @@ const BusStop = () => {
   if (!stopData) {
     return (
       <div className="glass-card">
-        <Helmet>
-          <title>Parada no encontrada - BusPronto</title>
-        </Helmet>
+        <title>Parada no encontrada - BusPronto</title>
         <PageHeader
           title="Parada no encontrada"
           showBackButton={true}
@@ -57,14 +54,12 @@ const BusStop = () => {
 
   return (
     <div className="glass-card">
-      <Helmet>
-        <title>{`${stopName} – Bus Interno UCR | BusPronto`}</title>
-        <meta name="description" content={`Horarios del bus interno UCR desde ${stopName} en tiempo real. Cronómetro en vivo para no perder tu bus.`} />
-        <link rel="canonical" href={`https://www.buspronto.lat/rutas-internas/parada/${stopId}`} />
-        <meta property="og:title" content={`${stopName} – Bus Interno UCR | BusPronto`} />
-        <meta property="og:description" content={`Ver cuánto falta para el próximo bus interno UCR desde ${stopName}. Cronómetro en vivo.`} />
-        <meta property="og:url" content={`https://www.buspronto.lat/rutas-internas/parada/${stopId}`} />
-      </Helmet>
+      <title>{`${stopName} – Bus Interno UCR | BusPronto`}</title>
+      <meta name="description" content={`Horarios del bus interno UCR desde ${stopName} en tiempo real. Cronómetro en vivo para no perder tu bus.`} />
+      <link rel="canonical" href={`https://www.buspronto.lat/rutas-internas/parada/${stopId}`} />
+      <meta property="og:title" content={`${stopName} – Bus Interno UCR | BusPronto`} />
+      <meta property="og:description" content={`Ver cuánto falta para el próximo bus interno UCR desde ${stopName}. Cronómetro en vivo.`} />
+      <meta property="og:url" content={`https://www.buspronto.lat/rutas-internas/parada/${stopId}`} />
       <PageHeader
         title={
           <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { MapPin, Video, Calendar, Clock, Film, Share2 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -27,17 +26,15 @@ const Cinema = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Cine Universitario - BusPronto</title>
-        <meta name="description" content="Descubre las funciones del Cine Universitario. Películas presenciales y por Zoom." />
-        <link rel="canonical" href="https://www.buspronto.lat/cine" />
-        <meta property="og:title" content="Cine Universitario - BusPronto" />
-        <meta property="og:description" content="Consulta la cartelera del Cine Universitario. Películas presenciales y virtuales." />
-        <meta property="og:url" content="https://www.buspronto.lat/cine" />
-        <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
-      </Helmet>
+      <title>Cine Universitario - BusPronto</title>
+      <meta name="description" content="Descubre las funciones del Cine Universitario. Películas presenciales y por Zoom." />
+      <link rel="canonical" href="https://www.buspronto.lat/cine" />
+      <meta property="og:title" content="Cine Universitario - BusPronto" />
+      <meta property="og:description" content="Consulta la cartelera del Cine Universitario. Películas presenciales y virtuales." />
+      <meta property="og:url" content="https://www.buspronto.lat/cine" />
+      <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
 
       <div className="glass-card">
         <PageHeader

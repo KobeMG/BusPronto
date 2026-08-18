@@ -5,20 +5,15 @@ import { supabase } from '../lib/supabaseClient';
  * @returns {Promise<Array>} A list of active alerts ordered by creation date descending.
  */
 export const getActiveAlerts = async () => {
-    try {
-        const { data, error } = await supabase
-            .from('bus_alerts')
-            .select('*')
-            .eq('active', true)
-            .order('created_at', { ascending: false });
+    const { data, error } = await supabase
+        .from('bus_alerts')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false });
 
-        if (error) throw error;
+    if (error) throw error;
 
-        return data || [];
-    } catch (err) {
-        console.error('Error in getActiveAlerts:', err);
-        throw err;
-    }
+    return data || [];
 };
 
 /**
@@ -26,18 +21,13 @@ export const getActiveAlerts = async () => {
  * @returns {Promise<Array>} A list of all alerts.
  */
 export const getAllAlertsAdmin = async () => {
-    try {
-        const { data, error } = await supabase
-            .from('bus_alerts')
-            .select('*')
-            .order('created_at', { ascending: false });
+    const { data, error } = await supabase
+        .from('bus_alerts')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-        if (error) throw error;
-        return data || [];
-    } catch (err) {
-        console.error('Error in getAllAlertsAdmin:', err);
-        throw err;
-    }
+    if (error) throw error;
+    return data || [];
 };
 
 /**
@@ -45,18 +35,13 @@ export const getAllAlertsAdmin = async () => {
  * @param {Object} alert - The alert data to insert.
  */
 export const createAlert = async (alert) => {
-    try {
-        const { data, error } = await supabase
-            .from('bus_alerts')
-            .insert([alert])
-            .select();
+    const { data, error } = await supabase
+        .from('bus_alerts')
+        .insert([alert])
+        .select();
 
-        if (error) throw error;
-        return data?.[0];
-    } catch (err) {
-        console.error('Error in createAlert:', err);
-        throw err;
-    }
+    if (error) throw error;
+    return data?.[0];
 };
 
 /**
@@ -65,19 +50,14 @@ export const createAlert = async (alert) => {
  * @param {Object} alert - The updated alert fields.
  */
 export const updateAlert = async (id, alert) => {
-    try {
-        const { data, error } = await supabase
-            .from('bus_alerts')
-            .update(alert)
-            .eq('id', id)
-            .select();
+    const { data, error } = await supabase
+        .from('bus_alerts')
+        .update(alert)
+        .eq('id', id)
+        .select();
 
-        if (error) throw error;
-        return data?.[0];
-    } catch (err) {
-        console.error('Error in updateAlert:', err);
-        throw err;
-    }
+    if (error) throw error;
+    return data?.[0];
 };
 
 /**
@@ -85,18 +65,13 @@ export const updateAlert = async (id, alert) => {
  * @param {string} id - The UUID of the alert.
  */
 export const deleteAlert = async (id) => {
-    try {
-        const { error } = await supabase
-            .from('bus_alerts')
-            .delete()
-            .eq('id', id);
+    const { error } = await supabase
+        .from('bus_alerts')
+        .delete()
+        .eq('id', id);
 
-        if (error) throw error;
-        return true;
-    } catch (err) {
-        console.error('Error in deleteAlert:', err);
-        throw err;
-    }
+    if (error) throw error;
+    return true;
 };
 
 /**
@@ -105,17 +80,12 @@ export const deleteAlert = async (id) => {
  * @param {boolean} currentActive - The current active status.
  */
 export const toggleAlertActive = async (id, currentActive) => {
-    try {
-        const { data, error } = await supabase
-            .from('bus_alerts')
-            .update({ active: !currentActive })
-            .eq('id', id)
-            .select();
+    const { data, error } = await supabase
+        .from('bus_alerts')
+        .update({ active: !currentActive })
+        .eq('id', id)
+        .select();
 
-        if (error) throw error;
-        return data?.[0];
-    } catch (err) {
-        console.error('Error in toggleAlertActive:', err);
-        throw err;
-    }
+    if (error) throw error;
+    return data?.[0];
 };

@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { getExternalService } from '../services/externalRoutesRegistry';
+import { getExternalStops } from '../services/externalRoute.service';
 
 export const useExternalStopsQuery = (routeId) => {
     return useQuery({
         queryKey: ['externalStops', routeId],
         queryFn: async () => {
             if (!routeId) return [];
-            const service = getExternalService(routeId);
-            return await service.getStops();
+            return await getExternalStops(routeId);
         },
         enabled: !!routeId,
         staleTime: 5 * 60 * 1000, // 5 minutos de vigencia en caché

@@ -1,6 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
 import PageHeader from '../components/ui/PageHeader';
 import { useExternalStopsQuery } from '../hooks/useExternalStopsQuery';
 import listStyles from '../components/ui/StopsList.module.css';
@@ -16,9 +15,7 @@ const ExternalStopsList = () => {
   if (error && error.message === 'ROUTE_NOT_SUPPORTED') {
     return (
       <div className="glass-card">
-        <Helmet>
-          <title>{`Ruta ${routeName} - BusPronto`}</title>
-        </Helmet>
+        <title>{`Ruta ${routeName} - BusPronto`}</title>
         <PageHeader
           title={`Rutas a ${routeName}`}
           showBackButton={true}
@@ -44,14 +41,12 @@ const ExternalStopsList = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{`Paradas a ${routeName} – Bus Externo UCR | BusPronto`}</title>
-        <meta name="description" content={`Horarios del bus externo UCR a ${routeName} en tiempo real. Selecciona desde cuál parada abordas el bus.`} />
-        <link rel="canonical" href={`https://www.buspronto.lat/rutas-externas/${routeId}`} />
-        <meta property="og:title" content={`Bus Externo UCR a ${routeName} | BusPronto`} />
-        <meta property="og:description" content={`Horarios del bus externo UCR a ${routeName} en tiempo real. Cronómetro en vivo.`} />
-        <meta property="og:url" content={`https://www.buspronto.lat/rutas-externas/${routeId}`} />
-      </Helmet>
+      <title>{`Paradas a ${routeName} – Bus Externo UCR | BusPronto`}</title>
+      <meta name="description" content={`Horarios del bus externo UCR a ${routeName} en tiempo real. Selecciona desde cuál parada abordas el bus.`} />
+      <link rel="canonical" href={`https://www.buspronto.lat/rutas-externas/${routeId}`} />
+      <meta property="og:title" content={`Bus Externo UCR a ${routeName} | BusPronto`} />
+      <meta property="og:description" content={`Horarios del bus externo UCR a ${routeName} en tiempo real. Cronómetro en vivo.`} />
+      <meta property="og:url" content={`https://www.buspronto.lat/rutas-externas/${routeId}`} />
 
       <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1.5rem' }}>
         <PageHeader

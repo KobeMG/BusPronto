@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 
 const QrRedirect = () => {
   const { stopId } = useParams();
@@ -26,10 +25,8 @@ const QrRedirect = () => {
       padding: '2rem',
       textAlign: 'center',
     }}>
-      <Helmet>
-        <title>Redirigiendo - BusPronto</title>
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <title>Redirigiendo - BusPronto</title>
+      <meta name="robots" content="noindex" />
 
       <div style={{
         fontSize: '1.75rem',

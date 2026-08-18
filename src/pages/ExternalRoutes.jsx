@@ -1,23 +1,20 @@
 import { ChevronRight } from 'lucide-react';
 import listStyles from '../components/ui/StopsList.module.css';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import PageHeader from '../components/ui/PageHeader';
 
 const ExternalRoutes = () => {
   return (
     <>
-      <Helmet>
-        <title>Bus Externo UCR – Horarios Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás | BusPronto</title>
-        <meta name="description" content="Horarios del bus externo UCR a Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás en tiempo real. Selecciona tu destino y ve cuánto falta para el próximo bus externo." />
-        <link rel="canonical" href="https://www.buspronto.lat/rutas-externas" />
-        <meta property="og:title" content="Bus Externo UCR – Horarios Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás | BusPronto" />
-        <meta property="og:description" content="Horarios del bus externo UCR a Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás en tiempo real. Cronómetro en vivo." />
-        <meta property="og:url" content="https://www.buspronto.lat/rutas-externas" />
-        <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
-      </Helmet>
+      <title>Bus Externo UCR – Horarios Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás | BusPronto</title>
+      <meta name="description" content="Horarios del bus externo UCR a Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás en tiempo real. Selecciona tu destino y ve cuánto falta para el próximo bus externo." />
+      <link rel="canonical" href="https://www.buspronto.lat/rutas-externas" />
+      <meta property="og:title" content="Bus Externo UCR – Horarios Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás | BusPronto" />
+      <meta property="og:description" content="Horarios del bus externo UCR a Alajuela, Heredia, Alajuelita, Coronado, Desamparados, San Juan de Dios, Pavas y Tibás en tiempo real. Cronómetro en vivo." />
+      <meta property="og:url" content="https://www.buspronto.lat/rutas-externas" />
+      <meta property="og:image" content="https://www.buspronto.lat/logo512x512.png" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image" content="https://www.buspronto.lat/logo512x512.png" />
 
       <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1.5rem' }}>
         <PageHeader

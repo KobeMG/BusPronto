@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { ExternalLink, Mail, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -38,11 +37,9 @@ const Sponsors = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Nuestros Aliados - BusPronto</title>
-        <meta name="description" content="Conoce a los patrocinadores y aliados que hacen posible BusPronto." />
-        <link rel="canonical" href="https://www.buspronto.lat/aliados" />
-      </Helmet>
+      <title>Nuestros Aliados - BusPronto</title>
+      <meta name="description" content="Conoce a los patrocinadores y aliados que hacen posible BusPronto." />
+      <link rel="canonical" href="https://www.buspronto.lat/aliados" />
 
       <div className="glass-card">
         <PageHeader

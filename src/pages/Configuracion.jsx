@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Smartphone, Bell, BellRing, BellOff, Loader2, Check, Share2, Instagram, Mail, Linkedin, Globe, ExternalLink } from 'lucide-react';
 import { sileo } from 'sileo';
 import PageHeader from '../components/ui/PageHeader';
@@ -126,10 +125,8 @@ const Configuracion = () => {
 
     return (
         <>
-            <Helmet>
-                <title>Configuración - BusPronto</title>
-                <meta name="description" content="Configure la instalación de la aplicación y las notificaciones para recibir alertas en tiempo real." />
-            </Helmet>
+            <title>Configuración - BusPronto</title>
+            <meta name="description" content="Configure la instalación de la aplicación y las notificaciones para recibir alertas en tiempo real." />
 
             <div className="glass-card">
                 <PageHeader

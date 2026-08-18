@@ -6,58 +6,38 @@ const sanitizeFolderName = (name) =>
   name.toLowerCase().trim().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
 
 export const getAllAds = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('ads')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    return data || [];
-  } catch (err) {
-    console.error('Error in getAllAds:', err);
-    throw err;
-  }
+  const { data, error } = await supabase
+    .from('ads')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
 };
 
 export const createAd = async (adData) => {
-  try {
-    const { data, error } = await supabase
-      .from('ads')
-      .insert([adData])
-      .select()
-      .single();
-    if (error) throw error;
-    return data;
-  } catch (err) {
-    console.error('Error in createAd:', err);
-    throw err;
-  }
+  const { data, error } = await supabase
+    .from('ads')
+    .insert([adData])
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
 };
 
 export const updateAd = async (id, updates) => {
-  try {
-    const { data, error } = await supabase
-      .from('ads')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .maybeSingle();
-    if (error) throw error;
-    return data;
-  } catch (err) {
-    console.error('Error in updateAd:', err);
-    throw err;
-  }
+  const { data, error } = await supabase
+    .from('ads')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .maybeSingle();
+  if (error) throw error;
+  return data;
 };
 
 export const deleteAd = async (id) => {
-  try {
-    const { error } = await supabase.from('ads').delete().eq('id', id);
-    if (error) throw error;
-  } catch (err) {
-    console.error('Error in deleteAd:', err);
-    throw err;
-  }
+  const { error } = await supabase.from('ads').delete().eq('id', id);
+  if (error) throw error;
 };
 
 export const uploadAdLogo = async (title, file) => {

@@ -5,21 +5,16 @@ import { supabase } from '../lib/supabaseClient';
  * @returns {Promise<Array>} A list of visible events ordered by event_date_start and start_time.
  */
 export const getUniversityEvents = async () => {
-    try {
-        const { data, error } = await supabase
-            .from('university_events')
-            .select('*')
-            .eq('is_visible', true)
-            .order('event_date_start', { ascending: true })
-            .order('start_time', { ascending: true });
+    const { data, error } = await supabase
+        .from('university_events')
+        .select('*')
+        .eq('is_visible', true)
+        .order('event_date_start', { ascending: true })
+        .order('start_time', { ascending: true });
 
-        if (error) throw error;
+    if (error) throw error;
 
-        return data || [];
-    } catch (err) {
-        console.error('Error in getUniversityEvents:', err);
-        throw err;
-    }
+    return data || [];
 };
 
 /**
@@ -28,20 +23,15 @@ export const getUniversityEvents = async () => {
  * @returns {Promise<Array>} All events ordered by event_date_start.
  */
 export const getAllEventsAdmin = async () => {
-    try {
-        const { data, error } = await supabase
-            .from('university_events')
-            .select('*')
-            .order('event_date_start', { ascending: true })
-            .order('start_time', { ascending: true });
+    const { data, error } = await supabase
+        .from('university_events')
+        .select('*')
+        .order('event_date_start', { ascending: true })
+        .order('start_time', { ascending: true });
 
-        if (error) throw error;
+    if (error) throw error;
 
-        return data || [];
-    } catch (err) {
-        console.error('Error in getAllEventsAdmin:', err);
-        throw err;
-    }
+    return data || [];
 };
 
 /**
@@ -51,20 +41,15 @@ export const getAllEventsAdmin = async () => {
  * @returns {Promise<Object>} The inserted record.
  */
 export const createEvent = async (eventData) => {
-    try {
-        const { data, error } = await supabase
-            .from('university_events')
-            .insert([eventData])
-            .select()
-            .single();
+    const { data, error } = await supabase
+        .from('university_events')
+        .insert([eventData])
+        .select()
+        .single();
 
-        if (error) throw error;
+    if (error) throw error;
 
-        return data;
-    } catch (err) {
-        console.error('Error in createEvent:', err);
-        throw err;
-    }
+    return data;
 };
 
 /**
@@ -75,21 +60,16 @@ export const createEvent = async (eventData) => {
  * @returns {Promise<Object>} The updated record.
  */
 export const updateEvent = async (id, updates) => {
-    try {
-        const { data, error } = await supabase
-            .from('university_events')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
+    const { data, error } = await supabase
+        .from('university_events')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
 
-        if (error) throw error;
+    if (error) throw error;
 
-        return data;
-    } catch (err) {
-        console.error('Error in updateEvent:', err);
-        throw err;
-    }
+    return data;
 };
 
 /**
@@ -98,17 +78,12 @@ export const updateEvent = async (id, updates) => {
  * @param {number} id - The event ID to delete.
  */
 export const deleteEvent = async (id) => {
-    try {
-        const { error } = await supabase
-            .from('university_events')
-            .delete()
-            .eq('id', id);
+    const { error } = await supabase
+        .from('university_events')
+        .delete()
+        .eq('id', id);
 
-        if (error) throw error;
-    } catch (err) {
-        console.error('Error in deleteEvent:', err);
-        throw err;
-    }
+    if (error) throw error;
 };
 
 /**

@@ -16,7 +16,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import {
-  getAllMoviesAdmin,
+  getUpcomingMovies,
   createMovie,
   updateMovie,
   deleteMovie,
@@ -80,7 +80,7 @@ const AdminCinema = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getAllMoviesAdmin();
+      const data = await getUpcomingMovies();
       setMovies(data);
     } catch (err) {
       setError(err.message || 'Error cargando películas');
