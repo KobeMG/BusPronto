@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { MapPin, Video, Globe, ExternalLink, Clock, Share2, X } from 'lucide-react';
-import { formatEventTime, formatDateRange, shareEvent, getEventModalityConfig } from '../../utils/eventosUtils';
+import { formatEventTime, formatDateRange, shareEvent } from '../../utils/eventosUtils';
 import styles from './EventCard.module.css';
 
 const MODALITY_ICONS = {
@@ -10,13 +10,27 @@ const MODALITY_ICONS = {
   hibrido: <Globe size={14} />,
 };
 
+const getModalityConfig = (modality) => {
+  switch (modality?.toLowerCase()) {
+    case 'presencial':
+      return { type: 'presencial', className: styles.presencial };
+    case 'virtual':
+      return { type: 'virtual', className: styles.virtual };
+    case 'híbrido':
+    case 'hibrido':
+      return { type: 'hibrido', className: styles.hibrido };
+    default:
+      return { type: 'presencial', className: styles.presencial };
+  }
+};
+
 const EventCard = ({ event, isHighlighted }) => {
   const { title, description, organizer, location, modality, is_active, google_maps, registration_link, start_time, event_date_start, event_date_finish } = event;
   const formattedTime = formatEventTime(start_time);
   const dateRange = formatDateRange(event_date_start, event_date_finish);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  const { type, className } = getEventModalityConfig(modality, styles);
+  const { type, className } = getModalityConfig(modality);
   const icon = MODALITY_ICONS[type] || MODALITY_ICONS.presencial;
 
   const hasDetail = Boolean(description);

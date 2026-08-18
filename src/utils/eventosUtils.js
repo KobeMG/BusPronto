@@ -115,20 +115,3 @@ export const shareEvent = async (event, formattedTime) => {
 
     return await shareContent(shareData, 'La información del evento se copió correctamente.');
 };
-
-/**
- * Retorna la configuración de iconos y estilos según la modalidad
- */
-export const getEventModalityConfig = (modality, styles) => {
-    switch (modality?.toLowerCase()) {
-        case 'presencial':
-            return { type: 'presencial', className: styles.presencial };
-        case 'virtual':
-            return { type: 'virtual', className: styles.virtual };
-        case 'híbrido':
-        case 'hibrido':
-            return { type: 'hibrido', className: styles.hibrido };
-        default:
-            return { type: 'presencial', className: styles.presencial };
-    }
-};

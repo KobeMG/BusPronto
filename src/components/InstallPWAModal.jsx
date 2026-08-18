@@ -19,6 +19,18 @@ function detectPlatform() {
   return 'desktop';
 }
 
+const CONFIRM_STEP = {
+  icon: '📲',
+  label: 'Confirme la instalación',
+  detail: 'BusPronto aparecerá en su pantalla de inicio',
+};
+
+const DONE_STEP = {
+  icon: '🚌',
+  label: '¡Listo! Abra BusPronto desde su pantalla de inicio',
+  detail: 'Acceso rápido a los horarios del bus UCR en cualquier momento',
+};
+
 const STEPS = {
   ios: [
     {
@@ -31,16 +43,8 @@ const STEPS = {
       label: 'Seleccione "Añadir a pantalla de inicio"',
       detail: 'Deslice hacia abajo en el menú hasta encontrar esta opción',
     },
-    {
-      icon: '📲',
-      label: 'Confirme con "Añadir"',
-      detail: 'BusPronto aparecerá en su pantalla de inicio como una app nativa',
-    },
-    {
-      icon: '🚌',
-      label: '¡Listo! Abra BusPronto desde su pantalla de inicio',
-      detail: 'Tendrá acceso rápido a los horarios del bus UCR en cualquier momento',
-    },
+    { ...CONFIRM_STEP, label: 'Confirme con "Añadir"', detail: 'BusPronto aparecerá en su pantalla de inicio como una app nativa' },
+    { ...DONE_STEP, detail: 'Tendrá acceso rápido a los horarios del bus UCR en cualquier momento' },
   ],
   'android-chrome': [
     {
@@ -53,16 +57,8 @@ const STEPS = {
       label: 'Seleccione "Añadir a pantalla de inicio"',
       detail: 'O busque la opción "Instalar aplicación"',
     },
-    {
-      icon: '📲',
-      label: 'Confirme la instalación',
-      detail: 'BusPronto aparecerá en su pantalla de inicio',
-    },
-    {
-      icon: '🚌',
-      label: '¡Listo! Abra BusPronto desde su pantalla de inicio',
-      detail: 'Acceso rápido a los horarios del bus UCR en cualquier momento',
-    },
+    CONFIRM_STEP,
+    DONE_STEP,
   ],
   samsung: [
     {
@@ -75,16 +71,8 @@ const STEPS = {
       label: 'Seleccione "Añadir página a" → "Pantalla de inicio"',
       detail: 'En Samsung Internet encontrará esta opción en el menú',
     },
-    {
-      icon: '📲',
-      label: 'Confirme la instalación',
-      detail: 'BusPronto quedará en su pantalla de inicio',
-    },
-    {
-      icon: '🚌',
-      label: '¡Listo! Abra BusPronto desde su pantalla de inicio',
-      detail: 'Acceso rápido a los horarios del bus UCR en cualquier momento',
-    },
+    { ...CONFIRM_STEP, detail: 'BusPronto quedará en su pantalla de inicio' },
+    DONE_STEP,
   ],
   desktop: [
     {
