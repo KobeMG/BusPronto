@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion as Motion, useAnimation, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
+import { X, ExternalLink } from 'lucide-react';
 import { calculateSnapX, getAppBounds, trackAdClick, trackAdImpression } from '../utils/adUtils';
 import { AD_THEMES } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from './ui/ImageCarousel';
+import BusinessLinks from './BusinessLinks';
 import styles from './AddBubble.module.css';
 
 const LogoOrIcon = ({ logo, fallbackIcon, title, className }) => {
@@ -249,53 +250,7 @@ const AddBubble = () => {
             />
 
             {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
-              <div className={styles.businessLinksExpanded}>
-                {ad.whatsapp && (
-                  <a
-                    href={`https://wa.me/${ad.whatsapp.replace(/\D/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${styles.businessLink} ${styles.whatsapp}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAdClick(ad.id);
-                    }}
-                  >
-                    <MessageCircle size={14} />
-                    <span>WhatsApp</span>
-                  </a>
-                )}
-                {ad.uber_eats && (
-                  <a
-                    href={ad.uber_eats}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${styles.businessLink} ${styles.uberEats}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAdClick(ad.id);
-                    }}
-                  >
-                    <ShoppingBag size={14} />
-                    <span>Uber Eats</span>
-                  </a>
-                )}
-                {ad.google_maps && (
-                  <a
-                    href={ad.google_maps}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${styles.businessLink} ${styles.googleMaps}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAdClick(ad.id);
-                    }}
-                  >
-                    <MapPin size={14} />
-                    <span>Maps</span>
-                  </a>
-                )}
-              </div>
+              <BusinessLinks ad={ad} styles={styles} containerClassName={styles.businessLinksExpanded} />
             )}
           </div>
 

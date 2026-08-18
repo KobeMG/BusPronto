@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
-import { ExternalLink, Mail, MapPin, ShoppingBag, MessageCircle } from 'lucide-react';
+import { ExternalLink, Mail } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { trackAdClick } from '../utils/adUtils';
 import { getAdIcon } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
 import ImageCarousel from '../components/ui/ImageCarousel';
+import BusinessLinks from '../components/BusinessLinks';
 import styles from './Sponsors.module.css';
 
 const SponsorLogoOrIcon = ({ logo, icon, title }) => {
@@ -82,56 +83,7 @@ const Sponsors = () => {
                   )}
 
                   {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
-                    <div className={styles.businessLinks}>
-                      {ad.whatsapp && (
-                        <a
-                          href={`https://wa.me/${ad.whatsapp.replace(/\D/g, '')}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`${styles.businessLink} ${styles.whatsapp}`}
-                          title="Contactar por WhatsApp"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAdClick(ad.id);
-                          }}
-                        >
-                          <MessageCircle size={14} />
-                          <span>WhatsApp</span>
-                        </a>
-                      )}
-                      {ad.uber_eats && (
-                        <a
-                          href={ad.uber_eats}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`${styles.businessLink} ${styles.uberEats}`}
-                          title="Pedir por Uber Eats"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAdClick(ad.id);
-                          }}
-                        >
-                          <ShoppingBag size={14} />
-                          <span>Uber Eats</span>
-                        </a>
-                      )}
-                      {ad.google_maps && (
-                        <a
-                          href={ad.google_maps}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`${styles.businessLink} ${styles.googleMaps}`}
-                          title="Ver en Google Maps"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAdClick(ad.id);
-                          }}
-                        >
-                          <MapPin size={14} />
-                          <span>Maps</span>
-                        </a>
-                      )}
-                    </div>
+                    <BusinessLinks ad={ad} styles={styles} containerClassName={styles.businessLinks} />
                   )}
                 </div>
 

@@ -2,73 +2,35 @@ import { Link, useLocation } from 'react-router-dom';
 import { Bus, Film, Heart, Settings, Calendar } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
+const NAV_ITEMS = [
+  { to: '/', label: 'Buses', Icon: Bus, isActive: (p) => p === '/' || p.startsWith('/rutas-internas') || p.startsWith('/rutas-externas') },
+  { to: '/cinema', label: 'Cine', Icon: Film, isActive: (p) => p.startsWith('/cinema') },
+  { to: '/aliados', label: 'Aliados', Icon: Heart, isActive: (p) => p.startsWith('/aliados') },
+  { to: '/eventos', label: 'Eventos', Icon: Calendar, isActive: (p) => p.startsWith('/eventos') },
+  { to: '/configuracion', label: 'Config.', Icon: Settings, isActive: (p) => p.startsWith('/configuracion') },
+];
+
 const BottomNav = () => {
   const location = useLocation();
-
-  // Función para determinar si el tab de buses está activo.
-  // Será true si estamos en el Home (/) o en cualquier ruta de rutas internas o externas.
-  const isBusesActive =
-    location.pathname === '/' ||
-    location.pathname.startsWith('/rutas-internas') ||
-    location.pathname.startsWith('/rutas-externas');
-
-  const isCinemaActive = location.pathname.startsWith('/cinema');
-  const isAliadosActive = location.pathname.startsWith('/aliados');
-  const isEventosActive = location.pathname.startsWith('/eventos');
-  const isConfigActive = location.pathname.startsWith('/configuracion');
 
   return (
     <div className={styles.bottomNavWrapper}>
       <nav className={styles.glassPill}>
-        <Link
-          to="/"
-          className={`${styles.navItem} ${isBusesActive ? styles.active : ''}`}
-        >
-          <div className={styles.iconContainer}>
-            <Bus size={20} strokeWidth={isBusesActive ? 2.5 : 2} />
-          </div>
-          <span className={styles.label}>Buses</span>
-        </Link>
-
-        <Link
-          to="/cinema"
-          className={`${styles.navItem} ${isCinemaActive ? styles.active : ''}`}
-        >
-          <div className={styles.iconContainer}>
-            <Film size={20} strokeWidth={isCinemaActive ? 2.5 : 2} />
-          </div>
-          <span className={styles.label}>Cine</span>
-        </Link>
-
-        <Link
-          to="/aliados"
-          className={`${styles.navItem} ${isAliadosActive ? styles.active : ''}`}
-        >
-          <div className={styles.iconContainer}>
-            <Heart size={20} strokeWidth={isAliadosActive ? 2.5 : 2} />
-          </div>
-          <span className={styles.label}>Aliados</span>
-        </Link>
-
-        <Link
-          to="/eventos"
-          className={`${styles.navItem} ${isEventosActive ? styles.active : ''}`}
-        >
-          <div className={styles.iconContainer}>
-            <Calendar size={20} strokeWidth={isEventosActive ? 2.5 : 2} />
-          </div>
-          <span className={styles.label}>Eventos</span>
-        </Link>
-
-        <Link
-          to="/configuracion"
-          className={`${styles.navItem} ${isConfigActive ? styles.active : ''}`}
-        >
-          <div className={styles.iconContainer}>
-            <Settings size={20} strokeWidth={isConfigActive ? 2.5 : 2} />
-          </div>
-          <span className={styles.label}>Config.</span>
-        </Link>
+        {NAV_ITEMS.map(({ to, label, Icon, isActive }) => {
+          const activeNow = isActive(location.pathname);
+          return (
+            <Link
+              key={to}
+              to={to}
+              className={`${styles.navItem} ${activeNow ? styles.active : ''}`}
+            >
+              <div className={styles.iconContainer}>
+                <Icon size={20} strokeWidth={activeNow ? 2.5 : 2} />
+              </div>
+              <span className={styles.label}>{label}</span>
+            </Link>
+          );
+        })}
       </nav>
     </div>
   );

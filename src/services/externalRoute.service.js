@@ -1,6 +1,17 @@
 import { supabase } from '../lib/supabaseClient';
 
-const SUPPORTED_ROUTES = ['alajuela', 'heredia', 'alajuelita', 'coronado', 'desamparados', 'sanjuandedios', 'pavas', 'tibas'];
+export const EXTERNAL_ROUTES = [
+  { id: 'alajuela', name: 'Alajuela' },
+  { id: 'heredia', name: 'Heredia' },
+  { id: 'alajuelita', name: 'Alajuelita' },
+  { id: 'coronado', name: 'Coronado' },
+  { id: 'desamparados', name: 'Desamparados' },
+  { id: 'sanjuandedios', name: 'San Juan de Dios' },
+  { id: 'pavas', name: 'Pavas' },
+  { id: 'tibas', name: 'Tibás' },
+];
+
+const SUPPORTED_ROUTES = EXTERNAL_ROUTES.map((route) => route.id);
 
 const assertSupportedRoute = (route) => {
   const normalized = route?.toLowerCase();

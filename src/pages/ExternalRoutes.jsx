@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react';
 import listStyles from '../components/ui/StopsList.module.css';
 import { Link } from 'react-router-dom';
 import PageHeader from '../components/ui/PageHeader';
+import { EXTERNAL_ROUTES } from '../services/externalRoute.service';
 
 const ExternalRoutes = () => {
   return (
@@ -24,61 +25,14 @@ const ExternalRoutes = () => {
         />
 
         <div className={listStyles.stopList}>
-          <Link to={'/rutas-externas/alajuela'} className={listStyles.stopLink} style={{ position: 'relative' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Alajuela</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/heredia'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Heredia</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/alajuelita'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Alajuelita</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/coronado'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Coronado</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/desamparados'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Desamparados</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/sanjuandedios'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>San Juan de Dios</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/pavas'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Pavas</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
-
-          <Link to={'/rutas-externas/tibas'} className={listStyles.stopLink}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span>Tibás</span>
-            </div>
-            <ChevronRight size={20} />
-          </Link>
+          {EXTERNAL_ROUTES.map((route) => (
+            <Link to={`/rutas-externas/${route.id}`} key={route.id} className={listStyles.stopLink}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span>{route.name}</span>
+              </div>
+              <ChevronRight size={20} />
+            </Link>
+          ))}
         </div>
       </div>
     </>
