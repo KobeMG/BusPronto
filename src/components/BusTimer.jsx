@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import styles from './BusTimer.module.css';
 import { Clock } from 'lucide-react';
-import { calculateBuses, getUpcomingBusesList } from '../utils/timeHelpers';
+import { calculateBuses, getUpcomingBusesList, parseTimeToDate } from '../utils/timeHelpers';
 
 const BusTimer = ({ schedule }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [selectedUpcomingIdx, setSelectedUpcomingIdx] = useState(null);
 
   useEffect(() => { // Actualiza la hora cada segundo
     const timer = setInterval(() => {
@@ -53,20 +54,12 @@ const BusTimer = ({ schedule }) => {
         <div className={styles.timeLabel}>para el próximo bus</div>
       </div>
 
-      <div className={`${styles.nextBusDetails} ${!lastBus ? styles.twoCols : ''}`}>
-        <div className={styles.detailItem}>
-          <span className={styles.detailLabel}>Hora actual</span>
-          <div className={styles.detailValue}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <Clock size={14} /> {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-            </span>
-          </div>
-        </div>
+      <div className={`${styles.nextBusDetails} ${!lastBus ? styles.singleCol : ''}`}>
         {lastBus && (
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Bus anterior</span>
             <div className={styles.detailValue}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'center' }}>
                 <Clock size={14} /> {typeof lastBus === 'string' ? lastBus : lastBus.time}
               </span>
             </div>
@@ -80,7 +73,7 @@ const BusTimer = ({ schedule }) => {
         <div className={styles.detailItem}>
           <span className={styles.detailLabel}>Siguiente bus</span>
           <div className={styles.detailValue}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'center' }}>
               <Clock size={14} /> {typeof nextBus === 'string' ? nextBus : nextBus.time}
             </span>
           </div>
@@ -98,15 +91,43 @@ const BusTimer = ({ schedule }) => {
           {upcomingBuses.map((bus, idx) => {
             const time = typeof bus === 'string' ? bus : bus.time;
             const dest = typeof bus === 'string' ? null : bus.destination;
+            const isSelected = selectedUpcomingIdx === idx;
+
+            let timeLabel = '';
+            if (isSelected) {
+              const busDate = parseTimeToDate(time, currentTime);
+              const diffSeconds = Math.floor((busDate.getTime() - currentTime.getTime()) / 1000);
+              // ponytail: naive same-day time diff assumption for upcoming buses
+              if (diffSeconds > 0) {
+                const hrs = Math.floor(diffSeconds / 3600);
+                const mins = Math.floor((diffSeconds % 3600) / 60);
+                timeLabel = hrs > 0 ? `en ${hrs}h ${mins}m` : `en ${mins}m`;
+              } else if (diffSeconds === 0) {
+                timeLabel = 'ahora';
+              } else {
+                timeLabel = 'ya pasó';
+              }
+            }
+
             return (
-              <div key={`${time}-${idx}`} className={`${styles.timeBadge} ${idx === 0 ? styles.next : ''}`}>
+              <button
+                key={`${time}-${idx}`}
+                className={`${styles.timeBadge} ${idx === 0 ? styles.next : ''}`}
+                onClick={() => setSelectedUpcomingIdx(isSelected ? null : idx)}
+                type="button"
+              >
                 <span className={styles.timeBadgeValue}>{time}</span>
                 {dest && (
                   <span className={styles.timeBadgeDest}>
                     {dest}
                   </span>
                 )}
-              </div>
+                {isSelected && (
+                  <span className={styles.timeBadgeRemaining}>
+                    {timeLabel}
+                  </span>
+                )}
+              </button>
             );
           })}
         </div>
