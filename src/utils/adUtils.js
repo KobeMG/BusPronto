@@ -23,6 +23,9 @@ export const getAppBounds = (screenWidth) => {
   return { appLeft, appRight, appWidth };
 };
 
+export const getBubbleMessage = (ad) =>
+  (ad.addBubbleMessage || '').trim() || (ad.description || '').trim() || '';
+
 export const calculateSnapX = (currentX, screenWidth) => {
   const { appLeft, appRight } = getAppBounds(screenWidth);
   const appCenter = appLeft + (appRight - appLeft) / 2;

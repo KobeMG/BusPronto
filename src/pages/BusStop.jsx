@@ -3,6 +3,7 @@ import { MapPin } from 'lucide-react';
 import { useInternalStopDetailsQuery } from '../hooks/useInternalStopDetailsQuery';
 import BusTimer from '../components/BusTimer';
 import PageHeader from '../components/ui/PageHeader';
+import InlineAd from '../components/InlineAd';
 import styles from '../components/ui/PageHeader.module.css';
 import eventCardStyles from '../components/ui/EventCard.module.css';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -95,6 +96,8 @@ const BusStop = () => {
           <FullScheduleList schedule={schedule} nextBusTime={nextBusTime} />
         </>
       )}
+
+      <InlineAd />
     </div>
   );
 };

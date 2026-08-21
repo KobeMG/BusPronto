@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion as Motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink } from 'lucide-react';
-import { calculateSnapX, getAppBounds, trackAdClick, trackAdImpression } from '../utils/adUtils';
+import { calculateSnapX, getAppBounds, getBubbleMessage, trackAdClick, trackAdImpression } from '../utils/adUtils';
 import { AD_THEMES } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
 import BusinessLinks from './BusinessLinks';
@@ -26,9 +26,6 @@ const pickPhrase = (ad) => {
   }
   return '¡Mira esto!';
 };
-
-const getBubbleMessage = (ad) =>
-  (ad.addBubbleMessage || '').trim() || (ad.description || '').trim() || '';
 
 const AddBubble = () => {
   const [ad, setAd] = useState(null);

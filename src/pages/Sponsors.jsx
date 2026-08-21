@@ -26,9 +26,9 @@ const Sponsors = () => {
 
       <div className="glass-card">
         <PageHeader
-          title="Nuestros Aliados"
+          title="Emprendimientos Destacados"
 
-          description="Empresas y proyectos que ayudan a mantener BusPronto"
+          description="Descubre negocios locales cerca de la UCR"
           showBackButton={true}
           backUrl="/"
         />
