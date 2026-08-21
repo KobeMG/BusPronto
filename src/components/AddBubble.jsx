@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion as Motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink } from 'lucide-react';
 import { calculateSnapX, getAppBounds, trackAdClick, trackAdImpression } from '../utils/adUtils';
@@ -9,6 +9,28 @@ import BusinessLinks from './BusinessLinks';
 import LogoOrIcon from './LogoOrIcon';
 import styles from './AddBubble.module.css';
 
+const SESSION_KEY = 'buspronto_ad_session';
+const ROTATION_MS = 10000;
+
+const loadSession = () => {
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : { shown: [], impressed: [] };
+  } catch {
+    return { shown: [], impressed: [] };
+  }
+};
+
+const pickPhrase = (ad) => {
+  if (ad.phrases && ad.phrases.length > 0) {
+    return ad.phrases[Math.floor(Math.random() * ad.phrases.length)];
+  }
+  return '¡Mira esto!';
+};
+
+const getBubbleMessage = (ad) =>
+  (ad.addBubbleMessage || '').trim() || (ad.description || '').trim() || '';
+
 const AddBubble = () => {
   const [ad, setAd] = useState(null);
   const [phrase, setPhrase] = useState('');
@@ -17,7 +39,48 @@ const AddBubble = () => {
   const [isRightSide, setIsRightSide] = useState(true);
 
   const { data: allAds = [] } = useAdsQuery();
-  const adsRaw = useMemo(() => allAds.filter(ad => ad.addBubbleMessage && ad.addBubbleMessage.trim() !== ''), [allAds]);
+  const adsRaw = useMemo(() => allAds.filter(ad => getBubbleMessage(ad) !== ''), [allAds]);
+
+  const containerRef = useRef(null);
+  // ponytail: refs como fuente de verdad de la sesión (evita closures obsoletos en el intervalo de rotación)
+  const shownRef = useRef([]);
+  const impressedRef = useRef([]);
+  const isOpenRef = useRef(isOpen);
+
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
+  useEffect(() => {
+    const session = loadSession();
+    shownRef.current = session.shown;
+    impressedRef.current = session.impressed;
+  }, []);
+
+  const persistSession = useCallback(() => {
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+        shown: shownRef.current,
+        impressed: impressedRef.current
+      }));
+    } catch {
+      // sin sessionStorage (modo privado), seguimos sin persistir
+    }
+  }, []);
+
+  const pickNextAd = useCallback((pool) => {
+    let unseen = pool.filter(a => !shownRef.current.includes(a.id));
+    if (unseen.length === 0) {
+      // ponytail: pool agotado, reiniciar rotación
+      shownRef.current = [];
+      unseen = pool;
+    }
+    // Mayor prioridad primero; empate = orden original del fetch
+    const chosen = [...unseen].sort((a, b) => (Number(b.priority) || 1) - (Number(a.priority) || 1))[0];
+    shownRef.current = [...shownRef.current, chosen.id];
+    persistSession();
+    return chosen;
+  }, [persistSession]);
 
   const controls = useAnimation();
   // Ref para rastrear la posición X real de la burbuja (controls.get no existe en framer-motion)
@@ -36,24 +99,54 @@ const AddBubble = () => {
   }, []);
 
   useEffect(() => {
-    if (adsRaw.length > 0 && !ad) {
-      const randomAd = adsRaw[Math.floor(Math.random() * adsRaw.length)];
-      
-      let randomPhrase = '¡Mira esto!';
-      if (randomAd.phrases && randomAd.phrases.length > 0) {
-        randomPhrase = randomAd.phrases[Math.floor(Math.random() * randomAd.phrases.length)];
-      }
+    if (adsRaw.length === 0 || ad) return;
+    const chosen = pickNextAd(adsRaw);
+    setAd(chosen);
+    setPhrase(pickPhrase(chosen));
+    setIsOpen(false);
+    setShowTooltip(true);
+  }, [adsRaw, ad, pickNextAd]);
 
-      const timer = setTimeout(() => {
-        setAd(randomAd);
-        setPhrase(randomPhrase);
-        // Contabilizar impresión: el anuncio fue seleccionado y se mostrará al usuario
-        trackAdImpression(randomAd.id);
-      }, 1000);
-      
-      return () => clearTimeout(timer);
+  // Rotación: avanza al siguiente anuncio cada ROTATION_MS mientras la tarjeta esté cerrada
+  useEffect(() => {
+    if (adsRaw.length === 0) return;
+    const interval = setInterval(() => {
+      // ponytail: no rotar con la tarjeta abierta (no cambiar contenido bajo el dedo del usuario)
+      if (isOpenRef.current) return;
+      const chosen = pickNextAd(adsRaw);
+      setAd(chosen);
+      setPhrase(pickPhrase(chosen));
+      setIsOpen(false);
+      setShowTooltip(true);
+    }, ROTATION_MS);
+    return () => clearInterval(interval);
+  }, [adsRaw, pickNextAd]);
+
+  // Impresión real: solo cuando el ad es visible en viewport, una vez por ad por sesión
+  useEffect(() => {
+    if (!ad) return;
+    if (impressedRef.current.includes(ad.id)) return;
+
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      impressedRef.current = [...impressedRef.current, ad.id];
+      persistSession();
+      trackAdImpression(ad.id);
+      return;
     }
-  }, [adsRaw, ad]);
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting) && !impressedRef.current.includes(ad.id)) {
+        impressedRef.current = [...impressedRef.current, ad.id];
+        persistSession();
+        trackAdImpression(ad.id);
+        observer.disconnect();
+      }
+    }, { threshold: 0.5 });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ad, persistSession]);
 
   // Efecto para manejar la posición inicial, el centrado al abrir y el snap al cerrar
   useEffect(() => {
@@ -106,7 +199,7 @@ const AddBubble = () => {
       }, 50);
       return () => clearTimeout(timer);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ad, isOpen, windowDimensions.width, windowDimensions.height]);
 
 
@@ -154,8 +247,8 @@ const AddBubble = () => {
 
   return (
     <Motion.div
+      ref={containerRef}
       className={styles.container}
-      data-clarity-mask="true"
       drag={!isOpen}
       dragConstraints={dragConstraints}
       dragMomentum={false}
@@ -224,7 +317,7 @@ const AddBubble = () => {
 
           <div className={styles.cardBody}>
             <h4 className={styles.adTitle}>{ad.title}</h4>
-            <p className={styles.adDesc}>{ad.addBubbleMessage}</p>
+            <p className={styles.adDesc}>{getBubbleMessage(ad)}</p>
             <ImageCarousel
               className={styles.carouselContainer}
               images={ad.images}

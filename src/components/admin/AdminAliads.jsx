@@ -31,6 +31,7 @@ const EMPTY_FORM = {
   link_text: 'Ver más',
   active: true,
   type: 'entrepreneur',
+  priority: 1,
   addBannerMessage: '',
   addBubbleMessage: '',
   uber_eats: '',
@@ -187,6 +188,7 @@ const AdminAliads = () => {
       link_text: ad.link_text || 'Ver más',
       active: ad.active ?? true,
       type: ad.type || 'entrepreneur',
+      priority: ad.priority ?? 1,
       addBannerMessage: ad.addBannerMessage || '',
       addBubbleMessage: ad.addBubbleMessage || '',
       uber_eats: ad.uber_eats || '',
@@ -218,6 +220,7 @@ const AdminAliads = () => {
       link_text: formData.link_text.trim() || null,
       active: formData.active,
       type: formData.type,
+      priority: Math.min(10, Math.max(1, Number(formData.priority) || 1)),
       addBannerMessage: formData.addBannerMessage.trim() || null,
       addBubbleMessage: formData.addBubbleMessage.trim() || null,
       uber_eats: formData.uber_eats.trim() || null,
@@ -426,6 +429,22 @@ const AdminAliads = () => {
                   ))}
                 </select>
               </div>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="ad-priority">
+                Prioridad <span className={styles.optional}>(1 - 10, mayor = más visible)</span>
+              </label>
+              <input
+                id="ad-priority"
+                type="number"
+                min="1"
+                max="10"
+                step="1"
+                className={styles.inputField}
+                value={formData.priority}
+                onChange={(e) => handleFormChange('priority', e.target.value)}
+              />
             </div>
 
             <div className={styles.field}>

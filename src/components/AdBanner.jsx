@@ -24,8 +24,6 @@ const AdLogoOrIcon = ({ logo, icon, title }) => {
   return icon;
 };
 
-const shuffleArray = (arr) => [...arr].sort(() => Math.random() - 0.5);
-
 const AdBanner = () => {
   const { data: adsRaw = [], isLoading: loading } = useAdsQuery();
   const adsRawByField = useMemo(() => adsRaw.filter(ad => ad.addBannerMessage && ad.addBannerMessage.trim() !== ''), [adsRaw]);
@@ -42,7 +40,7 @@ const AdBanner = () => {
       icon: getAdIcon(ad.type, 18)
     }));
     
-    return shuffleArray(formatted);
+    return formatted.sort((a, b) => (Number(b.priority) || 1) - (Number(a.priority) || 1));
   }, [adsRawByField]);
 
   const handleAdClick = (id) => {
