@@ -4,7 +4,6 @@ import { X, ExternalLink } from 'lucide-react';
 import { calculateSnapX, getAppBounds, trackAdClick, trackAdImpression } from '../utils/adUtils';
 import { AD_THEMES } from '../utils/adThemeUtils';
 import { useAdsQuery } from '../hooks/useAdsQuery';
-import ImageCarousel from './ui/ImageCarousel';
 import BusinessLinks from './BusinessLinks';
 import LogoOrIcon from './LogoOrIcon';
 import styles from './AddBubble.module.css';
@@ -278,7 +277,9 @@ const AddBubble = () => {
             <div className={styles.tooltipContent}>
               {phrase}
               <button
+                type="button"
                 className={styles.closeTooltip}
+                aria-label="Cerrar"
                 onClick={(e) => { e.stopPropagation(); setShowTooltip(false); }}
               >
                 <X size={12} />
@@ -290,14 +291,16 @@ const AddBubble = () => {
       </AnimatePresence>
 
       {!isOpen ? (
-        <Motion.div
+        <Motion.button
+          type="button"
           className={styles.bubble}
+          aria-label={`Ver anuncio: ${ad.title}`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => { setIsOpen(true); setShowTooltip(false); }}
         >
           <LogoOrIcon logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} className={styles.adLogoBubble} />
-        </Motion.div>
+        </Motion.button>
       ) : (
         <Motion.div
           className={styles.expandedCard}
@@ -310,7 +313,7 @@ const AddBubble = () => {
             <div className={styles.iconWrapperExpanded}>
               <LogoOrIcon logo={ad.logo} fallbackIcon={theme.icon} title={ad.title} className={styles.adLogoExpanded} />
             </div>
-            <button className={styles.closeBtn} onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}>
+            <button type="button" className={styles.closeBtn} aria-label="Cerrar" onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}>
               <X size={20} />
             </button>
           </div>
@@ -318,11 +321,6 @@ const AddBubble = () => {
           <div className={styles.cardBody}>
             <h4 className={styles.adTitle}>{ad.title}</h4>
             <p className={styles.adDesc}>{getBubbleMessage(ad)}</p>
-            <ImageCarousel
-              className={styles.carouselContainer}
-              images={ad.images}
-              title={ad.title}
-            />
 
             {(ad.uber_eats || ad.google_maps || ad.whatsapp) && (
               <BusinessLinks ad={ad} styles={styles} containerClassName={styles.businessLinksExpanded} />

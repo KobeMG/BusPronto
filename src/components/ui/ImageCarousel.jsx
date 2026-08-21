@@ -126,6 +126,8 @@ const ImageCarousel = ({ images, title, className }) => {
                   src={src}
                   alt={`${title} - vista ${idx + 1}`}
                   className={styles.carouselImage}
+                  loading="lazy"
+                  decoding="async"
                   onClick={handleImageClick}
                   draggable={false}
                 />

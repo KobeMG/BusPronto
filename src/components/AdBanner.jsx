@@ -16,6 +16,8 @@ const AdLogoOrIcon = ({ logo, icon, title }) => {
         src={logo}
         alt={title}
         className={styles.adLogo}
+        loading="lazy"
+        decoding="async"
         onError={() => setHasError(true)}
       />
     );

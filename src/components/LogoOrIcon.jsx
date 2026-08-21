@@ -9,6 +9,8 @@ const LogoOrIcon = ({ logo, fallbackIcon, title, className }) => {
         src={logo}
         alt={title}
         className={className}
+        loading="lazy"
+        decoding="async"
         onError={() => setHasError(true)}
       />
     );
