@@ -1,4 +1,4 @@
-# Cuando la Inpaciencia le gana a la lógica
+# Cuando la Impaciencia le gana a la lógica
 
 ## Descripción
 

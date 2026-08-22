@@ -28,7 +28,7 @@ const Sponsors = () => {
         <PageHeader
           title="Emprendimientos Destacados"
 
-          description="Descubre negocios locales cerca de la UCR"
+          description="Descubra negocios locales cerca de la UCR"
           showBackButton={true}
           backUrl="/"
         />

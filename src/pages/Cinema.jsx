@@ -17,17 +17,17 @@ const Cinema = () => {
   const handleShare = async (e) => {
     if (!activeMovie) return;
     e.stopPropagation();
-    
+
     const formattedDate = formatDate(activeMovie.screening_date);
     const formattedTime = formatTime(activeMovie.screening_time);
-    
+
     await shareMovie(activeMovie, formattedDate, formattedTime);
   };
 
   return (
     <>
       <title>Cine Universitario - BusPronto</title>
-      <meta name="description" content="Descubre las funciones del Cine Universitario. Películas presenciales y por Zoom." />
+      <meta name="description" content="Descubra las funciones del Cine Universitario. Películas presenciales y por Zoom." />
       <link rel="canonical" href="https://www.buspronto.lat/cine" />
       <meta property="og:title" content="Cine Universitario - BusPronto" />
       <meta property="og:description" content="Consulta la cartelera del Cine Universitario. Películas presenciales y virtuales." />
@@ -73,8 +73,8 @@ const Cinema = () => {
                   <div className={styles.movieHeader}>
                     <div className={styles.titleRow}>
                       <h2 className={styles.movieTitle}>{activeMovie.title}</h2>
-                      <button 
-                        className={styles.shareButton} 
+                      <button
+                        className={styles.shareButton}
                         onClick={handleShare}
                         title="Compartir película"
                         aria-label="Compartir película"
