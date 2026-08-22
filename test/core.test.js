@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 
 import {
   calculateBuses,
+  formatRemaining,
   getUpcomingBusesList,
   parseTimeToDate,
 } from '../src/utils/timeHelpers.js'
@@ -35,6 +36,13 @@ test('calculateBuses sin bus posterior deja nextBus nulo', () => {
 test('getUpcomingBusesList corta desde el proximo bus con el limite pedido', () => {
   const schedule = ['06:30', '11:00', '12:30', '13:00']
   assert.deepEqual(getUpcomingBusesList(schedule, '11:00', 2), ['11:00', '12:30'])
+})
+
+test('formatRemaining cubre futuro, presente y pasado', () => {
+  assert.equal(formatRemaining(5400), 'en 1h 30m')
+  assert.equal(formatRemaining(300), 'en 5m')
+  assert.equal(formatRemaining(0), 'ahora')
+  assert.equal(formatRemaining(-60), 'ya pasó')
 })
 
 // --- eventosUtils ---

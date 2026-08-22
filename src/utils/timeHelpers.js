@@ -62,6 +62,15 @@ export const parseTimeToDate = (timeStr, referenceDate) => {
     };
   };
   
+  // Formatea una diferencia en segundos a un label legible para horarios
+  export const formatRemaining = (diffSeconds) => {
+    if (diffSeconds < 0) return 'ya pasó';
+    if (diffSeconds === 0) return 'ahora';
+    const hrs = Math.floor(diffSeconds / 3600);
+    const mins = Math.floor((diffSeconds % 3600) / 60);
+    return hrs > 0 ? `en ${hrs}h ${mins}m` : `en ${mins}m`;
+  };
+
   export const getUpcomingBusesList = (schedule, nextBus, count = 4) => {
     if (!nextBus || !schedule || schedule.length === 0) return [];
     

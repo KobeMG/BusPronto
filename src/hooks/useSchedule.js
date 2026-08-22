@@ -35,13 +35,13 @@ export const useSchedule = (baseSchedule) => {
   }, [baseSchedule, dayToFilter]);
 
   // Obtener el próximo bus solo si el día seleccionado es HOY para resaltarlo
+  const isToday = selectedDay === todayName || (selectedDay === 'Lunes' && todayIndex >= 1 && todayIndex <= 5);
+
   const { nextBus } = useMemo(() => {
     const now = new Date();
-    const isToday = selectedDay === todayName || (selectedDay === 'Lunes' && todayIndex >= 1 && todayIndex <= 5);
-    
     if (!isToday) return { nextBus: null };
     return calculateBuses(schedule, now);
-  }, [schedule, selectedDay, todayIndex, todayName]);
+  }, [schedule, isToday]);
 
   const nextBusTime = typeof nextBus === 'string' ? nextBus : nextBus?.time;
 
@@ -53,6 +53,7 @@ export const useSchedule = (baseSchedule) => {
     schedule,
     nextBusTime,
     todayName,
-    todayIndex
+    todayIndex,
+    isToday
   };
 };

@@ -25,7 +25,7 @@ const ExternalBusStop = () => {
         view, setView, 
         selectedDay, setSelectedDay, 
         schedule, nextBusTime, 
-        todayName 
+        todayName, isToday 
     } = useSchedule(stopData?.formattedSchedules);
 
     const currentFare = stopData?.formattedSchedules?.find(s => s.fare != null)?.fare;
@@ -109,7 +109,7 @@ const ExternalBusStop = () => {
             ) : (
                 <>
                     <DaySelector selectedDay={selectedDay} onDayChange={setSelectedDay} />
-                    <FullScheduleList schedule={schedule} nextBusTime={nextBusTime} />
+                    <FullScheduleList schedule={schedule} nextBusTime={nextBusTime} isTodayView={isToday} />
                 </>
             )}
 

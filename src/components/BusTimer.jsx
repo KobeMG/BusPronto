@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import styles from './BusTimer.module.css';
 import { Clock } from 'lucide-react';
-import { calculateBuses, getUpcomingBusesList, parseTimeToDate } from '../utils/timeHelpers';
+import { calculateBuses, getUpcomingBusesList, parseTimeToDate, formatRemaining } from '../utils/timeHelpers';
 
 const BusTimer = ({ schedule }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [selectedUpcomingIdx, setSelectedUpcomingIdx] = useState(null);
+  const [selectedBusKey, setSelectedBusKey] = useState(null);
 
   useEffect(() => { // Actualiza la hora cada segundo
     const timer = setInterval(() => {
@@ -91,29 +91,24 @@ const BusTimer = ({ schedule }) => {
           {upcomingBuses.map((bus, idx) => {
             const time = typeof bus === 'string' ? bus : bus.time;
             const dest = typeof bus === 'string' ? null : bus.destination;
-            const isSelected = selectedUpcomingIdx === idx;
+            // Selección por identidad (hora+destino), no por índice: la lista
+            // se desplaza cuando pasa el próximo bus y un índice apuntaría a otro.
+            const busKey = `${time}|${dest || ''}`;
+            const isSelected = selectedBusKey === busKey;
 
             let timeLabel = '';
             if (isSelected) {
               const busDate = parseTimeToDate(time, currentTime);
               const diffSeconds = Math.floor((busDate.getTime() - currentTime.getTime()) / 1000);
               // ponytail: naive same-day time diff assumption for upcoming buses
-              if (diffSeconds > 0) {
-                const hrs = Math.floor(diffSeconds / 3600);
-                const mins = Math.floor((diffSeconds % 3600) / 60);
-                timeLabel = hrs > 0 ? `en ${hrs}h ${mins}m` : `en ${mins}m`;
-              } else if (diffSeconds === 0) {
-                timeLabel = 'ahora';
-              } else {
-                timeLabel = 'ya pasó';
-              }
+              timeLabel = formatRemaining(diffSeconds);
             }
 
             return (
               <button
                 key={`${time}-${idx}`}
                 className={`${styles.timeBadge} ${idx === 0 ? styles.next : ''}`}
-                onClick={() => setSelectedUpcomingIdx(isSelected ? null : idx)}
+                onClick={() => setSelectedBusKey(isSelected ? null : busKey)}
                 type="button"
               >
                 <span className={styles.timeBadgeValue}>{time}</span>

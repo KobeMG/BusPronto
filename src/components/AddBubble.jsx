@@ -9,7 +9,7 @@ import LogoOrIcon from './LogoOrIcon';
 import styles from './AddBubble.module.css';
 
 const SESSION_KEY = 'buspronto_ad_session';
-const ROTATION_MS = 10000;
+const ROTATION_MS = 20000; // 20 segundos entre rotaciones de anuncios
 
 const loadSession = () => {
   try {

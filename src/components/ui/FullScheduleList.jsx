@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './FullScheduleList.module.css';
 import { Clock, ChevronUp } from 'lucide-react';
+import { parseTimeToDate, formatRemaining } from '../../utils/timeHelpers';
 
-const FullScheduleList = ({ schedule, nextBusTime }) => {
+const FullScheduleList = ({ schedule, nextBusTime, isTodayView }) => {
+  const [selectedKey, setSelectedKey] = useState(null);
+
   if (!schedule || schedule.length === 0) {
     return (
       <div className={styles.empty}>
@@ -29,24 +32,57 @@ const FullScheduleList = ({ schedule, nextBusTime }) => {
           <div className={styles.itemsGrid}>
             {grouped[hour].map((item, idx) => {
               const isNext = nextBusTime === item.time;
-              return (
-                <div
-                  key={`${item.time}-${idx}`}
-                  className={`${styles.scheduleItem} ${isNext ? styles.nextBus : ''}`}
-                >
+              // Identidad hora+destino: sobrevive reordenamientos y evita
+              // que horarios con la misma hora se pisen entre sí.
+              const itemKey = `${item.time}|${item.destination || ''}`;
+              const isSelected = selectedKey === itemKey;
+
+              let timeLabel = null;
+              if (isSelected) {
+                // Cálculo estático al click: sin ticker, el label no se actualiza solo.
+                const busDate = parseTimeToDate(item.time, new Date());
+                const diffSeconds = Math.floor((busDate.getTime() - Date.now()) / 1000);
+                timeLabel = formatRemaining(diffSeconds);
+              }
+
+              const itemClass = `${styles.scheduleItem} ${isNext ? styles.nextBus : ''} ${isSelected ? styles.selected : ''}`;
+
+              const content = (
+                <>
                   <div className={styles.timeWrap}>
                     <Clock size={16} className={isNext ? styles.nextIcon : styles.icon} />
                     <span className={styles.time}>{item.time}</span>
                     {isNext && <span className={styles.nextBadge}>Siguiente</span>}
+                    {timeLabel && (
+                      <span className={styles.remainingLabel}>{timeLabel}</span>
+                    )}
                   </div>
                   {item.destination && (
                     <div className={styles.destWrap}>
                       <span>{'Rumbo a: ' + item.destination}</span>
                     </div>
                   )}
+                </>
+              );
 
-                </div>
+              if (!isTodayView) {
+                return (
+                  <div key={`${item.time}-${idx}`} className={itemClass}>
+                    {content}
+                  </div>
+                );
+              }
 
+              return (
+                <button
+                  key={`${item.time}-${idx}`}
+                  type="button"
+                  className={itemClass}
+                  onClick={() => setSelectedKey(isSelected ? null : itemKey)}
+                  aria-pressed={isSelected}
+                >
+                  {content}
+                </button>
               );
             })}
           </div>

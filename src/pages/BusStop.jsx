@@ -26,7 +26,7 @@ const BusStop = () => {
     view, setView, 
     selectedDay, setSelectedDay, 
     schedule, nextBusTime, 
-    todayName 
+    todayName, isToday 
   } = useSchedule(stopData?.formattedSchedules);
 
   const stopName = stopData?.name || stopId?.replace('_', ' ');
@@ -93,7 +93,7 @@ const BusStop = () => {
       ) : (
         <>
           <DaySelector selectedDay={selectedDay} onDayChange={setSelectedDay} />
-          <FullScheduleList schedule={schedule} nextBusTime={nextBusTime} />
+          <FullScheduleList schedule={schedule} nextBusTime={nextBusTime} isTodayView={isToday} />
         </>
       )}
 
