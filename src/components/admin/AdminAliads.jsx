@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2,
@@ -40,7 +41,21 @@ const EMPTY_FORM = {
   logo: '',
   images: [],
   phrases: [],
+  promos: [],
 };
+
+// Misma convención que events.recurrence_days: 1=Lun ... 7=Dom
+const PROMO_DAYS = [
+  { value: 1, label: 'Lun' },
+  { value: 2, label: 'Mar' },
+  { value: 3, label: 'Mié' },
+  { value: 4, label: 'Jue' },
+  { value: 5, label: 'Vie' },
+  { value: 6, label: 'Sáb' },
+  { value: 7, label: 'Dom' },
+];
+
+const DAY_LABELS = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado', 7: 'Domingo' };
 
 const TYPE_OPTIONS = [
   { value: 'entrepreneur', label: 'Emprendedor' },
@@ -113,7 +128,78 @@ const ChipInput = ({ phrases, onChange }) => {
   );
 };
 
+const PromoInput = ({ promos, onChange }) => {
+  const [text, setText] = useState('');
+  const [days, setDays] = useState([]);
+
+  const addPromo = () => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    onChange([...promos, { days: [...days].sort(), text: trimmed }]);
+    setText('');
+  };
+
+  const toggleDay = (value, checked) => {
+    setDays(checked ? [...days, value].sort() : days.filter((d) => d !== value));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addPromo();
+    }
+  };
+
+  return (
+    <div className={styles.chipInputContainer}>
+      <div className={styles.chips}>
+        {promos.map((promo, idx) => (
+          <span key={idx} className={styles.chip}>
+            {promo.days?.length
+              ? promo.days.map((d) => PROMO_DAYS.find((x) => x.value === d)?.label).join(', ')
+              : 'Siempre'}
+            : {promo.text}
+            <button
+              type="button"
+              onClick={() => onChange(promos.filter((_, i) => i !== idx))}
+              className={styles.chipRemove}
+            >
+              <X size={10} />
+            </button>
+          </span>
+        ))}
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+        {PROMO_DAYS.map((d) => (
+          <label key={d.value} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', color: '#e2e8f0', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={days.includes(d.value)}
+              onChange={(e) => toggleDay(d.value, e.target.checked)}
+            />
+            {d.label}
+          </label>
+        ))}
+      </div>
+      <div className={styles.chipInputRow}>
+        <input
+          type="text"
+          className={styles.chipTextInput}
+          placeholder="Ej: 2x1 en tacos, 10% con carnet..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button type="button" onClick={addPromo} className={styles.chipAddBtn}>
+          <Plus size={14} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const AdminAliads = () => {
+  const queryClient = useQueryClient();
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -197,6 +283,7 @@ const AdminAliads = () => {
       logo: ad.logo || '',
       images: ad.images || [],
       phrases: ad.phrases || [],
+      promos: ad.promos || [],
     });
     setResult(null);
   };
@@ -229,6 +316,7 @@ const AdminAliads = () => {
       logo: formData.logo || null,
       images: formData.images || [],
       phrases: formData.phrases || [],
+      promos: formData.promos || [],
     };
 
     try {
@@ -242,6 +330,7 @@ const AdminAliads = () => {
       setEditingId(null);
       setFormData(EMPTY_FORM);
       setLogoInputKey((prev) => prev + 1);
+      queryClient.invalidateQueries({ queryKey: ['ads'] });
       await fetchAds();
     } catch (err) {
       setResult({ error: err.message || 'Error al guardar el aliado.' });
@@ -255,6 +344,7 @@ const AdminAliads = () => {
     try {
       await deleteAd(deleteTarget.id);
       setAds(ads.filter((a) => a.id !== deleteTarget.id));
+      queryClient.invalidateQueries({ queryKey: ['ads'] });
       if (editingId === deleteTarget.id) handleCancelEdit();
     } catch (err) {
       setResult({ error: err.message || 'Error al eliminar el aliado.' });
@@ -559,6 +649,16 @@ const AdminAliads = () => {
               <ChipInput
                 phrases={formData.phrases}
                 onChange={(phrases) => handleFormChange('phrases', phrases)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>
+                Promociones <span className={styles.optional}>(opcional, por día o siempre)</span>
+              </label>
+              <PromoInput
+                promos={formData.promos}
+                onChange={(promos) => handleFormChange('promos', promos)}
               />
             </div>
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ExternalLink, Mail } from 'lucide-react';
+import { ExternalLink, Mail, Tag } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { trackAdClick } from '../utils/adUtils';
@@ -10,9 +10,24 @@ import BusinessLinks from '../components/BusinessLinks';
 import LogoOrIcon from '../components/LogoOrIcon';
 import styles from './Sponsors.module.css';
 
+const DAY_LABELS = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado', 7: 'Domingo' };
+
+// Misma convención que events.recurrence_days: 1=Lun ... 7=Dom; [] = siempre activa
+const isPromoActive = (promo, day) => !promo.days?.length || promo.days.includes(day);
+
 const Sponsors = () => {
   const { data: allAds = [], isLoading: loading } = useAdsQuery();
   const ads = useMemo(() => allAds.filter(ad => ad.description && ad.description.trim() !== ''), [allAds]);
+  // ponytail: calculado por render; si la página queda abierta de un día a otro no se actualiza, remontar la ruta si importa
+  const today = new Date().getDay() === 0 ? 7 : new Date().getDay();
+  const todaysPromos = useMemo(
+    () => ads.flatMap((ad) =>
+      (ad.promos || [])
+        .filter((p) => isPromoActive(p, today))
+        .map((p) => ({ adTitle: ad.title, text: p.text }))
+    ),
+    [ads, today]
+  );
 
   const handleAdClick = (id) => {
     trackAdClick(id);
@@ -32,6 +47,20 @@ const Sponsors = () => {
           showBackButton={true}
           backUrl="/"
         />
+
+        {!loading && todaysPromos.length > 0 && (
+          <div className={styles.promoStrip}>
+            <span className={styles.promoStripTitle}>
+              <Tag size={16} />
+              Promos de hoy
+            </span>
+            {todaysPromos.map((promo, idx) => (
+              <span key={idx} className={styles.promoStripItem}>
+                <strong>{promo.adTitle}:</strong> {promo.text}
+              </span>
+            ))}
+          </div>
+        )}
 
         {loading ? (
           <div className={styles.loaderContainer}>
@@ -59,6 +88,21 @@ const Sponsors = () => {
                   <p className={styles.sponsorDesc}>
                     {ad.description}
                   </p>
+
+                  {ad.promos && ad.promos.length > 0 && (
+                    <ul className={styles.promoList}>
+                      {ad.promos.map((promo, idx) => (
+                        <li
+                          key={idx}
+                          className={isPromoActive(promo, today) ? styles.promoToday : styles.promoLater}
+                        >
+                          <Tag size={12} />
+                          {promo.days?.length > 0 && `${promo.days.map((d) => DAY_LABELS[d]).join(', ')}: `}
+                          {promo.text}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
                   {ad.images && ad.images.length > 0 && (
                     <ImageCarousel images={ad.images} title={ad.title} />
