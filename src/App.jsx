@@ -41,7 +41,7 @@ const PageFallback = () => (
 );
 
 const AdminFallback = () => (
-  <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f1115', color: '#94a3b8', fontFamily: 'Inter, sans-serif' }}>
+  <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', color: 'var(--text-secondary)', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
     Cargando panel...
   </div>
 );

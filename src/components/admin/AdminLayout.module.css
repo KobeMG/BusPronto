@@ -1,14 +1,14 @@
 /* ─── Tokens ─── */
 :root {
   --sidebar-w: 240px;
-  --sidebar-bg: rgba(255, 255, 255, 0.028);
-  --sidebar-border: rgba(255, 255, 255, 0.07);
-  --nav-active-bg: rgba(96, 165, 250, 0.12);
-  --nav-active-color: #60a5fa;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --page-bg: radial-gradient(circle at 20% 50%, #151821 0%, #0f1115 100%);
+  --sidebar-bg: rgba(28, 28, 30, 0.85);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --nav-active-bg: rgba(10, 132, 255, 0.14);
+  --nav-active-color: #0a84ff;
+  --text-primary: #f5f5f7;
+  --text-secondary: #86868b;
+  --text-muted: #6e6e73;
+  --page-bg: #000000;
 }
 
 /* ─── Root layout ─── */
@@ -17,7 +17,8 @@
   min-height: 100svh;
   background: var(--page-bg);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 /* ─── Sidebar ─── */
@@ -29,10 +30,10 @@
   flex-direction: column;
   background: var(--sidebar-bg);
   border-right: 1px solid var(--sidebar-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   z-index: 100;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s var(--ease-apple);
 }
 
 .sidebarHeader {
@@ -46,7 +47,7 @@
 .logo {
   font-size: 1.05rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

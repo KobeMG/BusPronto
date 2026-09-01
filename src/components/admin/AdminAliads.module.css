@@ -424,6 +424,28 @@
   object-fit: cover;
 }
 
+.imageRemoveBtn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #fca5a5;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.imageRemoveBtn:hover {
+  background: rgba(239, 68, 68, 0.9);
+  color: #fff;
+}
+
 .chipInputContainer {
   display: flex;
   flex-direction: column;

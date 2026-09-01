@@ -8,7 +8,8 @@
   margin: 1.5rem auto;
   width: 90%;
   max-width: 340px;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .toggleButton {
@@ -27,11 +28,11 @@
   padding: 0.75rem 1rem;
   cursor: pointer;
   z-index: 10;
-  transition: color 0.3s ease;
+  transition: color 0.25s var(--ease-apple);
 }
 
 .toggleButton.active {
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .glider {
@@ -42,8 +43,8 @@
   width: calc(50% - 0.25rem);
   background: var(--accent-primary);
   border-radius: 0.75rem;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: transform 0.35s var(--ease-apple);
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.35);
 }
 
 .glider.right {

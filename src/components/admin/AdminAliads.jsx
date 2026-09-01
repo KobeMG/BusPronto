@@ -11,8 +11,6 @@ import {
   RefreshCw,
   Store,
   X,
-  Image,
-  Link,
 } from 'lucide-react';
 import {
   getAllAds,
@@ -21,6 +19,7 @@ import {
   deleteAd,
   uploadAdLogo,
   uploadAdImage,
+  deleteAdImage,
 } from '../../services/ads.service';
 import styles from './AdminAliads.module.css';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -211,6 +210,7 @@ const AdminAliads = () => {
   const [result, setResult] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [logoInputKey, setLogoInputKey] = useState(0);
+  const [removedImages, setRemovedImages] = useState([]);
 
   const fetchAds = useCallback(async () => {
     setLoading(true);
@@ -233,12 +233,17 @@ const AdminAliads = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleRemoveImage = (url) => {
+    handleFormChange('images', (formData.images || []).filter((u) => u !== url));
+    setRemovedImages((prev) => (prev.includes(url) ? prev : [...prev, url]));
+  };
+
   const handleLogoChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingLogo(true);
     try {
-      const url = await uploadAdLogo(formData.title || 'temp', file);
+      const url = await uploadAdLogo(formData.title.trim() || `temp_${Date.now()}`, file);
       handleFormChange('logo', url);
     } catch (err) {
       console.error('Error uploading logo:', err);
@@ -251,22 +256,28 @@ const AdminAliads = () => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
     setUploadingImages(true);
-    try {
-      const currentImages = formData.images || [];
-      const startIndex = currentImages.length;
-      const newUrls = await Promise.all(
-        files.map((file, i) => uploadAdImage(formData.title || 'temp', file, startIndex + i))
-      );
-      handleFormChange('images', [...currentImages, ...newUrls]);
-    } catch (err) {
-      console.error('Error uploading images:', err);
-    } finally {
-      setUploadingImages(false);
+    const currentImages = formData.images || [];
+    const newUrls = [];
+    // ponytail: secuencial evita racing de subidas concurrentes a carpeta nueva (Promise.all perdía todo el lote si una fallaba)
+    for (const file of files) {
+      try {
+        const url = await uploadAdImage(formData.title.trim() || `temp_${Date.now()}`, file, currentImages.length + newUrls.length);
+        newUrls.push(url);
+      } catch (err) {
+        console.error('Error uploading image:', err);
+      }
     }
+    if (newUrls.length) handleFormChange('images', [...currentImages, ...newUrls]);
+    e.target.value = '';
+    if (newUrls.length < files.length) {
+      setResult({ error: `${files.length - newUrls.length} imagen(es) no se pudieron subir, se guardaron ${newUrls.length}.` });
+    }
+    setUploadingImages(false);
   };
 
   const handleEditAd = (ad) => {
     setEditingId(ad.id);
+    setRemovedImages([]);
     setFormData({
       title: ad.title || '',
       description: ad.description || '',
@@ -293,6 +304,7 @@ const AdminAliads = () => {
     setFormData(EMPTY_FORM);
     setResult(null);
     setLogoInputKey((prev) => prev + 1);
+    setRemovedImages([]);
   };
 
   const handleSubmit = async (e) => {
@@ -330,6 +342,8 @@ const AdminAliads = () => {
       setEditingId(null);
       setFormData(EMPTY_FORM);
       setLogoInputKey((prev) => prev + 1);
+      removedImages.forEach((url) => deleteAdImage(url));
+      setRemovedImages([]);
       queryClient.invalidateQueries({ queryKey: ['ads'] });
       await fetchAds();
     } catch (err) {
@@ -427,6 +441,7 @@ const AdminAliads = () => {
                   <div className={styles.aliadRowTop}>
                     <div className={styles.aliadRowLeft}>
                       <LogoImg
+                        key={ad.logo}
                         src={ad.logo}
                         alt={ad.title}
                         imgClass={styles.logoThumb}
@@ -568,6 +583,7 @@ const AdminAliads = () => {
                   {uploadingLogo && <span className={styles.uploadHint}>Subiendo...</span>}
                 </div>
                 <LogoImg
+                  key={formData.logo}
                   src={formData.logo}
                   alt="Logo preview"
                   imgClass={styles.logoPreview}
@@ -595,6 +611,15 @@ const AdminAliads = () => {
                   {formData.images.map((img, idx) => (
                     <div key={idx} className={styles.imageThumbWrapper}>
                       <img src={img} alt={`Producto ${idx + 1}`} className={styles.imageThumb} />
+                      <button
+                        type="button"
+                        className={styles.imageRemoveBtn}
+                        onClick={() => handleRemoveImage(img)}
+                        title="Eliminar imagen"
+                        aria-label={`Eliminar imagen ${idx + 1}`}
+                      >
+                        <X size={12} />
+                      </button>
                     </div>
                   ))}
                 </div>

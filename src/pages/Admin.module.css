@@ -1,31 +1,10 @@
 /* Admin Login */
 .adminPage {
   min-height: 100vh;
-  color: var(--text-primary, #ffffff);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
   position: relative;
-}
-
-.adminPage::before {
-  content: '';
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 40%;
-  height: 40%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.adminPage::after {
-  content: '';
-  position: absolute;
-  bottom: -10%;
-  right: -10%;
-  width: 40%;
-  height: 40%;
-  pointer-events: none;
-  z-index: 0;
+  background-color: var(--bg-color);
 }
 
 .loginFormPanel {
@@ -33,8 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem 2rem;
-  background: radial-gradient(circle at 50% 50%, #151821 0%, #0f1115 100%);
+  padding: 2rem 1.5rem;
+  background: radial-gradient(circle at 50% 30%, rgba(10, 132, 255, 0.06) 0%, transparent 70%), var(--bg-color);
   position: relative;
   z-index: 1;
 }
@@ -42,13 +21,13 @@
 .loginCard {
   width: 100%;
   max-width: 420px;
-  background: rgba(26, 29, 36, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(28, 28, 30, 0.78);
+  border: 1px solid var(--surface-border);
   border-radius: 1.5rem;
   padding: 2.5rem;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
 }
@@ -60,7 +39,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
 }
 
 .loginHeader {
@@ -69,15 +48,17 @@
 }
 
 .loginTitle {
-  font-size: 1.85rem;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
 }
 
 .loginSubtitle {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .inputWrapper {
@@ -90,9 +71,9 @@
 .inputIcon {
   position: absolute;
   left: 1rem;
-  color: #64748b;
+  color: var(--text-secondary);
   pointer-events: none;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,24 +82,24 @@
 .inputField {
   width: 100%;
   padding: 0.85rem 1rem 0.85rem 2.75rem;
-  background: rgba(15, 17, 21, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--surface-border);
   border-radius: 0.75rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-family: inherit;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .inputField:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: rgba(15, 17, 21, 0.9);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
 }
 
-.inputField:focus+.inputIcon {
-  color: #3b82f6;
+.inputField:focus + .inputIcon {
+  color: var(--accent-primary);
 }
 
 .passwordToggle {
@@ -126,22 +107,22 @@
   right: 1rem;
   background: none;
   border: none;
-  color: #64748b;
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.25rem;
   border-radius: 0.25rem;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
 .passwordToggle:hover {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .submitBtn {
-  background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+  background: var(--accent-primary);
   color: #ffffff;
   border: none;
   border-radius: 0.75rem;
@@ -153,31 +134,31 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: all 0.25s ease;
+  transition: transform 0.2s var(--ease-apple), background-color 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(10, 132, 255, 0.35);
 }
 
 .submitBtn:hover:not(:disabled) {
-  opacity: 0.95;
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  background: var(--accent-primary-hover);
+  box-shadow: 0 6px 20px rgba(10, 132, 255, 0.45);
 }
 
 .submitBtn:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: scale(0.985);
 }
 
 .submitBtn:disabled {
-  background: #334155;
-  color: #64748b;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-tertiary);
   box-shadow: none;
   cursor: not-allowed;
 }
 
 .errorBox {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #f87171;
+  background: rgba(255, 69, 58, 0.12);
+  border: 1px solid rgba(255, 69, 58, 0.25);
+  color: var(--error);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
@@ -189,19 +170,19 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .label {
-  font-size: 0.875rem;
+  font-size: 0.825rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: var(--text-secondary);
   display: flex;
   justify-content: space-between;
 }
@@ -213,20 +194,19 @@
 }
 
 .loginLogo {
-  width: 90px;
-  height: 90px;
-  filter: drop-shadow(0 0 20px rgba(10, 188, 202, 0.45));
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 85px;
+  height: 85px;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s var(--ease-apple);
 }
 
 .loginLogo:hover {
-  transform: scale(1.08) rotate(2deg);
-  filter: drop-shadow(0 0 25px rgba(10, 188, 202, 0.65));
+  transform: scale(1.05);
 }
 
 @media (max-width: 640px) {
   .loginCard {
-    padding: 1.75rem;
+    padding: 2rem 1.5rem;
     border-radius: 1.25rem;
   }
 }
